@@ -16,7 +16,7 @@ Globals::Globals():
 
 
 /*
-Point GLOBALS::gridToScreen(Point gridPos) { //does not include GLOBALS::camera pos atm
+PointF GLOBALS::gridToScreen(PointF gridPos) { //does not include GLOBALS::camera pos atm
 	return { ( gridPos.x * (int)(GLOBALS::BlockSize / GLOBALS::camera.getScale()) ) , ( gridPos.y * (int)(GLOBALS::BlockSize / GLOBALS::camera.getScale()) ) };
 };
 */

@@ -42,7 +42,7 @@ public:
         Sand
     };
 
-    //Point gridToScreen(Point gridPos);
+    //PointF gridToScreen(PointF gridPos);
 
 private:
     Globals();

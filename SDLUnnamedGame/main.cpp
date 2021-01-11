@@ -29,7 +29,7 @@ Renderer* renderer;
 TTF_Font* font;
 
 PointI mousePositionABS = { -1 , -1 }; //ABS position
-Point mousePosition = { -1 , -1 };
+PointF mousePosition = { -1 , -1 };
 Rect mouseRect = { -1, -1, globals->BlockSize, globals->BlockSize };
 std::unique_ptr<Text> mousePositionABSText;
 
@@ -53,7 +53,7 @@ int main( int argc, char* args[] ) {
 			chunk[i].push_back(Block({ j ,i }, blockTexture) );
 		}
 	}
-	Point point = { 0 , 0 };
+	PointF point = { 0 , 0 };
 	std::cout << (point + 5).x << std::endl;
 	Block sand({ 6 ,6 }, std::make_shared<Texture>("assets\\textures\\blocks.png", *renderer, Rect{ 251, 0, 250, 250 }) );
 	int num = 0;
@@ -216,7 +216,7 @@ namespace EVENTS {
 	{
 		if (event.wheel.y != 0) {
 			float scaleDelta = 0.05;
-			Point temp = { (float)(mousePositionABS.x + globals->camera.getLocation().x) / globals->camera.getScale(), (float)(mousePositionABS.y + globals->camera.getLocation().y) / globals->camera.getScale() };
+			PointF temp = { (float)(mousePositionABS.x + globals->camera.getLocation().x) / globals->camera.getScale(), (float)(mousePositionABS.y + globals->camera.getLocation().y) / globals->camera.getScale() };
 			//temp = (mousePositionABS + cameraLocation) / (scale)
 			if (event.wheel.y > 0) // scroll up
 			{
@@ -226,7 +226,7 @@ namespace EVENTS {
 			{
 				globals->camera.addToScale(-scaleDelta);
 			}
-			Point temp2 = { (float)(mousePositionABS.x + globals->camera.getLocation().x) / globals->camera.getScale(), (float)(mousePositionABS.y + globals->camera.getLocation().y) / globals->camera.getScale() };
+			PointF temp2 = { (float)(mousePositionABS.x + globals->camera.getLocation().x) / globals->camera.getScale(), (float)(mousePositionABS.y + globals->camera.getLocation().y) / globals->camera.getScale() };
 			//temp = (mousePositionABS + cameraLocation) / (scale)
 			globals->camera.move({ -1 * (int)round((temp2.x - temp.x) * globals->camera.getScale()), -1 * (int)round((temp2.y - temp.y) * globals->camera.getScale()) });
 

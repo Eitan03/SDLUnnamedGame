@@ -44,7 +44,7 @@ void Text::renderABS(int x, int y)
 	SDL_RenderCopy(renderer.get(), texture.get(), &textureRect, &textureRect);
 }
 
-void Text::renderABS(Point location)
+void Text::renderABS(PointF location)
 {
     this->textureRect.x = location.x;
     this->textureRect.y = location.y;

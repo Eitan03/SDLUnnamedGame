@@ -28,7 +28,7 @@ public:
 	void setText(std::string text);
 	std::string getText() const { return text; };
 	void renderABS(int x, int y) override;
-	void renderABS(Point location);
+	void renderABS(PointF location);
 
 	inline Rect getRect() const { return this->textureRect; };
 

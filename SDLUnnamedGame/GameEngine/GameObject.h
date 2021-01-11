@@ -11,10 +11,10 @@
 class GameObject : public Drawable
 {
 public:
-	GameObject(Point position, PointI size,std::shared_ptr<Texture> texture);
+	GameObject(PointF position, PointI size,std::shared_ptr<Texture> texture);
 	~GameObject();
-	virtual void setPosition(Point position);
-	Point getPosition() const;
+	virtual void setPosition(PointF position);
+	PointF getPosition() const;
 	PointI getSize() const { return this->size; };
 	void changeTexture(std::shared_ptr<Texture> texture);
 	void render();
@@ -25,7 +25,7 @@ public:
 
 protected:
 	std::shared_ptr<Texture> texture;
-	Point position;
+	PointF position;
 	PointI size;
 
 	Globals* globals;
