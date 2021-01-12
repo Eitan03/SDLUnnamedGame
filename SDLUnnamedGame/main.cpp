@@ -44,7 +44,6 @@ int main( int argc, char* args[] ) {
 
 	init();
 
-	
 	std::shared_ptr<Texture> blockTexture = std::make_shared<Texture>("assets\\textures\\blocks.png", *renderer, Rect{ 0, 0, 250, 250 });
 	chunk.reserve(36);
 	for (int i = 0; i < 6; i++) {
@@ -53,8 +52,6 @@ int main( int argc, char* args[] ) {
 			chunk[i].push_back(Block({ j ,i }, blockTexture) );
 		}
 	}
-	PointF point = { 0 , 0 };
-	std::cout << (point + 5).x << std::endl;
 	Block sand({ 6 ,6 }, std::make_shared<Texture>("assets\\textures\\blocks.png", *renderer, Rect{ 251, 0, 250, 250 }) );
 	int num = 0;
 	mousePositionABSText = std::make_unique<Text>("-1, -1", globals->colors.White, *font, *renderer);
@@ -73,7 +70,6 @@ int main( int argc, char* args[] ) {
 	//While application is running
 	while (!quit)
 	{
-		
 		//rendering
 		renderer->clear();
 
@@ -125,17 +121,9 @@ int main( int argc, char* args[] ) {
 		}
 
 
-		if (isMouseInWindow) { //might be able to optimize! by doing math
+		if (isMouseInWindow) {
 
-			//mouseRect.x = (int)floor(mousePosition.x) * globals->camera.applyScale(globals->BlockSize);
-			//mouseRect.y = (int)floor(mousePosition.y) * globals->camera.applyScale(globals->BlockSize);
-
-			mouseRect.x = (int)floor((float)(mousePositionABS.x + globals->camera.getLocation().x) / globals->camera.applyScale(globals->BlockSize));
-			// mouseRect = floor( (mousePositionABS + cameraLocation) / (Block*scale) )
-			mouseRect.x = (int)round(mouseRect.x * globals->camera.applyScale(globals->BlockSize) - (globals->camera.getLocation().x));
-			// mouseRect = round( (mouseRect * Block * Scale) - cameraLocation ) )
-			mouseRect.y = (int)floor((float)(mousePositionABS.y + globals->camera.getLocation().y) / globals->camera.applyScale(globals->BlockSize));
-			mouseRect.y = (int)round(mouseRect.y * globals->camera.applyScale(globals->BlockSize) - (globals->camera.getLocation().y));
+			mouseRect.setPosition( ( floor(mousePosition) * globals->camera.applyScale(globals->BlockSize)) - (globals->camera.getLocation()));
 			renderer->renderRectABS(mouseRect);
 		}
 
@@ -207,16 +195,15 @@ namespace EVENTS {
 		int x, y;
 		SDL_GetMouseState(&x, &y);
 		mousePositionABS = { x, y };
-		mousePosition.x = (float)(mousePositionABS.x + globals->camera.getLocation().x) / globals->camera.applyScale(globals->BlockSize);
-		mousePosition.y = (float)(mousePositionABS.x + globals->camera.getLocation().x) / globals->camera.applyScale(globals->BlockSize);
-		mousePositionABSText.get()->setText(std::to_string((int)floor(mousePosition.x)) + ", " + std::to_string((int)floor(mousePosition.y)) );
+		mousePosition = (PointF)(mousePositionABS + globals->camera.getLocation()) / globals->camera.applyScale(globals->BlockSize);
+		//mousePositionABSText.get()->setText(std::to_string((int)floor(mousePosition.x)) + ", " + std::to_string((int)floor(mousePosition.y)) );
 	}
 
 	void mouseScroll(SDL_Event& event)
 	{
 		if (event.wheel.y != 0) {
 			float scaleDelta = 0.05;
-			PointF temp = { (float)(mousePositionABS.x + globals->camera.getLocation().x) / globals->camera.getScale(), (float)(mousePositionABS.y + globals->camera.getLocation().y) / globals->camera.getScale() };
+			PointF temp = (PointF) (mousePositionABS + globals->camera.getLocation()) / globals->camera.getScale();
 			//temp = (mousePositionABS + cameraLocation) / (scale)
 			if (event.wheel.y > 0) // scroll up
 			{
@@ -226,9 +213,9 @@ namespace EVENTS {
 			{
 				globals->camera.addToScale(-scaleDelta);
 			}
-			PointF temp2 = { (float)(mousePositionABS.x + globals->camera.getLocation().x) / globals->camera.getScale(), (float)(mousePositionABS.y + globals->camera.getLocation().y) / globals->camera.getScale() };
-			//temp = (mousePositionABS + cameraLocation) / (scale)
-			globals->camera.move({ -1 * (int)round((temp2.x - temp.x) * globals->camera.getScale()), -1 * (int)round((temp2.y - temp.y) * globals->camera.getScale()) });
+			PointF temp2 = (PointF)(mousePositionABS + globals->camera.getLocation()) / globals->camera.getScale();
+			//temp2 = (mousePositionABS + cameraLocation) / (scale)
+			globals->camera.move((PointI)round( (temp2 - temp) * globals->camera.getScale() ) * -1);
 
 			mouseRect.w = globals->camera.applyScale(globals->BlockSize);
 			mouseRect.h = globals->camera.applyScale(globals->BlockSize);

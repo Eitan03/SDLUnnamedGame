@@ -12,7 +12,7 @@ class Camera
 public:
 	Camera();
 	~Camera();
-	void move(PointI pixels) { this->location.x += pixels.x; this->location.y += pixels.y; };
+	void move(PointI pixels) { this->location += pixels; };
 	void setLocation(PointI location) { this->location = location; };
 	PointI getLocation(void) const { return this->location; };
 	float getScale(void) const { return this->scale; };
