@@ -6,7 +6,6 @@
 
 #include "Drawable.h"
 #include "Renderer.h"
-#include "../Globals.h"
 
 class Texture: Drawable
 {

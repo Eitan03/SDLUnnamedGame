@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Blocks\Block.cpp" />
+    <ClCompile Include="Blocks\Chunk.cpp" />
     <ClCompile Include="GameEngine\Camera.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
     <ClCompile Include="main.cpp" />
@@ -169,9 +170,11 @@
     <ClCompile Include="Primitives\Window.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="Primitives\Text.cpp" />
+    <ClCompile Include="tinyxml2\tinyxml2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Blocks\Block.h" />
+    <ClInclude Include="Blocks\Chunk.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Primitives\Drawable.h" />
     <ClInclude Include="GameEngine\Camera.h" />
@@ -182,6 +185,7 @@
     <ClInclude Include="Primitives\Window.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Primitives\Text.h" />
+    <ClInclude Include="tinyxml2\tinyxml2 .h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>

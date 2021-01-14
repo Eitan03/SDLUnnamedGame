@@ -11,12 +11,21 @@ Globals::Globals():
 		}
 	)
 {
-
+	
 };
 
+void Globals::setUpTextures(Renderer& renderer) {
+	//setting up textures
+	/*
+		were  assuming that each texture is 250 by 250 and that there is max of 5 textures per row
+	*/
+	for (int i = 0; i < BlockTypes::Size; i++) {
+		blockTextures[i] = new Texture("assets\\textures\\blocks.png", renderer, Rect{ (i % 5) * 250, (i / 5) * 250, 250, 250 }); //TODO change the word new here
+	}
+}
 
-/*
-PointF GLOBALS::gridToScreen(PointF gridPos) { //does not include GLOBALS::camera pos atm
-	return { ( gridPos.x * (int)(GLOBALS::BlockSize / GLOBALS::camera.getScale()) ) , ( gridPos.y * (int)(GLOBALS::BlockSize / GLOBALS::camera.getScale()) ) };
-};
-*/
+void Globals::deleteTextures() {
+	for (int i = 0; i < BlockTypes::Size; i++) {
+		delete blockTextures[i];
+	}
+}

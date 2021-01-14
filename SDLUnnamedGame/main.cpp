@@ -12,8 +12,9 @@
 #include "Primitives/EventHandler.h"
 
 #include "Globals.h"
-#include "Blocks/Block.h"
 #include "GameEngine/Camera.h"
+#include "Blocks/Block.h"
+#include "Blocks/Chunk.h"
 
 #include <vector>
 
@@ -44,15 +45,9 @@ int main( int argc, char* args[] ) {
 
 	init();
 
-	std::shared_ptr<Texture> blockTexture = std::make_shared<Texture>("assets\\textures\\blocks.png", *renderer, Rect{ 0, 0, 250, 250 });
-	chunk.reserve(36);
-	for (int i = 0; i < 6; i++) {
-		chunk.push_back(std::vector<Block>());
-		for (int j = 0; j < 6; j++) {
-			chunk[i].push_back(Block({ j ,i }, blockTexture) );
-		}
-	}
-	Block sand({ 6 ,6 }, std::make_shared<Texture>("assets\\textures\\blocks.png", *renderer, Rect{ 251, 0, 250, 250 }) );
+	Chunk chunk( {0, 0} );
+	chunk.load();
+	Block sand({ 6 ,6 }, globals->blockTextures[1] );
 	int num = 0;
 	mousePositionABSText = std::make_unique<Text>("-1, -1", globals->colors.White, *font, *renderer);
 
@@ -73,11 +68,7 @@ int main( int argc, char* args[] ) {
 		//rendering
 		renderer->clear();
 
-		for (int i = 0; i < 6; i++) {
-			for (int j = 0; j < 6; j++) {
-				chunk[j][i].render();
-			}
-		}
+		chunk.render();
 		sand.render();
 
 		mousePositionABSText.get()->renderABS(0, 0);
@@ -165,6 +156,8 @@ void init() {
 
 	renderer = new Renderer(*window);
 
+	globals->setUpTextures(*renderer);
+
 	//Open the font
 	font = TTF_OpenFont("assets\\fonts\\Pixeled.ttf", 28);
 	if (font == NULL)
@@ -196,14 +189,14 @@ namespace EVENTS {
 		SDL_GetMouseState(&x, &y);
 		mousePositionABS = { x, y };
 		mousePosition = (PointF)(mousePositionABS + globals->camera.getLocation()) / globals->camera.applyScale(globals->BlockSize);
-		//mousePositionABSText.get()->setText(std::to_string((int)floor(mousePosition.x)) + ", " + std::to_string((int)floor(mousePosition.y)) );
+		mousePositionABSText.get()->setText(std::to_string((int)floor(mousePosition.x)) + ", " + std::to_string((int)floor(mousePosition.y)) );
 	}
 
 	void mouseScroll(SDL_Event& event)
 	{
 		if (event.wheel.y != 0) {
 			float scaleDelta = 0.05;
-			PointF temp = (PointF) (mousePositionABS + globals->camera.getLocation()) / globals->camera.getScale();
+			float before = globals->camera.getScale();
 			//temp = (mousePositionABS + cameraLocation) / (scale)
 			if (event.wheel.y > 0) // scroll up
 			{
@@ -213,9 +206,8 @@ namespace EVENTS {
 			{
 				globals->camera.addToScale(-scaleDelta);
 			}
-			PointF temp2 = (PointF)(mousePositionABS + globals->camera.getLocation()) / globals->camera.getScale();
-			//temp2 = (mousePositionABS + cameraLocation) / (scale)
-			globals->camera.move((PointI)round( (temp2 - temp) * globals->camera.getScale() ) * -1);
+			float after = globals->camera.getScale();
+			globals->camera.move((PointI)round((mousePositionABS + globals->camera.getLocation()) * (1 - after / before)) * -1);
 
 			mouseRect.w = globals->camera.applyScale(globals->BlockSize);
 			mouseRect.h = globals->camera.applyScale(globals->BlockSize);
@@ -240,3 +232,4 @@ unsigned int moveScreen(unsigned int interval, void* param) {
 	}
 	return interval;
 }
+

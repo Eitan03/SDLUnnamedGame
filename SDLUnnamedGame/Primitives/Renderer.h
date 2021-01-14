@@ -4,8 +4,8 @@
 #include <assert.h>
 #include <string>
 
-#include "../Globals.h"
 #include "Window.h"
+#include "../Utilities.h"
 
 class Renderer
 {

@@ -3,9 +3,11 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <assert.h>
+#include <vector>
 
 #include "Utilities.h"
 #include "./GameEngine/Camera.h"
+#include "./Primitives/Texture.h"
 
 class Globals
 {
@@ -37,12 +39,16 @@ public:
 
     Colors colors;
 
+
     enum BlockTypes {
         Grass,
-        Sand
+        Sand,
+        Size
     };
 
-    //PointF gridToScreen(PointF gridPos);
+    Texture* blockTextures[BlockTypes::Size];
+    void setUpTextures(Renderer& renderer);
+    void deleteTextures();
 
 private:
     Globals();

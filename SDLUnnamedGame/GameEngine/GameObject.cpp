@@ -2,7 +2,7 @@
 
 
 
-GameObject::GameObject(PointF position, PointI size, std::shared_ptr<Texture> texture)
+GameObject::GameObject(PointF position, PointI size, Texture* texture)
 	: position(position), size(size), texture(texture), globals(Globals::getInstance())
 {
 }
@@ -22,7 +22,7 @@ PointF GameObject::getPosition() const
 	return this->position;
 }
 
-void GameObject::changeTexture(std::shared_ptr<Texture> texture)
+void GameObject::changeTexture(Texture* texture)
 {
 	this->texture = texture;
 }

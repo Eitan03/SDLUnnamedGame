@@ -11,20 +11,20 @@
 class GameObject : public Drawable
 {
 public:
-	GameObject(PointF position, PointI size,std::shared_ptr<Texture> texture);
+	GameObject(PointF position, PointI size, Texture* texture);
 	~GameObject();
 	virtual void setPosition(PointF position);
 	PointF getPosition() const;
 	PointI getSize() const { return this->size; };
-	void changeTexture(std::shared_ptr<Texture> texture);
+	void changeTexture(Texture* texture);
 	void render();
 	void renderABS(int x, int y) override;
 
 	//debugging
-	Rect getPosABS() { return this->texture.get()->getTextureRect(); };
+	Rect getPosABS() { return this->texture->getTextureRect(); };
 
 protected:
-	std::shared_ptr<Texture> texture;
+	Texture* texture;
 	PointF position;
 	PointI size;
 
