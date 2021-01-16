@@ -45,7 +45,7 @@ int main( int argc, char* args[] ) {
 
 	init();
 
-	Chunk chunk( {0, 0} );
+	Chunk chunk( {1, 0} ); //TODO changbe postion and fix the bug
 	chunk.load();
 	Block sand({ 6 ,6 }, globals->blockTextures[1] );
 	int num = 0;

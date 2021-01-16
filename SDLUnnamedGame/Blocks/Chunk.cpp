@@ -12,62 +12,139 @@ Chunk::~Chunk()
 
 void Chunk::load()
 {
-	this->createChunk();
-
-	for (int i = 0; i < CHUNK_SIZE; i++) {
-	for (int j = 0; j < CHUNK_SIZE; j++) {
-			blocks[i][j] = new Block(this->position + PointI( i, j ), blockTextures[0]);
-		}
-	}
+	this->loadFromFile(std::string("./chunks/" + std::to_string(this->position.x) + "-" + std::to_string(this->position.y) + ".chunk").c_str());
 }
 
 void Chunk::unload()
 {
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
-			delete blocks[i][j];
+			for (int l = 0; l < LAYERS; j++) {
+
+				delete blocks[l][i][j];
+			}
 		}
 	}
 }
 
-int Chunk::loadFromFile(std::string path)
+void Chunk::loadFromFile(const char* path)
 {
-	return 0;
+	std::ifstream ifStream;
+	ifStream.open(path);
+	if (!ifStream.is_open())
+	{
+		std::cerr << "creating File : " << path << std::endl;
+		createChunk();
+		ifStream.open(path);
+	}
+
+	unsigned int currentLayer = -1;
+	int row = 0;
+	int column = 0;
+
+	
+	std::string line;
+	while (getline(ifStream, line)) {
+		
+		if (!line.compare("")) continue;
+
+		if (line.find("layer ") == 0) { //if the line starts with "layer "
+			currentLayer = std::stoi(line.substr(5, line.size() - 1));
+			row = 0;
+			column = 0;
+		}
+		else {
+			
+			while (line != "" && line.find(",") != std::string::npos ) {
+				if (currentLayer > LAYERS || row > CHUNK_SIZE || column > CHUNK_SIZE) {
+					std::cerr << "either currentLayer, row, or column is to big" << std::endl;
+					assert(false);
+				}
+				int blockNum = std::stoi(line.substr(0, line.find(",")));
+				blocks[currentLayer][row][column] = createBlock(blockNum, this->position + PointI(row, column));
+				row++;
+				line = line.substr(line.find(",") + 1);
+			}
+			row = 0;
+			column++;
+
+
+		}
+	}
+	
+}
+
+Block* Chunk::createBlock(int n, PointI position)
+{
+	return new Block(this->position * CHUNK_SIZE + position, blockTextures[n]);
+
 }
 
 void Chunk::createChunk()
 {
-	std::string data = "\n"; //might be somethnig better then string? istream?
+	
+	int chunkData[CHUNK_SIZE][CHUNK_SIZE];
+
 	for (int i = 0; i < CHUNK_SIZE; i++) {
-		for (int i = 0; i < CHUNK_SIZE; i++) {
-			data += "0,";
+		for (int j = 0; j < CHUNK_SIZE; j++) {
+			chunkData[i][j] = 0;
 		}
-		data.pop_back(); //removes the last character
-		data += "\n";
 	}
 
+	std::ofstream ofStream;
+	ofStream.open(std::string("./chunks/" + std::to_string(this->position.x) + "-" + std::to_string(this->position.y) + ".chunk").c_str());
 
-	tinyxml2::XMLDocument chunkFile;
+	if (!ofStream.is_open())
+	{
+		std::cerr << "Failed to open file : " << "./chunks/" + std::to_string(this->position.x) + "-" + std::to_string(this->position.y) + ".chunk" << std::endl;
+		assert(false);
+	}
 
-	tinyxml2::XMLElement* chunk = chunkFile.NewElement("Chunk");
-	chunk->SetAttribute("position", std::string(std::to_string(this->position.x) + "," + std::to_string(this->position.x)).c_str() );
-	chunkFile.InsertFirstChild(chunk);
+	ofStream << "layer 1:\n";
 
-	tinyxml2::XMLElement* chunkData = chunkFile.NewElement("data");
-	chunkData->SetText( data.c_str() );
+	for (int i = 0; i < CHUNK_SIZE; i++) {
+		for (int j = 0; j < CHUNK_SIZE; j++) {
+			ofStream << std::to_string(chunkData[i][j]) + ",";
+		}
+		ofStream << "\n";
+	}
 
-	chunk->InsertEndChild(chunkData);
+	ofStream.close();
+}
 
-	tinyxml2::XMLError eResult = chunkFile.SaveFile( std::string("./chunks/" + std::to_string(this->position.x) + "," + std::to_string(this->position.x) + ".chunk").c_str() );
-	XMLCheckResult(eResult);
+void Chunk::renderLayer(unsigned int layer)
+{
+	for (int i = 0; i < CHUNK_SIZE; i++) {
+		for (int j = 0; j < CHUNK_SIZE; j++) {
+			blocks[layer][i][j]->render();
+		}
+	}
+}
 
+void Chunk::renderLayers(unsigned int layers[], unsigned int size)
+{
+	for (int i = 0; i < CHUNK_SIZE; i++) {
+		for (int j = 0; j < CHUNK_SIZE; j++) {
+			for (int l = LAYERS; l > 0; l--) {
+				if (blocks[layers[l]][i][j] != nullptr) {
+					blocks[layers[l]][i][j]->render();
+					break;
+				}
+			}
+		}
+	}
 }
 
 void Chunk::render()
 {
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
-			blocks[i][j]->render();
+			for (int l = LAYERS - 1; l > 0; l--) {
+				if (blocks[l][i][j] != nullptr) {
+					blocks[l][i][j]->render();
+					break;
+				}
+			}
 		}
 	}
 }
