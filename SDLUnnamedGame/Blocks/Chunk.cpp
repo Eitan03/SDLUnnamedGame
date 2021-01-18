@@ -8,6 +8,7 @@ Chunk::Chunk(PointI position) : position(position), blocks()
 
 Chunk::~Chunk()
 {
+	this->unload();
 }
 
 void Chunk::load()
@@ -19,7 +20,7 @@ void Chunk::unload()
 {
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
-			for (int l = 0; l < LAYERS; j++) {
+			for (int l = 0; l < LAYERS; l++) {
 
 				delete blocks[l][i][j];
 			}

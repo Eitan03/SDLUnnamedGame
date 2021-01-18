@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include <map>
 
 #include "Chunk.h"
 
@@ -12,8 +12,9 @@ public:
 	void unloadChunk(PointI pos);
 
 	void render();
+	void update(PointI cameraPosition, float Scale);
 
 private:
-	std::vector<Chunk> loadedChunks;
+	std::map<long long int, Chunk*> loadedChunks;
 };
 
