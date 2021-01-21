@@ -11,6 +11,7 @@ Globals::Globals():
 		}
 	)
 {
+	std::cout << "created" << std::endl;
 	
 };
 

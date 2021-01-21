@@ -20,21 +20,20 @@ public:
 	Chunk(PointI position);
 	~Chunk();
 
-	void load();
-	void unload();
-	
-
 	void renderLayer(unsigned int layer);
 	void renderLayers(unsigned int layers[], unsigned int size); //size is the size of the layers array, will firstly render the frist layer in the array, then second etc.
 	void render(); //renders all layers
 
+	PointI getPosition(void) const { return this->position; }
+
 	static Texture** blockTextures;
+	Block* blocks[LAYERS][CHUNK_SIZE][CHUNK_SIZE];
 protected:
+	
 	void loadFromFile(const char* path);
 	Block* createBlock(int n, PointI position); // takes the number from the file and returns a block
 	void createChunk();
 
-	Block* blocks[LAYERS][CHUNK_SIZE][CHUNK_SIZE];
 	PointI position;
 };
 

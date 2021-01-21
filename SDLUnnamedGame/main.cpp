@@ -45,17 +45,15 @@ int main( int argc, char* args[] ) {
 
 	init();
 
-	ChunkManager chunkManager = ChunkManager();
-	chunkManager.loadChunk({1 , 0});
+	ChunkManager* chunkManager = new ChunkManager();
+	globals->camera.setChunkManager(chunkManager);
 
 	//Chunk chunk( {1, 0} );
 	Block sand({ 6 ,7 }, globals->blockTextures[1] );
-	Block* sand2 = new Block({ 6 ,6 }, globals->blockTextures[1] );
 	int num = 0;
 	mousePositionABSText = std::make_unique<Text>("-1, -1", globals->colors.White, *font, *renderer);
 
 	renderer->setBackgroundColor( globals->colors.Black );
-	
 	
 
 	//Event handler
@@ -71,11 +69,8 @@ int main( int argc, char* args[] ) {
 		//rendering
 		renderer->clear();
 
-		chunkManager.render();
+		chunkManager->render();
 		sand.render();
-		if (sand2 != nullptr) {
-			sand2->render();
-		}
 
 		mousePositionABSText.get()->renderABS(0, 0);
 		//eventHandler.checkForEvents();
@@ -111,7 +106,6 @@ int main( int argc, char* args[] ) {
 				{
 				case SDLK_w:
 					//chunkManager.unloadChunk({ 1, 0 });
-					delete sand2;
 					break;
 				}
 				break;

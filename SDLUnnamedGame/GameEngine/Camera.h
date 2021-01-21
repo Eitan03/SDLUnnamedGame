@@ -6,22 +6,26 @@
 
 #include "../Utilities.h"
 
+class ChunkManager;
+
    //includes scale
 class Camera
 {
 public:
 	Camera();
 	~Camera();
-	void move(PointI pixels) { this->location += pixels; };
-	void setLocation(PointI location) { this->location = location; };
+	void setLocation(PointI location);
+	void move(PointI pixels) { this->setLocation(location+ pixels); };
 	PointI getLocation(void) const { return this->location; };
 	float getScale(void) const { return this->scale; };
-	void setScale(float scale) { this->scale = scale; if (scale == 0) assert(false); }; //the if statement might be heavy on preformance
+	void setScale(float scale); //the if statement might be heavy on preformance
 	void addToScale(float number) { this->setScale(scale + number); }; 
 	int applyScale(int num) { return (int)round(num * scale); }; //adds the round function
 
+	void setChunkManager(ChunkManager* chunkManager) { this->chunkManager = chunkManager; };
 private:
 	PointI location;
 	float scale;
+	ChunkManager* chunkManager;
 };
 

@@ -4,25 +4,25 @@ Texture** Chunk::blockTextures = Globals::getInstance()->blockTextures;
 
 Chunk::Chunk(PointI position) : position(position), blocks()
 {
+	for (int i = 0; i < CHUNK_SIZE; i++) {
+		for (int j = 0; j < CHUNK_SIZE; j++) {
+			for (int l = LAYERS - 1; l > 0; l--) {
+				blocks[l][i][j] = nullptr;
+			}
+		}
+	}
+
+	this->loadFromFile(std::string("./chunks/" + std::to_string(this->position.x) + "-" + std::to_string(this->position.y) + ".chunk").c_str());
 }
 
 Chunk::~Chunk()
 {
-	this->unload();
-}
-
-void Chunk::load()
-{
-	this->loadFromFile(std::string("./chunks/" + std::to_string(this->position.x) + "-" + std::to_string(this->position.y) + ".chunk").c_str());
-}
-
-void Chunk::unload()
-{
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
 			for (int l = 0; l < LAYERS; l++) {
-
-				delete blocks[l][i][j];
+				if (blocks[l][i][j] != nullptr) {
+					delete blocks[l][i][j];
+				}
 			}
 		}
 	}
@@ -141,9 +141,12 @@ void Chunk::render()
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
 			for (int l = LAYERS - 1; l > 0; l--) {
-				if (blocks[l][i][j] != nullptr) {
-					blocks[l][i][j]->render();
-					break;
+				std::cout << blocks[l][i][j] << std::endl;
+				if (blocks[l][i] != nullptr) {
+					if (blocks[l][i][j] != nullptr) {
+						blocks[l][i][j]->render();
+						break;
+					}
 				}
 			}
 		}

@@ -13,7 +13,6 @@ public:
 
 	void render();
 	void update(PointI cameraPosition, float Scale);
-
 private:
 	std::map<long long int, Chunk*> loadedChunks;
 };
