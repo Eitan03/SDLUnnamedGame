@@ -95,71 +95,53 @@ auto operator/(const Point_impl<L>& lhs, const Point_impl<R>& rhs) {
     return rv;
 }
 
-//floats
-template<typename L>
-auto operator+(const Point_impl<L>& lhs, float rhs) {
-    Point_impl<decltype(lhs.x)> rv = lhs;
+
+
+//add something that isnt a point
+template<typename L, typename R>
+auto operator+(const Point_impl<L>& lhs, R rhs) {
+    Point_impl<decltype(lhs.x + rhs)> rv = lhs;
     rv.x += rhs;
     rv.y += rhs;
     return rv;
 }
 
-template<typename L>
-auto operator-(const Point_impl<L>& lhs, float rhs) {
-    Point_impl<decltype(lhs.x)> rv = lhs;
+template<typename L, typename R>
+auto operator-(const Point_impl<L>& lhs, R rhs) {
+    Point_impl<decltype(lhs.x + rhs)> rv = lhs;
     rv.x -= rhs;
     rv.y -= rhs;
     return rv;
 }
 
-template<typename L>
-auto operator*(const Point_impl<L>& lhs, float rhs) {
-    Point_impl<decltype(lhs.x)> rv = lhs;
+template<typename L, typename R>
+auto operator*(const Point_impl<L>& lhs, R rhs) {
+    Point_impl<decltype(lhs.x + rhs)> rv = lhs;
     rv.x *= rhs;
     rv.y *= rhs;
     return rv;
 }
 
-template<typename L>
-auto operator/(const Point_impl<L>& lhs, float rhs) {
-    Point_impl<decltype(lhs.x)> rv = lhs;
+template<typename L, typename R>
+auto operator/(const Point_impl<L>& lhs, R rhs) {
+    Point_impl<decltype(lhs.x + rhs)> rv = lhs;
     rv.x /= rhs;
     rv.y /= rhs;
     return rv;
 }
 
-//ints
-template<typename L>
-auto operator+(const Point_impl<L>& lhs, int rhs) {
-    Point_impl<decltype(lhs.x)> rv = lhs;
-    rv.x += rhs;
-    rv.y += rhs;
-    return rv;
+//comapre
+template<typename L, typename R>
+auto operator==(const Point_impl<L>& lhs, const Point_impl<R>& rhs) {
+    return (lhs.x == rhs.x && lhs.y == rhs.y);
 }
 
-template<typename L>
-auto operator-(const Point_impl<L>& lhs, int rhs) {
-    Point_impl<decltype(lhs.x)> rv = lhs;
-    rv.x -= rhs;
-    rv.y -= rhs;
-    return rv;
+//for std::map
+template<typename L, typename R>
+auto operator<(const Point_impl<L>& lhs, const Point_impl<R>& rhs) {
+    return (lhs.x < rhs.x);
 }
 
-template<typename L>
-auto operator*(const Point_impl<L>& lhs, int rhs) {
-    Point_impl<decltype(lhs.x)> rv = lhs;
-    rv.x *= rhs;
-    rv.y *= rhs;
-    return rv;
-}
-
-template<typename L>
-auto operator/(const Point_impl<L>& lhs, int rhs) {
-    Point_impl<decltype(lhs.x)> rv = lhs;
-    rv.x /= rhs;
-    rv.y /= rhs;
-    return rv;
-}
 
 //math functions
 template<typename L>

@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <set>
 
 #include "Chunk.h"
 
@@ -14,6 +15,6 @@ public:
 	void render();
 	void update(PointI cameraPosition, float Scale);
 private:
-	std::map<long long int, Chunk*> loadedChunks;
+	std::map<PointI, Chunk*> loadedChunks;
 };
 

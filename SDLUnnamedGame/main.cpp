@@ -47,6 +47,8 @@ int main( int argc, char* args[] ) {
 
 	ChunkManager* chunkManager = new ChunkManager();
 	globals->camera.setChunkManager(chunkManager);
+	chunkManager->loadChunk(PointI(0, 0));
+	chunkManager->loadChunk(PointI(0, 1));
 
 	//Chunk chunk( {1, 0} );
 	Block sand({ 6 ,7 }, globals->blockTextures[1] );
@@ -105,7 +107,7 @@ int main( int argc, char* args[] ) {
 				switch (event.key.keysym.sym)
 				{
 				case SDLK_w:
-					//chunkManager.unloadChunk({ 1, 0 });
+					chunkManager->unloadChunk({ 0, 0 });
 					break;
 				}
 				break;

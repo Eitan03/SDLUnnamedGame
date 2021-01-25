@@ -22,6 +22,7 @@ Chunk::~Chunk()
 			for (int l = 0; l < LAYERS; l++) {
 				if (blocks[l][i][j] != nullptr) {
 					delete blocks[l][i][j];
+					blocks[l][i][j] = nullptr;
 				}
 			}
 		}
@@ -62,7 +63,7 @@ void Chunk::loadFromFile(const char* path)
 					assert(false);
 				}
 				int blockNum = std::stoi(line.substr(0, line.find(",")));
-				blocks[currentLayer][row][column] = createBlock(blockNum, this->position + PointI(row, column));
+				blocks[currentLayer][row][column] = createBlock(blockNum, PointI(row, column));
 				row++;
 				line = line.substr(line.find(",") + 1);
 			}
@@ -75,9 +76,9 @@ void Chunk::loadFromFile(const char* path)
 	
 }
 
-Block* Chunk::createBlock(int n, PointI position)
+Block* Chunk::createBlock(int textureNumber, PointI position)
 {
-	return new Block(this->position * CHUNK_SIZE + position, blockTextures[n]);
+	return new Block((this->position * CHUNK_SIZE) + position, blockTextures[textureNumber]);
 
 }
 
@@ -141,7 +142,6 @@ void Chunk::render()
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
 			for (int l = LAYERS - 1; l > 0; l--) {
-				std::cout << blocks[l][i][j] << std::endl;
 				if (blocks[l][i] != nullptr) {
 					if (blocks[l][i][j] != nullptr) {
 						blocks[l][i][j]->render();
