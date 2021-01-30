@@ -35,7 +35,7 @@ void Chunk::loadFromFile(const char* path)
 	ifStream.open(path);
 	if (!ifStream.is_open())
 	{
-		std::cerr << "creating File : " << path << std::endl;
+		std::cout << "creating File : " << path << std::endl;
 		createChunk();
 		ifStream.open(path);
 	}
@@ -141,7 +141,7 @@ void Chunk::render()
 {
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
-			for (int l = LAYERS - 1; l > 0; l--) {
+			for (int l = LAYERS - 1; l >= 0; l--) {
 				if (blocks[l][i] != nullptr) {
 					if (blocks[l][i][j] != nullptr) {
 						blocks[l][i][j]->render();
