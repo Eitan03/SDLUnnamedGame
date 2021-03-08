@@ -176,6 +176,8 @@
     <ClInclude Include="Blocks\Block.h" />
     <ClInclude Include="Blocks\Chunk.h" />
     <ClInclude Include="Blocks\ChunkManager.h" />
+    <ClInclude Include="Pattrens\observer.h" />
+    <ClInclude Include="Pattrens\subject.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Primitives\Drawable.h" />
     <ClInclude Include="GameEngine\Camera.h" />

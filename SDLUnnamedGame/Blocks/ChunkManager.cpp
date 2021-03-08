@@ -1,8 +1,8 @@
 #include "ChunkManager.h"
 
-ChunkManager::ChunkManager()
+ChunkManager::ChunkManager(Camera* camera)
 {
-	
+	observer::setSubject((subject*)camera);
 }
 
 ChunkManager::~ChunkManager()
@@ -45,4 +45,11 @@ void ChunkManager::update(PointI cameraPosition, float Scale)
 		}
 	}
 	*/
+}
+
+void ChunkManager::update()
+{
+	subject* temp = observer::_subject;
+	Camera* cam = dynamic_cast<Camera*>((this->_subject));
+	this->update(cam->getLocation(), cam->getScale());
 }

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -16,7 +17,6 @@
 #include "Blocks/Block.h"
 #include "Blocks/ChunkManager.h"
 
-#include <vector>
 
 namespace EVENTS { void mouseMove(); void mouseScroll(SDL_Event& event); };
 void init();
@@ -45,8 +45,7 @@ int main( int argc, char* args[] ) {
 
 	init();
 
-	ChunkManager* chunkManager = new ChunkManager();
-	globals->camera.setChunkManager(chunkManager);
+	ChunkManager* chunkManager = new ChunkManager(&(globals->camera));
 	chunkManager->loadChunk(PointI(0, 0));
 	chunkManager->loadChunk(PointI(0, 1));
 

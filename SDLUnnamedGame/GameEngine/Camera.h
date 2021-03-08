@@ -5,15 +5,14 @@
 
 
 #include "../Utilities.h"
-
-class ChunkManager;
+#include "../Pattrens/subject.h"
 
    //includes scale
-class Camera
+class Camera: subject
 {
 public:
 	Camera();
-	~Camera();
+	~Camera() override {};
 	void setLocation(PointI location);
 	void move(PointI pixels) { this->setLocation(location+ pixels); };
 	PointI getLocation(void) const { return this->location; };
@@ -22,10 +21,10 @@ public:
 	void addToScale(float number) { this->setScale(scale + number); }; 
 	int applyScale(int num) { return (int)round(num * scale); }; //adds the round function
 
-	void setChunkManager(ChunkManager* chunkManager) { this->chunkManager = chunkManager; };
+	void temp() {};
+
 private:
 	PointI location;
 	float scale;
-	ChunkManager* chunkManager;
 };
 
