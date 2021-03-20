@@ -96,9 +96,11 @@ int main( int argc, char* args[] ) {
 				{
 				case SDL_WINDOWEVENT_ENTER:
 					isMouseInWindow = true;
+					std::cout << "in" << std::endl;
 					break;
 				case SDL_WINDOWEVENT_LEAVE:
 					isMouseInWindow = false;
+					std::cout << "out" << std::endl;
 					break;
 				}
 				break;
@@ -120,7 +122,7 @@ int main( int argc, char* args[] ) {
 			mouseRect.setPosition( ( floor(mousePosition) * globals->camera.applyScale(globals->BlockSize)) - (globals->camera.getLocation()));
 			renderer->renderRectABS(mouseRect);
 		}
-
+		
 		renderer->present();
 
 	}
@@ -220,18 +222,19 @@ namespace EVENTS {
 }
 
 unsigned int moveScreen(unsigned int interval, void* param) {
-	if (isMouseInWindow)
-	if ((mousePositionABS.y > 0) && (mousePositionABS.y < SCREEN_HEIGHT / 9)) {
-		globals->camera.move({ 0, -1 });
-	}
-	if (mousePositionABS.y > SCREEN_HEIGHT - (SCREEN_HEIGHT / 9)) {
-		globals->camera.move({ 0, 1 });
-	}
-	if ((mousePositionABS.x > 0) && (mousePositionABS.x < SCREEN_WIDTH / 16)) {
-		globals->camera.move({ -1, 0 });
-	}
-	if (mousePositionABS.x > SCREEN_WIDTH - (SCREEN_WIDTH / 16)) {
-		globals->camera.move({ 1, 0 });
+	if (isMouseInWindow) {
+		if ((mousePositionABS.y > 0) && (mousePositionABS.y < SCREEN_HEIGHT / 9)) {
+			globals->camera.move({ 0, -1 });
+		}
+		if (mousePositionABS.y > SCREEN_HEIGHT - (SCREEN_HEIGHT / 9)) {
+			globals->camera.move({ 0, 1 });
+		}
+		if ((mousePositionABS.x > 0) && (mousePositionABS.x < SCREEN_WIDTH / 16)) {
+			globals->camera.move({ -1, 0 });
+		}
+		if (mousePositionABS.x > SCREEN_WIDTH - (SCREEN_WIDTH / 16)) {
+			globals->camera.move({ 1, 0 });
+		}
 	}
 	return interval;
 }

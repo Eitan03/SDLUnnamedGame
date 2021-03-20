@@ -19,6 +19,6 @@ public:
 	// bserver pattren
 	void update() override;
 private:
-	std::map<PointI, Chunk*> loadedChunks;
+	std::map<long long int, Chunk*> loadedChunks;
 };
 

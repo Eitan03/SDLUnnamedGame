@@ -136,12 +136,6 @@ auto operator==(const Point_impl<L>& lhs, const Point_impl<R>& rhs) {
     return (lhs.x == rhs.x && lhs.y == rhs.y);
 }
 
-//for std::map
-template<typename L, typename R>
-auto operator<(const Point_impl<L>& lhs, const Point_impl<R>& rhs) {
-    return (lhs.x < rhs.x);
-}
-
 
 //math functions
 template<typename L>
