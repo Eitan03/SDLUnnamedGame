@@ -3,7 +3,7 @@
 Globals* Globals::instance = nullptr;
 
 Globals::Globals():
-	BlockSize(SCREEN_WIDTH / 16), camera(Camera()), BlockSizeScaled(BlockSize),
+	camera(Camera()),
 	colors(
 		{
 			{255, 255, 255}, //White

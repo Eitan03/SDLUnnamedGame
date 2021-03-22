@@ -165,6 +165,7 @@
     <ClCompile Include="GameEngine\Camera.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Pattrens\subject.cpp" />
     <ClCompile Include="Primitives\EventHandler.cpp" />
     <ClCompile Include="Primitives\Renderer.cpp" />
     <ClCompile Include="Primitives\Texture.cpp" />

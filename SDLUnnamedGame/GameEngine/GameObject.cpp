@@ -1,5 +1,5 @@
 #include "GameObject.h"
-
+#include "../Blocks/Block.h"
 
 
 GameObject::GameObject(PointF position, PointI size, Texture* texture)
@@ -30,8 +30,8 @@ void GameObject::changeTexture(Texture* texture)
 void GameObject::render()
 {
 	this->texture->renderABS({ 
-		(int) round(this->position.x * globals->camera.applyScale(globals->BlockSize)  - (globals->camera.getLocation().x) ),
-		(int) round(this->position.y * globals->camera.applyScale(globals->BlockSize)  - globals->camera.getLocation().y) ,
+		(int) round(this->position.x * Block::getSizeScaled()  - (globals->camera.getLocation().x) ),
+		(int) round(this->position.y * Block::getSizeScaled()  - globals->camera.getLocation().y) ,
 		globals->camera.applyScale(this->size.x),
 		globals->camera.applyScale(this->size.y)
 		});

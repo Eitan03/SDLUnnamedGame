@@ -31,7 +31,7 @@ TTF_Font* font;
 
 PointI mousePositionABS = { -1 , -1 }; //ABS position
 PointF mousePosition = { -1 , -1 };
-Rect mouseRect = { -1, -1, globals->BlockSize, globals->BlockSize };
+Rect mouseRect = { -1, -1, Block::getSize(), Block::getSize() };
 std::unique_ptr<Text> mousePositionABSText;
 
 //Main loop flag
@@ -51,11 +51,11 @@ int main( int argc, char* args[] ) {
 
 	//Chunk chunk( {1, 0} );
 	Block sand({ 6 ,7 }, globals->blockTextures[1] );
-	int num = 0;
 	mousePositionABSText = std::make_unique<Text>("-1, -1", globals->colors.White, *font, *renderer);
 
 	renderer->setBackgroundColor( globals->colors.Black );
 	
+	globals->camera.addObserver((observer*)chunkManager);
 
 	//Event handler
 	SDL_Event event;
@@ -119,7 +119,7 @@ int main( int argc, char* args[] ) {
 
 		if (isMouseInWindow) {
 
-			mouseRect.setPosition( ( floor(mousePosition) * globals->camera.applyScale(globals->BlockSize)) - (globals->camera.getLocation()));
+			mouseRect.setPosition( floor(mousePosition) * Block::getSize() - globals->camera.getLocation() );
 			renderer->renderRectABS(mouseRect);
 		}
 		
@@ -193,7 +193,7 @@ namespace EVENTS {
 		int x, y;
 		SDL_GetMouseState(&x, &y);
 		mousePositionABS = { x, y };
-		mousePosition = (PointF)(mousePositionABS + globals->camera.getLocation()) / globals->camera.applyScale(globals->BlockSize);
+		mousePosition = (PointF)(mousePositionABS + globals->camera.getLocation()) / Block::getSizeScaled();
 		mousePositionABSText.get()->setText(std::to_string((int)floor(mousePosition.x)) + ", " + std::to_string((int)floor(mousePosition.y)) );
 	}
 
@@ -214,8 +214,8 @@ namespace EVENTS {
 			float after = globals->camera.getScale();
 			globals->camera.move((PointI)round((mousePositionABS + globals->camera.getLocation()) * (1 - after / before)) * -1);
 
-			mouseRect.w = globals->camera.applyScale(globals->BlockSize);
-			mouseRect.h = globals->camera.applyScale(globals->BlockSize);
+			mouseRect.w = Block::getSizeScaled();
+			mouseRect.h = Block::getSizeScaled();
 		}
 	}
 

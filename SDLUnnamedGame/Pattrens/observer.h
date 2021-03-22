@@ -2,10 +2,11 @@
 class subject;
 
 class observer {
+	friend class subject;
 public:
-	virtual void update() = 0;
 	void setSubject(subject* sbj) { _subject = sbj; }
 protected:
+	virtual void update() = 0;
 	subject* _subject;
 };
 

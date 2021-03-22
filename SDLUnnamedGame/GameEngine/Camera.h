@@ -8,11 +8,15 @@
 #include "../Pattrens/subject.h"
 
    //includes scale
-class Camera: subject
+
+/*
+only supports one camera object because of block
+*/
+class Camera: public subject
 {
 public:
+	~Camera() {};
 	Camera();
-	~Camera() override {};
 	void setLocation(PointI location);
 	void move(PointI pixels) { this->setLocation(location+ pixels); };
 	PointI getLocation(void) const { return this->location; };
@@ -22,7 +26,8 @@ public:
 	int applyScale(int num) { return (int)round(num * scale); }; //adds the round function
 
 	void temp() {};
-
+protected:
+	void update() override;
 private:
 	PointI location;
 	float scale;

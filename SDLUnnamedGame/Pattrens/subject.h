@@ -1,5 +1,7 @@
 #pragma once
+
 #include <vector>
+#include <cassert>
 #include "observer.h"
 
 class subject {
@@ -13,7 +15,7 @@ public:
 		assert(false);
 	}
 protected:
-	void update() {
+	virtual void update() {
 		for (auto* obs : observers) {
 			obs->update();
 		}
@@ -21,3 +23,4 @@ protected:
 	std::vector<observer*> observers;
 
 };
+

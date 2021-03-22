@@ -27,9 +27,6 @@ public:
     //       due to the compilers behavior to check accessibility
     //       before deleted status
 
-    const int BlockSize;
-    int BlockSizeScaled; //insted of writing appleScale(BlockSize) multiple times
-
     Camera camera;
 
     struct Colors {

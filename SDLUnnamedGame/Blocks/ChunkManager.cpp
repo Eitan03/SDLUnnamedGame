@@ -24,7 +24,9 @@ void ChunkManager::unloadChunk(PointI pos)
 
 void ChunkManager::render()
 {
-	for (auto& chunk : loadedChunks) {
+	if (loadedChunks.size() == 0) { return; }
+	else { std::cout << loadedChunks.size() << std::endl; }
+	for (auto const& chunk : loadedChunks) {
 		chunk.second->render();
 	}
 	
@@ -32,14 +34,35 @@ void ChunkManager::render()
 
 void ChunkManager::update(PointI cameraPosition, float Scale)
 {
+
+	PointI cameraPos = (PointI)floor( (PointF)cameraPosition / Block::getSizeScaled() );
+	PointI cameraChunkPos = cameraPos / CHUNK_SIZE;
+	std::cout << cameraPos << std::endl;
+	std::cout << cameraChunkPos << std::endl;
 	
+	long long int cameraChunkPosInt = (long long int)cameraChunkPos.x << 32 | cameraChunkPos.y;
+	loadedChunks.clear();
+	//loadedChunks[cameraChunkPosInt] = std::make_unique<Chunk>(cameraChunkPos);
+	for (auto it = loadedChunks.cbegin(); it != loadedChunks.cend() /* not hoisted */; /* no increment */)
+	{
+		if (false)//(needToBeLoaded.find(it->first) == needToBeLoaded.end())
+		{
+			//loadedChunks.erase(it++);    // or "it = m.erase(it)" since C++11
+			it = loadedChunks.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+	/*
 	std::set<long long int> needToBeLoaded;
-	PointI cameraChunk = (PointI)floor( (cameraPosition / (float)Globals::getInstance()->camera.applyScale(Globals::getInstance()->BlockSize)) / 16);
+	PointI cameraChunk = (PointI)floor( (cameraPosition / ( (float)Globals::getInstance()->camera.applyScale(Globals::getInstance()->BlockSize)) / 16) );
 	long long int cameraChunkPos = (long long int)cameraChunk.x << 32 | cameraChunk.y;;
 	needToBeLoaded.insert(cameraChunkPos);
 	std::cout << cameraChunk << std::endl;
 
-	for (auto it = loadedChunks.cbegin(); it != loadedChunks.cend() /* not hoisted */; /* no increment */)
+	for (auto it = loadedChunks.cbegin(); it != loadedChunks.cend() /* not hoisted *; /* no increment *)
 	{
 		if (needToBeLoaded.find(it->first) == needToBeLoaded.end())
 		{
@@ -51,6 +74,7 @@ void ChunkManager::update(PointI cameraPosition, float Scale)
 			++it;
 		}
 	}
+	*/
 
 }
 

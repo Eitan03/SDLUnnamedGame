@@ -16,9 +16,9 @@ public:
 	void render();
 	void update(PointI cameraPosition, float Scale);
 
-	// bserver pattren
+	// observer pattren
 	void update() override;
 private:
-	std::map<long long int, Chunk*> loadedChunks;
+	std::map<long long int, std::unique_ptr<Chunk>> loadedChunks;
 };
 
