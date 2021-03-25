@@ -1,6 +1,9 @@
 #include "Chunk.h"
 
-Texture** Chunk::blockTextures = Globals::getInstance()->blockTextures;
+#include "../Globals.h"
+extern Texture* blockTextures[BlockTypes::Size];
+
+Block* Chunk::temp = new Block({0,0}, blockTextures[0]);
 
 Chunk::Chunk(PointI position) : position(position), blocks()
 {

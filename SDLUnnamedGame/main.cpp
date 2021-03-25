@@ -23,7 +23,6 @@ void init();
 void close();
 unsigned int moveScreen(unsigned int interval, void* param);
 
-Globals* globals = Globals::getInstance();
 
 Window* window;
 Renderer* renderer;
@@ -38,24 +37,27 @@ std::unique_ptr<Text> mousePositionABSText;
 bool quit = false;
 bool isMouseInWindow = true;
 
-
+extern Camera camera;
+extern Texture* blockTextures[BlockTypes::Size];
+extern Colors colors;
+extern void setUpTextures(Renderer& renderer);
 
 std::vector< std::vector<Block>> chunk;
 int main( int argc, char* args[] ) {
 
 	init();
 
-	ChunkManager* chunkManager = new ChunkManager(&(globals->camera));
-	chunkManager->loadChunk(PointI(0, 0));
-	chunkManager->loadChunk(PointI(0, 1));
+	ChunkManager* chunkManager = new ChunkManager(&(camera));
+	//chunkManager->loadChunk(PointI(0, 0));
+	//chunkManager->loadChunk(PointI(0, 1));
 
 	//Chunk chunk( {1, 0} );
-	Block sand({ 6 ,7 }, globals->blockTextures[1] );
-	mousePositionABSText = std::make_unique<Text>("-1, -1", globals->colors.White, *font, *renderer);
+	Block sand({ 6 ,7 }, blockTextures[1] );
+	mousePositionABSText = std::make_unique<Text>("-1, -1", colors.White, *font, *renderer);
 
-	renderer->setBackgroundColor( globals->colors.Black );
+	renderer->setBackgroundColor( colors.Black );
 	
-	globals->camera.addObserver((observer*)chunkManager);
+	camera.addObserver((observer*)chunkManager);
 
 	//Event handler
 	SDL_Event event;
@@ -119,7 +121,7 @@ int main( int argc, char* args[] ) {
 
 		if (isMouseInWindow) {
 
-			mouseRect.setPosition( floor(mousePosition) * Block::getSize() - globals->camera.getLocation() );
+			mouseRect.setPosition( floor(mousePosition) * Block::getSize() - camera.getLocation() );
 			renderer->renderRectABS(mouseRect);
 		}
 		
@@ -161,7 +163,7 @@ void init() {
 
 	renderer = new Renderer(*window);
 
-	globals->setUpTextures(*renderer);
+	setUpTextures(*renderer);
 
 	//Open the font
 	font = TTF_OpenFont("assets\\fonts\\Pixeled.ttf", 28);
@@ -193,7 +195,7 @@ namespace EVENTS {
 		int x, y;
 		SDL_GetMouseState(&x, &y);
 		mousePositionABS = { x, y };
-		mousePosition = (PointF)(mousePositionABS + globals->camera.getLocation()) / Block::getSizeScaled();
+		mousePosition = (PointF)(mousePositionABS + camera.getLocation()) / Block::getSizeScaled();
 		mousePositionABSText.get()->setText(std::to_string((int)floor(mousePosition.x)) + ", " + std::to_string((int)floor(mousePosition.y)) );
 	}
 
@@ -201,18 +203,18 @@ namespace EVENTS {
 	{
 		if (event.wheel.y != 0) {
 			float scaleDelta = 0.05;
-			float before = globals->camera.getScale();
+			float before = camera.getScale();
 			//temp = (mousePositionABS + cameraLocation) / (scale)
 			if (event.wheel.y > 0) // scroll up
 			{
-				globals->camera.addToScale(scaleDelta);
+				camera.addToScale(scaleDelta);
 			}
 			else if (event.wheel.y < 0) // scroll down
 			{
-				globals->camera.addToScale(-scaleDelta);
+				camera.addToScale(-scaleDelta);
 			}
-			float after = globals->camera.getScale();
-			globals->camera.move((PointI)round((mousePositionABS + globals->camera.getLocation()) * (1 - after / before)) * -1);
+			float after = camera.getScale();
+			camera.move((PointI)round((mousePositionABS + camera.getLocation()) * (1 - after / before)) * -1);
 
 			mouseRect.w = Block::getSizeScaled();
 			mouseRect.h = Block::getSizeScaled();
@@ -224,16 +226,16 @@ namespace EVENTS {
 unsigned int moveScreen(unsigned int interval, void* param) {
 	if (isMouseInWindow) {
 		if ((mousePositionABS.y > 0) && (mousePositionABS.y < SCREEN_HEIGHT / 9)) {
-			globals->camera.move({ 0, -1 });
+			camera.move({ 0, -1 });
 		}
 		if (mousePositionABS.y > SCREEN_HEIGHT - (SCREEN_HEIGHT / 9)) {
-			globals->camera.move({ 0, 1 });
+			camera.move({ 0, 1 });
 		}
 		if ((mousePositionABS.x > 0) && (mousePositionABS.x < SCREEN_WIDTH / 16)) {
-			globals->camera.move({ -1, 0 });
+			camera.move({ -1, 0 });
 		}
 		if (mousePositionABS.x > SCREEN_WIDTH - (SCREEN_WIDTH / 16)) {
-			globals->camera.move({ 1, 0 });
+			camera.move({ 1, 0 });
 		}
 	}
 	return interval;

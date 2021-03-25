@@ -1,21 +1,32 @@
-#include "Globals.h"
+#pragma once
+#include <iostream>
+#include <SDL.h>
+#include <SDL_image.h>
+#include <assert.h>
+#include <vector>
 
-Globals* Globals::instance = nullptr;
+#include "Utilities.h"
+#include "./GameEngine/Camera.h"
+#include "./Primitives/Texture.h"
 
-Globals::Globals():
-	camera(Camera()),
-	colors(
-		{
-			{255, 255, 255}, //White
-			{0 ,0 ,0} //Black
-		}
-	)
-{
-	std::cout << "created" << std::endl;
-	
+Camera camera = Camera();
+
+struct Colors {
+		const Color White;
+		const Color Black;
+	};
+Colors colors = {
+				{255, 255, 255}, //White
+				{0 ,0 ,0} //Black
+	};
+
+enum BlockTypes {
+	Grass,
+	Sand,
+	Size
 };
-
-void Globals::setUpTextures(Renderer& renderer) {
+Texture* blockTextures[BlockTypes::Size];
+void setUpTextures(Renderer& renderer) {
 	//setting up textures
 	/*
 		were  assuming that each texture is 250 by 250 and that there is max of 5 textures per row
@@ -25,7 +36,7 @@ void Globals::setUpTextures(Renderer& renderer) {
 	}
 }
 
-void Globals::deleteTextures() {
+void deleteTextures() {
 	for (int i = 0; i < BlockTypes::Size; i++) {
 		delete blockTextures[i];
 	}

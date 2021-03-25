@@ -6,7 +6,7 @@
 #include <iostream>
 
 #include "../Primitives/Texture.h"
-#include "../Globals.h"
+#include "../GameEngine/Camera.h"
 
 class GameObject : public Drawable
 {
@@ -27,7 +27,5 @@ protected:
 	Texture* texture;
 	PointF position;
 	PointI size;
-
-	Globals* globals;
 };
 

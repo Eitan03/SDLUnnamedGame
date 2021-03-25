@@ -4,7 +4,6 @@
 #include <fstream>
 
 #include "Block.h"
-#include "../Globals.h"
 #define CHUNK_SIZE 6
 #define LAYERS 3
 /*
@@ -26,7 +25,6 @@ public:
 
 	PointI getPosition(void) const { return this->position; }
 
-	static Texture** blockTextures;
 	Block* blocks[LAYERS][CHUNK_SIZE][CHUNK_SIZE];
 protected:
 	
@@ -35,5 +33,7 @@ protected:
 	void createChunk();
 
 	PointI position;
+
+	static Block* temp;
 };
 

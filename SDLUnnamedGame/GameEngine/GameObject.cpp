@@ -1,9 +1,10 @@
 #include "GameObject.h"
 #include "../Blocks/Block.h"
 
+extern Camera camera;
 
 GameObject::GameObject(PointF position, PointI size, Texture* texture)
-	: position(position), size(size), texture(texture), globals(Globals::getInstance())
+	: position(position), size(size), texture(texture)
 {
 }
 
@@ -30,10 +31,10 @@ void GameObject::changeTexture(Texture* texture)
 void GameObject::render()
 {
 	this->texture->renderABS({ 
-		(int) round(this->position.x * Block::getSizeScaled()  - (globals->camera.getLocation().x) ),
-		(int) round(this->position.y * Block::getSizeScaled()  - globals->camera.getLocation().y) ,
-		globals->camera.applyScale(this->size.x),
-		globals->camera.applyScale(this->size.y)
+		(int) round(this->position.x * Block::getSizeScaled()  - (camera.getLocation().x) ),
+		(int) round(this->position.y * Block::getSizeScaled()  - camera.getLocation().y) ,
+		camera.applyScale(this->size.x),
+		camera.applyScale(this->size.y)
 		});
 }
 
