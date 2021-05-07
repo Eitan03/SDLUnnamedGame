@@ -18,7 +18,7 @@ public:
 	~Camera() {};
 	Camera();
 	void setLocation(PointI location);
-	void move(PointI pixels) { this->setLocation(location+ pixels); };
+	void move(PointI pixels) { this->setLocation(location + pixels); };
 	PointI getLocation(void) const { return this->location; };
 	float getScale(void) const { return this->scale; };
 	void setScale(float scale); //the if statement might be heavy on preformance

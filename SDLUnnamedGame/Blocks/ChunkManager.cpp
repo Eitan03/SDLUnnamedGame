@@ -19,15 +19,20 @@ void ChunkManager::loadChunk(PointI pos)
 void ChunkManager::unloadChunk(PointI pos)
 {
 	long long int position = (long long int)pos.x << 32 | pos.y;
+	std::cout << "unloaded" << std::endl;
 	loadedChunks.erase(position);
 }
 
 void ChunkManager::render()
 {
-	loadedChunks[0].get()->render();
-	//for (auto chunk = loadedChunks.cbegin(); chunk != loadedChunks.cend() /* not hoisted */; chunk++/* no increment */) {
+
+	//for (auto chunk = loadedChunks.cbegin(); chunk != loadedChunks.cend() /* not hoisted */; chunk++) {
 	//	chunk->second->render();
 	//}
+	for (auto const& chunk : loadedChunks)
+	{
+		chunk.second->render();
+	}
 	
 }
 
@@ -39,7 +44,9 @@ void ChunkManager::update(PointI cameraPosition, float Scale)
 	std::cout << cameraPosition << std::endl;
 	//std::cout << cameraPos << std::endl;
 	//std::cout << cameraChunkPos << std::endl;
-	loadedChunks[0] = std::make_unique<Chunk>(cameraChunkPos + PointI(1, 1));
+	if (loadedChunks.find(0) == loadedChunks.end()) {
+		this->loadChunk({ 0 ,0 });
+	}
 
 	/*
 	std::set<long long int> needToBeLoaded;

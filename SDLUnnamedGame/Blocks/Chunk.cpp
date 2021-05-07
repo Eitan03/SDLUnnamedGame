@@ -3,15 +3,11 @@
 #include "../Globals.h"
 extern Texture* blockTextures[BlockTypes::Size];
 
-Block* Chunk::temp = new Block({0,0}, blockTextures[0]);
-
 Chunk::Chunk(PointI position) : position(position), blocks()
 {
-	for (int i = 0; i < CHUNK_SIZE; i++) {
-		for (int j = 0; j < CHUNK_SIZE; j++) {
-			for (int l = LAYERS - 1; l > 0; l--) {
-				blocks[l][i][j] = nullptr;
-			}
+	for (int row = 0; row < CHUNK_SIZE; row++) {
+		for (int column = 0; column < CHUNK_SIZE; column++) {
+				blocks[column][row] = nullptr;
 		}
 	}
 
@@ -20,13 +16,11 @@ Chunk::Chunk(PointI position) : position(position), blocks()
 
 Chunk::~Chunk()
 {
-	for (int i = 0; i < CHUNK_SIZE; i++) {
-		for (int j = 0; j < CHUNK_SIZE; j++) {
-			for (int l = 0; l < LAYERS; l++) {
-				if (blocks[l][i][j] != nullptr) {
-					delete blocks[l][i][j];
-					blocks[l][i][j] = nullptr;
-				}
+	for (int row = 0; row < CHUNK_SIZE; row++) {
+		for (int column = 0; column < CHUNK_SIZE; column++) {
+			if (blocks[column][row] != nullptr) {
+				delete blocks[column][row];
+				blocks[column][row] = nullptr;
 			}
 		}
 	}
@@ -34,6 +28,7 @@ Chunk::~Chunk()
 
 void Chunk::loadFromFile(const char* path)
 {
+	std::cout << path << std::endl;
 	std::ifstream ifStream;
 	ifStream.open(path);
 	if (!ifStream.is_open())
@@ -43,41 +38,37 @@ void Chunk::loadFromFile(const char* path)
 		ifStream.open(path);
 	}
 
-	unsigned int currentLayer = -1;
 	int row = 0;
 	int column = 0;
 
-	
+
 	std::string line;
 	while (getline(ifStream, line)) {
-		
+		std::cout << "line" << line << std::endl;
 		if (!line.compare("")) continue;
 
-		if (line.find("layer ") == 0) { //if the line starts with "layer "
+		/* if (line.find("layer ") == 0) { //if the line starts with "layer "
 			currentLayer = std::stoi(line.substr(5, line.size() - 1));
 			row = 0;
 			column = 0;
-		}
-		else {
-			
-			while (line != "" && line.find(",") != std::string::npos ) {
-				if (currentLayer > LAYERS || row > CHUNK_SIZE || column > CHUNK_SIZE) {
-					std::cerr << "either currentLayer, row, or column is to big" << std::endl;
-					assert(false);
-				}
-				int blockNum = std::stoi(line.substr(0, line.find(",")));
-				blocks[currentLayer][row][column] = createBlock(blockNum, PointI(row, column));
-				row++;
-				line = line.substr(line.find(",") + 1);
+		} */
+
+		while (line != "" && line.find(",") != std::string::npos) {
+			if (row > CHUNK_SIZE || column > CHUNK_SIZE) {
+				std::cerr << "either row or column is to big" << std::endl;
+				std::cerr << "row: " << row << ", column: " << column << std::endl;
+				assert(false);
 			}
-			row = 0;
-			column++;
-
-
+			int blockTypeID = std::stoi(line.substr(0, line.find(",")));
+			blocks[column][row] = createBlock(blockTypeID, PointI(column, row));
+			row++;
+			line = line.substr(line.find(",") + 1);
 		}
+		row = 0;
+		column++;
 	}
-	
 }
+
 
 Block* Chunk::createBlock(int textureNumber, PointI position)
 {
@@ -105,8 +96,6 @@ void Chunk::createChunk()
 		assert(false);
 	}
 
-	ofStream << "layer 1:\n";
-
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
 			ofStream << std::to_string(chunkData[i][j]) + ",";
@@ -117,40 +106,17 @@ void Chunk::createChunk()
 	ofStream.close();
 }
 
-void Chunk::renderLayer(unsigned int layer)
-{
-	for (int i = 0; i < CHUNK_SIZE; i++) {
-		for (int j = 0; j < CHUNK_SIZE; j++) {
-			blocks[layer][i][j]->render();
-		}
-	}
-}
-
-void Chunk::renderLayers(unsigned int layers[], unsigned int size)
-{
-	for (int i = 0; i < CHUNK_SIZE; i++) {
-		for (int j = 0; j < CHUNK_SIZE; j++) {
-			for (int l = LAYERS; l > 0; l--) {
-				if (blocks[layers[l]][i][j] != nullptr) {
-					blocks[layers[l]][i][j]->render();
-					break;
-				}
-			}
-		}
-	}
-}
-
 void Chunk::render()
 {
-	for (int i = 0; i < CHUNK_SIZE; i++) {
-		for (int j = 0; j < CHUNK_SIZE; j++) {
-			for (int l = LAYERS - 1; l >= 0; l--) {
-				if (blocks[l][i] != nullptr) {
-					if (blocks[l][i][j] != nullptr) {
-						blocks[l][i][j]->render();
-						break;
-					}
-				}
+	for (int row = 0; row < CHUNK_SIZE; row++) {
+		for (int column = 0; column < CHUNK_SIZE; column++) {
+			if (blocks[column][row] != nullptr) {
+				std::cout << "redndering: " << column << std::endl;
+				blocks[column][row]->render();
+			}
+			else {
+				assert(false);
+
 			}
 		}
 	}

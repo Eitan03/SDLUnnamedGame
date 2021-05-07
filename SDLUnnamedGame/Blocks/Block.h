@@ -2,7 +2,7 @@
 
 #include "../GameEngine/GameObject.h"
 
-
+// this is not an obersver becuase the size and sizeScaled are static
 class Block: public GameObject
 {
 	friend class Camera; //camera calls the update function to change sizeScaled

@@ -42,7 +42,6 @@ extern Texture* blockTextures[BlockTypes::Size];
 extern Colors colors;
 extern void setUpTextures(Renderer& renderer);
 
-std::vector< std::vector<Block>> chunk;
 int main( int argc, char* args[] ) {
 
 	init();
@@ -51,8 +50,7 @@ int main( int argc, char* args[] ) {
 	//chunkManager->loadChunk(PointI(0, 0));
 	//chunkManager->loadChunk(PointI(0, 1));
 
-	//Chunk chunk( {1, 0} );
-	Block sand({ 6 ,7 }, blockTextures[1] );
+	Block tempSandBlock({ 6 ,7 }, blockTextures[1] );
 	mousePositionABSText = std::make_unique<Text>("-1, -1", colors.White, *font, *renderer);
 
 	renderer->setBackgroundColor( colors.Black );
@@ -73,7 +71,7 @@ int main( int argc, char* args[] ) {
 		renderer->clear();
 
 		chunkManager->render();
-		sand.render();
+		tempSandBlock.render();
 
 		mousePositionABSText.get()->renderABS(0, 0);
 		//eventHandler.checkForEvents();
@@ -98,11 +96,9 @@ int main( int argc, char* args[] ) {
 				{
 				case SDL_WINDOWEVENT_ENTER:
 					isMouseInWindow = true;
-					std::cout << "in" << std::endl;
 					break;
 				case SDL_WINDOWEVENT_LEAVE:
 					isMouseInWindow = false;
-					std::cout << "out" << std::endl;
 					break;
 				}
 				break;
@@ -110,6 +106,7 @@ int main( int argc, char* args[] ) {
 				switch (event.key.keysym.sym)
 				{
 				case SDLK_w:
+					std::cout << "pressed W" << std::endl;
 					chunkManager->unloadChunk({ 0, 0 });
 					break;
 				}

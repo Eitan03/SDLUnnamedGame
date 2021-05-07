@@ -89,7 +89,6 @@ auto operator*(const Point_impl<L>& lhs, const Point_impl<R>& rhs) {
 
 template<typename L, typename R>
 auto operator/(const Point_impl<L>& lhs, const Point_impl<R>& rhs) {
-    std::cout << "called" << std::endl;
     Point_impl<decltype(lhs.x / rhs.x)> rv = lhs;
     rv /= rhs;
     return rv;
