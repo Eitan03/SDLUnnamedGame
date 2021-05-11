@@ -25,7 +25,6 @@ public:
 	void addToScale(float number) { this->setScale(scale + number); }; 
 	int applyScale(int num) { return (int)round(num * scale); }; //adds the round function
 
-	void temp() {};
 protected:
 	void update() override;
 private:

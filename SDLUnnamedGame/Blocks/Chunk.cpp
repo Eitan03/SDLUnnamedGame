@@ -44,7 +44,6 @@ void Chunk::loadFromFile(const char* path)
 
 	std::string line;
 	while (getline(ifStream, line)) {
-		std::cout << "line" << line << std::endl;
 		if (!line.compare("")) continue;
 
 		/* if (line.find("layer ") == 0) { //if the line starts with "layer "
@@ -111,7 +110,6 @@ void Chunk::render()
 	for (int row = 0; row < CHUNK_SIZE; row++) {
 		for (int column = 0; column < CHUNK_SIZE; column++) {
 			if (blocks[column][row] != nullptr) {
-				std::cout << "redndering: " << column << std::endl;
 				blocks[column][row]->render();
 			}
 			else {

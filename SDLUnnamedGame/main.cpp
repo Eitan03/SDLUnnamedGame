@@ -118,7 +118,7 @@ int main( int argc, char* args[] ) {
 
 		if (isMouseInWindow) {
 
-			mouseRect.setPosition( floor(mousePosition) * Block::getSize() - camera.getLocation() );
+			mouseRect.setPosition( floor(mousePosition) * Block::getSizeScaled() - camera.getLocation() );
 			renderer->renderRectABS(mouseRect);
 		}
 		

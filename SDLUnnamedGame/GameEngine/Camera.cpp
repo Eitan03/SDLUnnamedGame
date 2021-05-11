@@ -17,6 +17,7 @@ void Camera::setLocation(PointI location)
 void Camera::setScale(float scale)
 {
 	this->scale = scale; if (scale == 0) assert(false); this->update();
+	std::cout << this->scale << std::endl;
 }
 
 void Camera::update()
