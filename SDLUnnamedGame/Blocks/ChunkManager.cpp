@@ -26,9 +26,6 @@ void ChunkManager::unloadChunk(PointI pos)
 void ChunkManager::render()
 {
 
-	//for (auto chunk = loadedChunks.cbegin(); chunk != loadedChunks.cend() /* not hoisted */; chunk++) {
-	//	chunk->second->render();
-	//}
 	for (auto const& chunk : loadedChunks)
 	{
 		chunk.second->render();

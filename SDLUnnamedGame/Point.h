@@ -135,7 +135,6 @@ auto operator==(const Point_impl<L>& lhs, const Point_impl<R>& rhs) {
     return (lhs.x == rhs.x && lhs.y == rhs.y);
 }
 
-
 //math functions
 template<typename L>
 Point_impl<L> floor(const Point_impl<L>& lhs) {
