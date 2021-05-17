@@ -19,6 +19,6 @@ public:
 	// observer pattren
 	void update() override;
 private:
-	std::map<long long int, std::unique_ptr<Chunk>> loadedChunks;
+	std::map<PointI, std::unique_ptr<Chunk>> loadedChunks;
 };
 

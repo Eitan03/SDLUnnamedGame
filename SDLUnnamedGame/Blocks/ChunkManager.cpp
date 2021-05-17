@@ -12,15 +12,15 @@ ChunkManager::~ChunkManager()
 void ChunkManager::loadChunk(PointI pos)
 {
 	Chunk* chunk = new Chunk(pos);
-	long long int position = (long long int)pos.x << 32 | pos.y;
-	loadedChunks.emplace(position, chunk);
+	//long long int position = (long long int)pos.x << 32 | pos.y;
+	loadedChunks.emplace(pos, chunk);
 }
 
 void ChunkManager::unloadChunk(PointI pos)
 {
 	long long int position = (long long int)pos.x << 32 | pos.y;
 	std::cout << "unloaded" << std::endl;
-	loadedChunks.erase(position);
+	loadedChunks.erase(pos);
 }
 
 void ChunkManager::render()
@@ -40,8 +40,9 @@ void ChunkManager::update(PointI cameraPosition, float Scale)
 	PointI cameraChunkPos = cameraPos / CHUNK_SIZE;
 	//std::cout << cameraPos << std::endl;
 	//std::cout << cameraChunkPos << std::endl;
-	if (loadedChunks.find(0) == loadedChunks.end()) {
-		this->loadChunk({ 0 ,0 });
+	if (loadedChunks.find(cameraChunkPos) == loadedChunks.end()) {
+		std::cout << "created" << std::endl;
+		this->loadChunk(cameraChunkPos);
 	}
 
 	/*
