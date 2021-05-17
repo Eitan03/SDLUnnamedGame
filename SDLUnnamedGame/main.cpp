@@ -20,7 +20,6 @@ void initlializeSDL()
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
 		assert(false);
 	}
-
 	//Initialize PNG loading
 	int imgFlags = IMG_INIT_PNG;
 	if (!(IMG_Init(imgFlags) & imgFlags))
@@ -28,8 +27,6 @@ void initlializeSDL()
 		printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
 		assert(false);
 	}
-
-
 	if (TTF_Init() == -1)
 	{
 		printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
@@ -92,7 +89,6 @@ void gameLoop() {
 	{
 		eventFactory->runEvents();
 		render();
-		renderMouseRect();
 		renderer->present();
 	}
 };
@@ -100,6 +96,7 @@ void render() {
 	renderer->clear();
 	chunkManager->render();
 	mousePositionABSText.get()->renderABS(0, 0);
+	renderMouseRect();
 }
 
 void renderMouseRect()
