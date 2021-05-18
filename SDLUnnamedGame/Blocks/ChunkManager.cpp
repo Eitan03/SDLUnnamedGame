@@ -37,9 +37,9 @@ void ChunkManager::update(PointI cameraPosition, float Scale)
 {
 
 	PointI cameraPos = (PointI)floor( (PointF)cameraPosition / Block::getSizeScaled() );
-	PointI cameraChunkPos = cameraPos / CHUNK_SIZE;
+	PointI cameraChunkPos = (PointI)floor( (PointF)cameraPos / CHUNK_SIZE );
 	//std::cout << cameraPos << std::endl;
-	//std::cout << cameraChunkPos << std::endl;
+	std::cout << cameraChunkPos << std::endl;
 	if (loadedChunks.find(cameraChunkPos) == loadedChunks.end()) {
 		std::cout << "created" << std::endl;
 		this->loadChunk(cameraChunkPos);
