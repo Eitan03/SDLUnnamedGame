@@ -16,6 +16,7 @@ Chunk::Chunk(PointI position) : position(position), blocks()
 
 Chunk::~Chunk()
 {
+	std::cout << "deleted Chunk" << this->position << std::endl;
 	for (int row = 0; row < CHUNK_SIZE; row++) {
 		for (int column = 0; column < CHUNK_SIZE; column++) {
 			if (blocks[column][row] != nullptr) {

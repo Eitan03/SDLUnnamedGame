@@ -4,7 +4,7 @@ int Block::sizeScaled = Block::getSize();
 Camera* Block::cam = nullptr;
 
 Block::Block(PointI position, Texture* texture)
-	: GameObject({ (float)(position.x), (float)(position.y) }, { size, size }, texture)
+	: GameObject(PointF(position), { size, size }, texture)
 {
 }
 

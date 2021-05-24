@@ -12,13 +12,11 @@ ChunkManager::~ChunkManager()
 void ChunkManager::loadChunk(PointI pos)
 {
 	Chunk* chunk = new Chunk(pos);
-	//long long int position = (long long int)pos.x << 32 | pos.y;
 	loadedChunks.emplace(pos, chunk);
 }
 
 void ChunkManager::unloadChunk(PointI pos)
 {
-	long long int position = (long long int)pos.x << 32 | pos.y;
 	std::cout << "unloaded" << std::endl;
 	loadedChunks.erase(pos);
 }
@@ -33,30 +31,39 @@ void ChunkManager::render()
 	
 }
 
-void ChunkManager::update(PointI cameraPosition, float Scale)
+void ChunkManager::update(PointI cameraPosition, float scale)
 {
 
 	PointI cameraPos = (PointI)floor( (PointF)cameraPosition / Block::getSizeScaled() );
 	PointI cameraChunkPos = (PointI)floor( (PointF)cameraPos / CHUNK_SIZE );
-	//std::cout << cameraPos << std::endl;
-	std::cout << cameraChunkPos << std::endl;
-	if (loadedChunks.find(cameraChunkPos) == loadedChunks.end()) {
-		std::cout << "created" << std::endl;
-		this->loadChunk(cameraChunkPos);
+	
+	updateLoadedChunks( chunksToLoad(cameraChunkPos, scale) );
+	
+}
+
+std::set<PointI> ChunkManager::chunksToLoad(PointI cameraChunkPosition, float scale) {
+	std::set<PointI> chunksToLoad;
+	
+
+	PointI screenSizeInChunks = PointI( (SCREEN_WIDTH / Block::getSizeScaled()) / 6, (SCREEN_HEIGHT / Block::getSizeScaled()) / 6 ) + 2;
+
+	for (PointI chunkPosition = cameraChunkPosition; chunkPosition.x < cameraChunkPosition.x + screenSizeInChunks.x; (chunkPosition.x)++) {
+		for (; chunkPosition.y < cameraChunkPosition.y + screenSizeInChunks.y;  (chunkPosition.y)++ ) {
+			chunksToLoad.insert(chunkPosition);
+		}
+		chunkPosition.y = cameraChunkPosition.y;
+		
 	}
 
-	/*
-	std::set<long long int> needToBeLoaded;
-	PointI cameraChunk = (PointI)floor( (cameraPosition / ( (float)Globals::getInstance()->camera.applyScale(Globals::getInstance()->BlockSize)) / 16) );
-	long long int cameraChunkPos = (long long int)cameraChunk.x << 32 | cameraChunk.y;;
-	needToBeLoaded.insert(cameraChunkPos);
-	std::cout << cameraChunk << std::endl;
+	return chunksToLoad;
+}
 
-	for (auto it = loadedChunks.cbegin(); it != loadedChunks.cend() /* not hoisted *; /* no increment *)
+void ChunkManager::updateLoadedChunks(std::set<PointI> chunksToLoad) {
+	
+	for (auto it = loadedChunks.begin(); it != loadedChunks.end() /* not hoisted */; /* no increment */)
 	{
-		if (needToBeLoaded.find(it->first) == needToBeLoaded.end())
+		if (chunksToLoad.find(it->first) == chunksToLoad.end())
 		{
-			//loadedChunks.erase(it++);    // or "it = m.erase(it)" since C++11
 			it = loadedChunks.erase(it);
 		}
 		else
@@ -64,8 +71,12 @@ void ChunkManager::update(PointI cameraPosition, float Scale)
 			++it;
 		}
 	}
-	*/
 
+	for (auto it : chunksToLoad) {
+		if (loadedChunks.find(it) == loadedChunks.end()) {
+			this->loadChunk(it);
+		}
+	}
 }
 
 void ChunkManager::update()

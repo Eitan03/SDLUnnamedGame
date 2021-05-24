@@ -13,6 +13,7 @@ public:
 
     Point_impl() : x{}, y{} {}            // default
     Point_impl(T x, T y) : x{ x }, y{ y } {}  // conversion
+    Point_impl(const Point_impl& p) { x = p.x; y = p.y; } //copy
     
     // create one Point_impl<T> from a Point_impl<U> 
     template<typename U>

@@ -31,8 +31,8 @@ void GameObject::changeTexture(Texture* texture)
 void GameObject::render()
 {
 	this->texture->renderABS({ 
-		(int) round(this->position.x * Block::getSizeScaled()  - (camera.getLocation().x) ),
-		(int) round(this->position.y * Block::getSizeScaled()  - camera.getLocation().y) ,
+		(int) round(this->position.x * Block::getSizeScaled()  - camera.getLocation().x),
+		(int) round(this->position.y * Block::getSizeScaled()  - camera.getLocation().y),
 		camera.applyScale(this->size.x),
 		camera.applyScale(this->size.y)
 		});
