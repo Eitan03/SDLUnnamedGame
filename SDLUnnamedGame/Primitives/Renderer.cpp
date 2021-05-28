@@ -6,8 +6,7 @@ Renderer::Renderer(Window& window)
 {
 	if (renderer == nullptr)
 	{
-		printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
-		assert(false);
+		throw GameEngineException("Renderer could not be created! SDL Error: " +  std::string(SDL_GetError()) );
 	}
 }
 

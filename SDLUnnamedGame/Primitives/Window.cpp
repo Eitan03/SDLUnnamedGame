@@ -6,8 +6,7 @@ Window::Window(std::string name,int width, int height)
 {
 	if (window == nullptr)
 	{
-		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-		assert(false);
+		throw GameEngineException("Window could not be created! SDL_Error: " + std::string(SDL_GetError()));
 	}
 }
 

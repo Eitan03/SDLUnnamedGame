@@ -17,7 +17,8 @@ void Camera::setLocation(PointI location)
 void Camera::setScale(float scale)
 {
 	this->scale = scale; 
-	if (-0.01 < scale && scale < 0.01) assert(false); 
+	if (-0.01 < scale && scale < 0.01) 
+		throw GameEngineException("scale cant be 0");
 	this->update();
 
 	std::cout << "scale: " << this->scale << std::endl;

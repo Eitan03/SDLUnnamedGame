@@ -5,14 +5,12 @@ Texture::Texture( std::string path, Renderer& renderer, Rect textureRect )
 {
 	SDL_Surface* textureSurface = IMG_Load(path.c_str());
 	if (textureSurface == NULL) {
-		std::cerr << "Unable to load image " << path.c_str() << "! SDL_image Error: " << IMG_GetError() << std::endl;
-		assert(false);
+		throw GameEngineException("Unable to load image " + path + "! SDL_image Error: " + IMG_GetError());
 	}
 
 	texture = std::unique_ptr<SDL_Texture, void(*)(SDL_Texture*)>(SDL_CreateTextureFromSurface(renderer.get() , textureSurface), SDL_DestroyTexture);
 	if ( ! texture) {
-		std::cerr << "Unable to load texture " << path.c_str() << "! SDL_image Error: " << IMG_GetError() << std::endl;
-		assert(false);
+		throw GameEngineException("Unable to load texture " + path + "! SDL_image Error: " + IMG_GetError());
 	}
 
 	if (textureRect.w == -1) {

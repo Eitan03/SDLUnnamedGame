@@ -17,28 +17,24 @@ void initlializeSDL()
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
 	{
-		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-		assert(false);
+		throw "SDL could not initialize! SDL_Error: " + std::string(SDL_GetError());
 	}
 	//Initialize PNG loading
 	int imgFlags = IMG_INIT_PNG;
 	if (!(IMG_Init(imgFlags) & imgFlags))
 	{
-		printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-		assert(false);
+		throw "SDL_image could not initialize! SDL_image Error: " + std::string(IMG_GetError());
 	}
 	if (TTF_Init() == -1)
 	{
-		printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
-		assert(false);
+		throw "SDL_ttf could not initialize! SDL_ttf Error: " + std::string(TTF_GetError());
 	}
 
 	//Open the font
 	font = TTF_OpenFont("assets\\fonts\\Pixeled.ttf", 28);
 	if (font == NULL)
 	{
-		printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
-		assert(false);
+		throw "Failed to load lazy font! SDL_ttf Error: " + std::string(TTF_GetError());
 	}
 
 }
@@ -57,41 +53,54 @@ void initlializeGameEngine()
 
 	eventFactory = std::make_unique<EventFactoryImpl>(EventFactoryImpl());
 	
-	SDL_AddTimer(10, moveScreen, NULL);
+	timer = Timer();
+	timer.Start();
 }
 
 EventFactoryImpl::EventFactoryImpl() {
 	this->updateMousePosition();
 }
 
-unsigned int moveScreen(unsigned int interval, void* param) {
-	if (isMouseInWindow) {
-		if ((mousePositionABS.y > 0) && (mousePositionABS.y < SCREEN_HEIGHT / 9)) {
-			camera.move({ 0, -1 });
-		}
-		if (mousePositionABS.y > SCREEN_HEIGHT - (SCREEN_HEIGHT / 9)) {
-			camera.move({ 0, 1 });
-		}
-		if ((mousePositionABS.x > 0) && (mousePositionABS.x < SCREEN_WIDTH / 16)) {
-			camera.move({ -1, 0 });
-		}
-		if (mousePositionABS.x > SCREEN_WIDTH - (SCREEN_WIDTH / 16)) {
-			camera.move({ 1, 0 });
-		}
-	}
-	return interval;
-}
-
-
-
 void gameLoop() {
 	while (!quitApplication)
 	{
+		moveScreenBasedOnTimePassed();
 		eventFactory->runEvents();
 		render();
 		renderer->present();
 	}
 };
+
+//TODO look at
+// https://gafferongames.com/post/fix_your_timestep/
+// https://www.daniweb.com/programming/software-development/threads/446383/sdl-and-time-based-movement-problem#post1925548
+// might have a bug here that makes it inconsistent
+void moveScreenBasedOnTimePassed() {
+	if (timer.GetTime() >= 60) {
+		int diffTime = timer.GetTime();
+		timer.Start();
+		moveScreen(diffTime);
+	}
+}
+
+void moveScreen(int timeDiff) {
+	int moveAmount = floor(0.2 * timeDiff);
+	if (isMouseInWindow) {
+		if ((mousePositionABS.y > 0) && (mousePositionABS.y < SCREEN_HEIGHT / 9)) {
+			camera.move({ 0, -moveAmount });
+		}
+		if (mousePositionABS.y > SCREEN_HEIGHT - (SCREEN_HEIGHT / 9)) {
+			camera.move({ 0, moveAmount });
+		}
+		if ((mousePositionABS.x > 0) && (mousePositionABS.x < SCREEN_WIDTH / 16)) {
+			camera.move({ -moveAmount, 0 });
+		}
+		if (mousePositionABS.x > SCREEN_WIDTH - (SCREEN_WIDTH / 16)) {
+			camera.move({ moveAmount, 0 });
+		}
+	}
+}
+
 void render() {
 	renderer->clear();
 	chunkManager->render();

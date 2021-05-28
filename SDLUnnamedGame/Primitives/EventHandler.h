@@ -2,7 +2,6 @@
 #pragma once
 #include <memory>
 #include <SDL.h>
-#include <assert.h>
 #include <string>
 #include <iostream>
 

@@ -2,12 +2,22 @@
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
-#include <assert.h>
+#include <exception>
 
 #include "Point.h"
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
+
+struct GameEngineException : public std::exception {
+    GameEngineException(std::string msg): _msg(msg) {  }
+    const char* what() const throw () {
+        return _msg.c_str();
+    }
+
+private:
+    std::string _msg;
+};
 
 struct Color {
 	Color(unsigned char r, unsigned char b, unsigned char g, unsigned char a = 0xFF) : r(r), b(b), g(g), a(a) {}

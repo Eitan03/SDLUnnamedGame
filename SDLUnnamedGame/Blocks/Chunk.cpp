@@ -11,7 +11,7 @@ Chunk::Chunk(PointI position) : position(position), blocks()
 		}
 	}
 
-	this->loadFromFile(std::string("./chunks/" + std::to_string(this->position.x) + "-" + std::to_string(this->position.y) + ".chunk").c_str());
+	this->loadFromFile(std::string("./chunks/" + std::to_string(this->position.x) + "," + std::to_string(this->position.y) + ".chunk").c_str());
 }
 
 Chunk::~Chunk()
@@ -55,9 +55,7 @@ void Chunk::loadFromFile(const char* path)
 
 		while (line != "" && line.find(",") != std::string::npos) {
 			if (row > CHUNK_SIZE || column > CHUNK_SIZE) {
-				std::cerr << "either row or column is to big" << std::endl;
-				std::cerr << "row: " << row << ", column: " << column << std::endl;
-				assert(false);
+				throw GameEngineException("row or column too big");
 			}
 			int blockTypeID = std::stoi(line.substr(0, line.find(",")));
 			blocks[column][row] = createBlock(blockTypeID, PointI(column, row));
@@ -88,12 +86,11 @@ void Chunk::createChunk()
 	}
 
 	std::ofstream ofStream;
-	ofStream.open(std::string("./chunks/" + std::to_string(this->position.x) + "-" + std::to_string(this->position.y) + ".chunk").c_str());
+	ofStream.open(std::string("./chunks/" + std::to_string(this->position.x) + "," + std::to_string(this->position.y) + ".chunk").c_str());
 
 	if (!ofStream.is_open())
 	{
-		std::cerr << "Failed to open file : " << "./chunks/" + std::to_string(this->position.x) + "-" + std::to_string(this->position.y) + ".chunk" << std::endl;
-		assert(false);
+		throw GameEngineException("Failed to open file : " + std::string("./chunks/") + std::to_string(this->position.x) + "," + std::to_string(this->position.y) + ".chunk");
 	}
 
 	for (int i = 0; i < CHUNK_SIZE; i++) {
@@ -114,7 +111,7 @@ void Chunk::render()
 				blocks[column][row]->render();
 			}
 			else {
-				assert(false);
+				throw GameEngineException("block is nullptr");
 
 			}
 		}

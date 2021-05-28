@@ -12,15 +12,13 @@ void Text::setText(std::string text) //not efficient atm
     SDL_Surface* textureSurface = TTF_RenderText_Solid(&font, text.c_str(), color.ToSDL());
     if (textureSurface == NULL)
     {
-        printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
-        assert(false);
+        throw GameEngineException("Unable to render text surface! SDL_ttf Error: " + std::string(TTF_GetError()) );
     }
     //Create texture from surface pixels
     texture = std::unique_ptr<SDL_Texture, void(*)(SDL_Texture*)>(SDL_CreateTextureFromSurface(renderer.get(), textureSurface), SDL_DestroyTexture);
     if (texture.get() == NULL)
     {
-        printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
-        assert(false);
+        GameEngineException("Unable to create texture from rendered text! SDL Error: " + std::string(SDL_GetError()) );
     }
     //Get image dimensions
     this->textureRect.w = textureSurface->w;

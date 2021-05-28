@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <assert.h>
 #include <fstream>
 
 #include "Block.h"

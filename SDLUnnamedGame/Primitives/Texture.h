@@ -2,7 +2,6 @@
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
-#include <assert.h>
 
 #include "Drawable.h"
 #include "Renderer.h"

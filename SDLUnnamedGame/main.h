@@ -6,7 +6,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#include <assert.h>
 
 #include "Primitives/Window.h"
 #include "Primitives/Renderer.h"
@@ -19,6 +18,7 @@
 #include "Blocks/Block.h"
 #include "Blocks/ChunkManager.h"
 
+#include "Timer.h"
 
 void initlialize();
 void initlializeSDL();
@@ -40,7 +40,9 @@ TTF_Font* font;
 
 bool quitApplication = false;
 bool isMouseInWindow = true;
-unsigned int moveScreen(unsigned int interval, void* param);
+void moveScreenBasedOnTimePassed();
+void moveScreen(int timeDiff);
+Timer timer;
 
 PointI mousePositionABS = { -1 , -1 };
 PointF mousePosition = { -1 , -1 };
