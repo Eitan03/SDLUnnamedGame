@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "Block.h"
+#include "worldGenerators/grassWorldGenerator.h"
 #define CHUNK_SIZE 6
 /*
 * To Be Done -
@@ -30,5 +31,7 @@ protected:
 
 	PointI position;
 	Block* blocks[CHUNK_SIZE][CHUNK_SIZE];
+
+	static WorldGenerator* const worldGenerator;
 };
 

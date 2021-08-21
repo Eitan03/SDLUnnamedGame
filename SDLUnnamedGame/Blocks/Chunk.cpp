@@ -2,6 +2,7 @@
 
 #include "../Globals.h"
 extern Texture* blockTextures[BlockTypes::Size];
+WorldGenerator* const Chunk::worldGenerator = new GrassWorldGenerator();
 
 Chunk::Chunk(PointI position) : position(position), blocks()
 {
@@ -81,7 +82,7 @@ void Chunk::createChunk()
 
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
-			chunkData[i][j] = 0;
+			chunkData[i][j] = worldGenerator->getBlock( (this->position * CHUNK_SIZE) + position );
 		}
 	}
 
