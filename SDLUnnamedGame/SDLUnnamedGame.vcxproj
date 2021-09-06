@@ -167,6 +167,7 @@
     <ClCompile Include="Blocks\worldGenerators\GrassWorldGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pattrens\subject.cpp" />
+    <ClCompile Include="Blocks\worldGenerators\PossionDiscWorldGenerator.cpp" />
     <ClCompile Include="Primitives\EventHandler.cpp" />
     <ClCompile Include="Primitives\Renderer.cpp" />
     <ClCompile Include="Primitives\Texture.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="Pattrens\observer.h" />
     <ClInclude Include="Pattrens\subject.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="Blocks\worldGenerators\PossionDiscWorldGenerator.h" />
     <ClInclude Include="Primitives\Drawable.h" />
     <ClInclude Include="GameEngine\Camera.h" />
     <ClInclude Include="GameEngine\GameObject.h" />

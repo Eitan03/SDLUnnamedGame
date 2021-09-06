@@ -130,6 +130,14 @@ auto operator/(const Point_impl<L>& lhs, R rhs) {
     return rv;
 }
 
+template<typename L, typename R>
+auto operator%(const Point_impl<L>& lhs, R rhs) {
+    Point_impl<decltype(lhs.x + rhs)> rv = lhs;
+    rv.x %= rhs;
+    rv.y %= rhs;
+    return rv;
+}
+
 //comapre
 template<typename L, typename R>
 auto operator==(const Point_impl<L>& lhs, const Point_impl<R>& rhs) {
@@ -150,6 +158,22 @@ Point_impl<L> floor(const Point_impl<L>& lhs) {
 template<typename L>
 Point_impl<L> round(const Point_impl<L>& lhs) {
     return Point_impl<L>(round(lhs.x), round(lhs.y));
+}
+
+template<typename L>
+Point_impl<L> abs(const Point_impl<L>& lhs) {
+    return Point_impl<L>(abs(lhs.x), abs(lhs.y));
+}
+
+//vector functions
+template<typename L>
+int magnitude(const Point_impl<L>& lhs) {
+    return sqrt( lhs.x*lhs.x + lhs.y * lhs.y );
+}
+
+template<typename L>
+int sqrMagnitude(const Point_impl<L>& lhs) { //cheaper then magnitude
+    return lhs.x * lhs.x + lhs.y * lhs.y;
 }
 
 using PointI = Point_impl<int>;

@@ -82,7 +82,7 @@ void Chunk::createChunk()
 
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
-			chunkData[i][j] = worldGenerator->getBlock( (this->position * CHUNK_SIZE) + position );
+			chunkData[i][j] = worldGenerator->getBlock( (this->position * CHUNK_SIZE) + PointI(i, j) );
 		}
 	}
 

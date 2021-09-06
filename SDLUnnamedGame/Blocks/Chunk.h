@@ -3,7 +3,8 @@
 #include <fstream>
 
 #include "Block.h"
-#include "worldGenerators/grassWorldGenerator.h"
+#include "worldGenerators/GrassWorldGenerator.h"
+#include "worldGenerators/PossionDiscWorldGenerator.h"
 #define CHUNK_SIZE 6
 /*
 * To Be Done -
