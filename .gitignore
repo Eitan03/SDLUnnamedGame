@@ -418,3 +418,6 @@ FodyWeavers.xsd
 #for the dependecies:
 
 !Dependecies/**
+
+#----------- GAME ENGINE-------------------
+SDLUnnmaedGame/chunks/
