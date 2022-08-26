@@ -6,6 +6,7 @@
 #include "worldGenerators/GrassWorldGenerator.h"
 #include "worldGenerators/PossionDiscWorldGenerator.h"
 #define CHUNK_SIZE 6
+#define LAYERS 3
 /*
 * To Be Done -
 	3 layers-
@@ -31,7 +32,7 @@ protected:
 	void createChunk();
 
 	PointI position;
-	Block* blocks[CHUNK_SIZE][CHUNK_SIZE];
+	Block* blocks[LAYERS][CHUNK_SIZE][CHUNK_SIZE];
 
 	static WorldGenerator* const worldGenerator;
 };

@@ -64,7 +64,6 @@ EventFactoryImpl::EventFactoryImpl() {
 void gameLoop() {
 	while (!quitApplication)
 	{
-		std::cout << "settinbg block" << std::endl;
 		moveScreenBasedOnTimePassed();
 		eventFactory->runEvents();
 		render();
