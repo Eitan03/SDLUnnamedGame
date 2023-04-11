@@ -36,15 +36,14 @@ Text::~Text()
 
 void Text::renderABS(int x, int y)
 {
-	//Set rendering space and render to screen
-    this->textureRect.x = x;
-    this->textureRect.y = y;
-	SDL_RenderCopy(renderer.get(), texture.get(), &textureRect, &textureRect);
+    Rect destRect = textureRect;
+    destRect.setPosition({ x, y });
+    SDL_RenderCopy(renderer.get(), texture.get(), &textureRect, &destRect);
 }
 
 void Text::renderABS(PointF location)
 {
-    this->textureRect.x = location.x;
-    this->textureRect.y = location.y;
-	SDL_RenderCopy(renderer.get(), texture.get(), &textureRect, &textureRect);
+    Rect destRect = textureRect;
+    destRect.setPosition(location);
+	SDL_RenderCopy(renderer.get(), texture.get(), &textureRect, &destRect);
 }

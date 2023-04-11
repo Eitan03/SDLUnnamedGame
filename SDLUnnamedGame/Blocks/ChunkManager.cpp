@@ -2,7 +2,6 @@
 
 ChunkManager::ChunkManager(Camera* camera)
 {
-	observer::setSubject((subject*)camera);
 }
 
 ChunkManager::~ChunkManager()
@@ -79,9 +78,8 @@ void ChunkManager::updateLoadedChunks(std::set<PointI> chunksToLoad) {
 	}
 }
 
-void ChunkManager::update()
+// TODO only calc if needed
+void ChunkManager::cameraMoved(Camera* cam)
 {
-	subject* temp = observer::_subject;
-	Camera* cam = dynamic_cast<Camera*>((this->_subject));
 	this->update(cam->getLocation(), cam->getScale());
 }

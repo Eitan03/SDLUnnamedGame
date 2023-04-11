@@ -5,14 +5,14 @@
 
 
 #include "../Utilities.h"
-#include "../Pattrens/subject.h"
-
-   //includes scale
+#include <vector>
+#include <functional>
+//includes scale
 
 /*
 only supports one camera object because of block
 */
-class Camera: public subject
+class Camera
 {
 public:
 	~Camera() {};
@@ -24,11 +24,14 @@ public:
 	void setScale(float scale); //the if statement might be heavy on preformance
 	void addToScale(float number) { this->setScale(scale + number); }; 
 	int applyScale(int num) { return (int)round(num * scale); }; //adds the round function
+	
+	void addObserver(std::function<void (Camera*)> func) { observers.push_back(func); };
 
 protected:
-	void update() override;
+	void update(Camera* cam);
 private:
 	PointI location;
 	float scale;
+	std::vector<std::function<void (Camera*)>> observers;
 };
 

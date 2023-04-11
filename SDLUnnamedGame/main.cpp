@@ -47,14 +47,21 @@ void initlializeGameEngine()
 	setUpTextures(*renderer);
 	
 	chunkManager = new ChunkManager(&(camera)); //TODO shared ptr?
-	camera.addObserver((observer*)chunkManager);
 
 	mousePositionABSText = std::make_unique<Text>("-1, -1", colors.White, *font, *renderer);
+	fpsText = std::make_unique<Text>("fps: -1", colors.White, *font, *renderer);
 
 	eventFactory = std::make_unique<EventFactoryImpl>(EventFactoryImpl());
 	
-	timer = Timer();
-	timer.Start();
+	camera.addObserver(std::bind(&ChunkManager::cameraMoved, chunkManager, std::placeholders::_1));
+	camera.addObserver(Block::update);
+
+	cameraMovmentsTimer = Timer();
+	cameraMovmentsTimer.Start();
+
+	fpsTimer = Timer();
+	fpsTimer.Start();
+	fpsCount = 0;
 }
 
 EventFactoryImpl::EventFactoryImpl() {
@@ -64,6 +71,7 @@ EventFactoryImpl::EventFactoryImpl() {
 void gameLoop() {
 	while (!quitApplication)
 	{
+		updateFpsCount();
 		moveScreenBasedOnTimePassed();
 		eventFactory->runEvents();
 		render();
@@ -71,21 +79,31 @@ void gameLoop() {
 	}
 };
 
+void updateFpsCount() {
+	fpsCount++;
+	if (fpsTimer.GetTime() >= 1000) {
+		fpsText.get()->setText("fps: " + std::to_string(fpsCount));
+		fpsCount = 0;
+		fpsTimer.Start();
+	}
+}
+
 //TODO look at
 // https://gafferongames.com/post/fix_your_timestep/
 // https://www.daniweb.com/programming/software-development/threads/446383/sdl-and-time-based-movement-problem#post1925548
 // might have a bug here that makes it inconsistent
 void moveScreenBasedOnTimePassed() {
-	if (timer.GetTime() >= 60) {
-		int diffTime = timer.GetTime();
-		timer.Start();
+	if (cameraMovmentsTimer.GetTime() >= 10) {
+		int diffTime = cameraMovmentsTimer.GetTime();
+		cameraMovmentsTimer.Start();
 		moveScreen(diffTime);
 	}
 }
 
 void moveScreen(int timeDiff) {
-	int moveAmount = floor(0.2 * timeDiff);
 	if (isMouseInWindow) {
+		int moveAmount = floor(0.2 * timeDiff);
+		
 		if ((mousePositionABS.y > 0) && (mousePositionABS.y < SCREEN_HEIGHT / 9)) {
 			camera.move({ 0, -moveAmount });
 		}
@@ -104,7 +122,8 @@ void moveScreen(int timeDiff) {
 void render() {
 	renderer->clear();
 	chunkManager->render();
-	mousePositionABSText.get()->renderABS(0, 0);
+	mousePositionABSText.get()->renderABS(10, 0);
+	fpsText.get()->renderABS(SCREEN_WIDTH - fpsText.get()->getRect().w - 10, 0);
 	renderMouseRect();
 }
 

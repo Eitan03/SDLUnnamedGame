@@ -3,10 +3,9 @@
 #include <set>
 
 #include "Chunk.h"
-#include "../Pattrens/observer.h"
 #include "../Utilities.h"
 
-class ChunkManager: observer
+class ChunkManager
 {
 public:
 	ChunkManager(Camera* camera);
@@ -21,7 +20,7 @@ public:
 	void updateLoadedChunks(std::set<PointI> chunksToLoad);
 
 	// observer pattren
-	void update() override;
+	void cameraMoved(Camera* cam);
 private:
 	std::map<PointI, std::unique_ptr<Chunk>> loadedChunks;
 };

@@ -42,12 +42,17 @@ bool quitApplication = false;
 bool isMouseInWindow = true;
 void moveScreenBasedOnTimePassed();
 void moveScreen(int timeDiff);
-Timer timer;
+Timer cameraMovmentsTimer;
+
+Timer fpsTimer;
+int fpsCount;
+void updateFpsCount();
 
 PointI mousePositionABS = { -1 , -1 };
 PointF mousePosition = { -1 , -1 };
 Rect mouseRect = { -1, -1, Block::getSize(), Block::getSize() };
 std::unique_ptr<Text> mousePositionABSText;
+std::unique_ptr<Text> fpsText;
 void renderMouseRect();
 
 ChunkManager* chunkManager;
