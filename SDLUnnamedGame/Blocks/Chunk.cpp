@@ -2,7 +2,7 @@
 
 #include "../Globals.h"
 extern Texture* blockTextures[BlockTypes::Size];
-WorldGenerator* const Chunk::worldGenerator = new GrassWorldGenerator();
+WorldGenerator* const Chunk::worldGenerator = new PossionDiscWorldGenerator();
 
 Chunk::Chunk(PointI position) : position(position), blocks()
 {

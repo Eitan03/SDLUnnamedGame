@@ -5,7 +5,7 @@
 #include "Block.h"
 #include "worldGenerators/GrassWorldGenerator.h"
 #include "worldGenerators/PossionDiscWorldGenerator.h"
-#define CHUNK_SIZE 6
+#define CHUNK_SIZE 8
 #define LAYERS 3
 /*
 * To Be Done -

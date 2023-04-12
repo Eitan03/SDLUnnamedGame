@@ -2,12 +2,12 @@
 
 
 PossionDiscWorldGenerator::PossionDiscWorldGenerator() {
-	points = possionDisk(2, PointI(sampleSize, sampleSize));
+	points = possionDisk(10, PointI(sampleSize, sampleSize));
 }
 
 int PossionDiscWorldGenerator::getBlock(PointI position) {
 	
-	PointI currPosition = abs(position) % (int)sampleSize;
+	PointI currPosition = position; // abs(position) % (int)sampleSize;
 	if (std::find(points.begin(), points.end(), currPosition) != points.end()) {
 		return 1;
 	}
