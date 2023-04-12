@@ -65,74 +65,77 @@ public:
 
 };
 
-template<typename L, typename R>
-auto operator+(const Point_impl<L>& lhs, const Point_impl<R>& rhs) {
-    // return the properly promoted Point_impl type deduced from if the
-    // underlying types where added
-    Point_impl<decltype(lhs.x + rhs.x)> rv = lhs;
-    rv += rhs;
+// add another point
+
+template<typename L>
+auto operator+(const Point_impl<L>& lhs, const Point_impl<L>& rhs) {
+    Point_impl<L> rv = lhs;
+    rv.x += rhs.x;
+    rv.y += rhs.y;
     return rv;
 }
 
-template<typename L, typename R>
-auto operator-(const Point_impl<L>& lhs, const Point_impl<R>& rhs) {
-    Point_impl<decltype(lhs.x - rhs.x)> rv = lhs;
-    rv -= rhs;
+template<typename L>
+auto operator-(const Point_impl<L>& lhs, const Point_impl<L>& rhs) {
+    Point_impl<L> rv = lhs;
+    rv.x -= rhs.x;
+    rv.y -= rhs.y;
     return rv;
 }
 
-template<typename L, typename R>
-auto operator*(const Point_impl<L>& lhs, const Point_impl<R>& rhs) {
-    Point_impl<decltype(lhs.x* rhs.x)> rv = lhs;
-    rv *= rhs;
-    return rv;
-}
-
-template<typename L, typename R>
-auto operator/(const Point_impl<L>& lhs, const Point_impl<R>& rhs) {
-    Point_impl<decltype(lhs.x / rhs.x)> rv = lhs;
-    rv /= rhs;
+template<typename L>
+auto operator*(const Point_impl<L>& lhs, const Point_impl<L>& rhs) {
+    Point_impl<L> rv = lhs;
+    rv.x *= rhs.x;
+    rv.y *= rhs.y;
     return rv;
 }
 
 
+template<typename L>
+auto operator/(const Point_impl<L>& lhs, const Point_impl<L>& rhs) {
+    Point_impl<L> rv = lhs;
+    rv.x /= rhs.x;
+    rv.y /= rhs.y;
+    return rv;
+}
 
 //add something that isnt a point
-template<typename L, typename R>
-auto operator+(const Point_impl<L>& lhs, R rhs) {
-    Point_impl<decltype(lhs.x + rhs)> rv = lhs;
+template<typename L>
+auto operator+(const Point_impl<L>& lhs, L rhs) {
+    Point_impl<L> rv = lhs;
     rv.x += rhs;
     rv.y += rhs;
     return rv;
 }
 
-template<typename L, typename R>
-auto operator-(const Point_impl<L>& lhs, R rhs) {
-    Point_impl<decltype(lhs.x + rhs)> rv = lhs;
+template<typename L>
+auto operator-(const Point_impl<L>& lhs, L rhs) {
+    Point_impl<L> rv = lhs;
     rv.x -= rhs;
     rv.y -= rhs;
     return rv;
 }
 
-template<typename L, typename R>
-auto operator*(const Point_impl<L>& lhs, R rhs) {
-    Point_impl<decltype(lhs.x + rhs)> rv = lhs;
+template<typename L>
+auto operator*(const Point_impl<L>& lhs, L rhs) {
+    Point_impl<L> rv = lhs;
     rv.x *= rhs;
     rv.y *= rhs;
     return rv;
 }
 
-template<typename L, typename R>
-auto operator/(const Point_impl<L>& lhs, R rhs) {
-    Point_impl<decltype(lhs.x + rhs)> rv = lhs;
+template<typename L>
+auto operator/(const Point_impl<L>& lhs, L rhs) {
+    Point_impl<L> rv = lhs;
     rv.x /= rhs;
     rv.y /= rhs;
     return rv;
 }
 
-template<typename L, typename R>
-auto operator%(const Point_impl<L>& lhs, R rhs) {
-    Point_impl<decltype(lhs.x + rhs)> rv = lhs;
+template<typename L>
+auto operator%(const Point_impl<L>& lhs, L rhs) {
+    Point_impl<L> rv = lhs;
     rv.x %= rhs;
     rv.y %= rhs;
     return rv;
@@ -176,5 +179,5 @@ int sqrMagnitude(const Point_impl<L>& lhs) { //cheaper then magnitude
     return lhs.x * lhs.x + lhs.y * lhs.y;
 }
 
-using PointI = Point_impl<int>;
-using PointF = Point_impl<float>;
+typedef Point_impl<int> PointI;
+typedef Point_impl<float> PointF;

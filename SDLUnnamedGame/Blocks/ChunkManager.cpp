@@ -32,8 +32,8 @@ void ChunkManager::render()
 void ChunkManager::update(PointI cameraPosition, float scale)
 {
 
-	PointI cameraPos = (PointI)floor( (PointF)cameraPosition / Block::getSizeScaled() );
-	PointI cameraChunkPos = (PointI)floor( (PointF)cameraPos / CHUNK_SIZE );
+	PointI cameraPos = (PointI)floor( (PointF)cameraPosition / (float)Block::getSizeScaled() );
+	PointI cameraChunkPos = (PointI)floor( (PointF)cameraPos / (float)CHUNK_SIZE );
 	
 	updateLoadedChunks( chunksToLoad(cameraChunkPos, scale) );
 	

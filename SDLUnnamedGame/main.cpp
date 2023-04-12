@@ -134,7 +134,7 @@ void render() {
 void renderMouseRect()
 {
 	if (isMouseInWindow) {
-		mouseRect.setPosition(floor(mousePosition) * Block::getSizeScaled() - camera.getLocation());
+		mouseRect.setPosition((PointI)floor(mousePosition) * Block::getSizeScaled() - camera.getLocation());
 		renderer->renderRectABS(mouseRect);
 	}
 }
@@ -179,7 +179,7 @@ void EventFactoryImpl::updateMousePosition()
 	int x, y;
 	SDL_GetMouseState(&x, &y);
 	mousePositionABS = { x, y };
-	mousePosition = (PointF)(mousePositionABS + camera.getLocation()) / Block::getSizeScaled();
+	mousePosition = (PointF)(mousePositionABS + camera.getLocation()) / (float)Block::getSizeScaled();
 	mousePositionABSText.get()->setText(std::to_string((int)floor(mousePosition.x)) + ", " + std::to_string((int)floor(mousePosition.y)));
 }
 
@@ -197,7 +197,7 @@ void EventFactoryImpl::changeScale(Sint32 mouseMovement)
 			camera.addToScale(-scaleDelta);
 		}
 		float after = camera.getScale();
-		camera.move((PointI)round((mousePositionABS + camera.getLocation()) * (1 - after / before)) * -1);
+		camera.move((PointI)round((PointF)(mousePositionABS + camera.getLocation()) * (1 - after / before)) * -1);
 
 		mouseRect.w = Block::getSizeScaled();
 		mouseRect.h = Block::getSizeScaled();

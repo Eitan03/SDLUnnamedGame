@@ -7,7 +7,7 @@ PossionDiscWorldGenerator::PossionDiscWorldGenerator() {
 
 int PossionDiscWorldGenerator::getBlock(PointI position) {
 	
-	PointI currPosition = abs(position) % sampleSize;
+	PointI currPosition = abs(position) % (int)sampleSize;
 	if (std::find(points.begin(), points.end(), currPosition) != points.end()) {
 		return 1;
 	}
@@ -40,7 +40,7 @@ std::vector<PointI> possionDisk(float raduis, PointI sampleRegionSize, int maxRe
 		for (int i = 0; i < maxRejection; i++) {
 			float angle = randValue() * M_PI * 2; //random angle in radians
 			PointF dir = { sin(angle), cos(angle) }; // random direction
-			PointF candidate = spawnCentre + dir * randrange(raduis, raduis * 2);
+			PointF candidate = (PointF)spawnCentre + dir * (float)randrange(raduis, raduis * 2);
 
 			if (isValid(candidate, raduis, sampleRegionSize, cellSize, points, grid)) {
 				points.push_back(candidate);
@@ -62,7 +62,7 @@ std::vector<PointI> possionDisk(float raduis, PointI sampleRegionSize, int maxRe
 
 bool isValid(PointI candidatePoint, float radius, PointI sampleRegionSize, float cellSize, std::vector<PointI> points, std::vector< std::vector<int> > grid) {
 	if ((candidatePoint.x < sampleRegionSize.x) && (candidatePoint.x >= 0) && (candidatePoint.y < sampleRegionSize.y) && (candidatePoint.y >= 0)) {
-		PointI cell = (PointI)( candidatePoint / cellSize );
+		PointI cell = (PointI)( (PointF)candidatePoint / cellSize );
 
 		int searchStartX = std::max(0, cell.x - 2);
 		int searchEndX = std::min(cell.x + 2, int(grid.size() - 1) );
