@@ -30,9 +30,10 @@ void GameObject::changeTexture(Texture* texture)
 
 void GameObject::render()
 {
+	PointI location = round(this->position * Block::getSizeScaled() - camera.getLocation());
 	this->texture->renderABS({ 
-		(int) round(this->position.x * Block::getSizeScaled()  - camera.getLocation().x),
-		(int) round(this->position.y * Block::getSizeScaled()  - camera.getLocation().y),
+		location.x,
+		location.y,
 		camera.applyScale(this->size.x),
 		camera.applyScale(this->size.y)
 		});

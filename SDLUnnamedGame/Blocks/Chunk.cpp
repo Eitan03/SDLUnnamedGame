@@ -19,7 +19,6 @@ Chunk::Chunk(PointI position) : position(position), blocks()
 
 Chunk::~Chunk()
 {
-	std::cout << "deleted Chunk" << this->position << std::endl;
 	for (int layer = 0; layer < LAYERS; layer++) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int column = 0; column < CHUNK_SIZE; column++) {
@@ -34,7 +33,6 @@ Chunk::~Chunk()
 
 void Chunk::loadFromFile(const char* path)
 {
-	std::cout << path << std::endl;
 	std::ifstream ifStream;
 	ifStream.open(path);
 	if (!ifStream.is_open())

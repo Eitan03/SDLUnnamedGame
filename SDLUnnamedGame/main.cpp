@@ -102,18 +102,22 @@ void moveScreenBasedOnTimePassed() {
 
 void moveScreen(int timeDiff) {
 	if (isMouseInWindow) {
-		int moveAmount = floor(0.2 * timeDiff);
+		int moveAmount;
 		
 		if ((mousePositionABS.y > 0) && (mousePositionABS.y < SCREEN_HEIGHT / 9)) {
+			moveAmount = floor(0.2 * timeDiff);
 			camera.move({ 0, -moveAmount });
 		}
 		if (mousePositionABS.y > SCREEN_HEIGHT - (SCREEN_HEIGHT / 9)) {
+			moveAmount = floor(0.2 * timeDiff);
 			camera.move({ 0, moveAmount });
 		}
 		if ((mousePositionABS.x > 0) && (mousePositionABS.x < SCREEN_WIDTH / 16)) {
+			moveAmount = floor(0.2 * timeDiff);
 			camera.move({ -moveAmount, 0 });
 		}
 		if (mousePositionABS.x > SCREEN_WIDTH - (SCREEN_WIDTH / 16)) {
+			moveAmount = floor(0.2 * timeDiff);
 			camera.move({ moveAmount, 0 });
 		}
 	}

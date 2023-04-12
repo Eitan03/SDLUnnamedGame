@@ -16,7 +16,6 @@ void ChunkManager::loadChunk(PointI pos)
 
 void ChunkManager::unloadChunk(PointI pos)
 {
-	std::cout << "unloaded" << std::endl;
 	loadedChunks.erase(pos);
 }
 
