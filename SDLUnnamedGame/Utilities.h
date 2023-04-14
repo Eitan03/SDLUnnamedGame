@@ -28,8 +28,6 @@ struct Color {
 	SDL_Color ToSDL() { return { r, g, b, a }; }
 };
 
-
-
 struct Rect : public SDL_Rect {
     void setPosition(PointI pos) {
         this->x = pos.x;
@@ -48,4 +46,12 @@ struct Rect : public SDL_Rect {
     PointI getSize() {
         return PointI(this->w, this->h);
     };
+};
+
+enum Direction {
+    None = 0,
+    Up = 1,
+    Down = 2,
+    Left = 4,
+    Right = 8,
 };

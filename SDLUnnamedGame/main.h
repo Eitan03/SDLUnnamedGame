@@ -23,6 +23,7 @@
 void initlialize();
 void initlializeSDL();
 void initlializeGameEngine();
+void initlializeGame();
 
 void close();
 void closeSDL();
@@ -40,14 +41,14 @@ TTF_Font* font;
 
 bool quitApplication = false;
 bool isMouseInWindow = true;
-void moveScreenBasedOnTimePassed();
-void moveScreen(int timeDiff);
+void moveScreen();
 Timer cameraMovmentsTimer;
 
 Timer fpsTimer;
 int fpsCount;
 void updateFpsCount();
 
+Direction screenMoveDirection = None;
 PointI mousePositionABS = { -1 , -1 };
 PointF mousePosition = { -1 , -1 };
 Rect mouseRect = { -1, -1, Block::getSize(), Block::getSize() };

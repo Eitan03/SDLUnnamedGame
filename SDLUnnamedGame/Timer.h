@@ -14,7 +14,7 @@ public:
 
     void Start();
     void Pause();
-    void stop();
+    void Stop();
     void Continue();
 
     int GetTime();

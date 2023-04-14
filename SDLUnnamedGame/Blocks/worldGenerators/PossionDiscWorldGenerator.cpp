@@ -2,7 +2,7 @@
 
 
 PossionDiscWorldGenerator::PossionDiscWorldGenerator() {
-	points = possionDisk(10, PointI(sampleSize, sampleSize));
+	points = possionDisk(radius, PointI(sampleSize, sampleSize));
 }
 
 int PossionDiscWorldGenerator::getBlock(PointI position) {
@@ -23,6 +23,7 @@ std::vector<PointI> possionDisk(float raduis, PointI sampleRegionSize, int maxRe
 ) {
 	float cellSize = raduis / sqrt(2);
 
+	// TODO dynamic array instead
 	std::vector< std::vector<int> > grid(
 		ceil(sampleRegionSize.x / cellSize), std::vector<int>( ceil(sampleRegionSize.y / cellSize), -1 )
 		);
@@ -40,13 +41,13 @@ std::vector<PointI> possionDisk(float raduis, PointI sampleRegionSize, int maxRe
 		for (int i = 0; i < maxRejection; i++) {
 			float angle = randValue() * M_PI * 2; //random angle in radians
 			PointF dir = { sin(angle), cos(angle) }; // random direction
-			PointF candidate = (PointF)spawnCentre + dir * (float)randrange(raduis, raduis * 2);
+			PointI candidate = (PointI)((PointF)spawnCentre + dir * (float)randrange(raduis, raduis * 2));
 
 			if (isValid(candidate, raduis, sampleRegionSize, cellSize, points, grid)) {
 				points.push_back(candidate);
 				spawnPoints.push_back(candidate);
 				if (grid[(int)(candidate.x / cellSize)][(int)(candidate.y / cellSize)] != -1) {
-					std::cout << "wierd" << std::endl;
+					std::cout << "wierd overriding" << std::endl;
 				}
 				grid[(int)(candidate.x / cellSize)][(int)(candidate.y / cellSize)] = points.size() - 1;
 				candidateAccepted = true;
@@ -65,10 +66,10 @@ bool isValid(PointI candidatePoint, float radius, PointI sampleRegionSize, float
 		PointI cell = (PointI)( (PointF)candidatePoint / cellSize );
 
 		int searchStartX = std::max(0, cell.x - 2);
-		int searchEndX = std::min(cell.x + 2, int(grid.size() - 1) );
+		int searchEndX = std::min(cell.x + 2, int(grid.size()) );
 
 		int searchStartY = std::max(0, cell.y - 2);
-		int searchEndY = std::min(cell.y + 2, int(grid[0].size() - 1));
+		int searchEndY = std::min(cell.y + 2, int(grid[0].size()));
 
 		for (int x = searchStartX; x < searchEndX; x++) {
 			for (int y = searchStartY; y < searchEndY; y++) {

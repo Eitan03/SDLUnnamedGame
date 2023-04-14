@@ -11,6 +11,7 @@ int main( int argc, char* args[] ) {
 void initlialize() {
 	initlializeSDL();
 	initlializeGameEngine();
+	initlializeGame();
 }
 
 void initlializeSDL()
@@ -53,13 +54,20 @@ void initlializeGameEngine()
 
 	eventFactory = std::make_unique<EventFactoryImpl>(EventFactoryImpl());
 	
+
+	cameraMovmentsTimer = Timer();
+
+	fpsTimer = Timer();
+
+	std::srand(1);
+}
+
+void initlializeGame() {
 	camera.addObserver(std::bind(&ChunkManager::cameraMoved, chunkManager, std::placeholders::_1));
 	camera.addObserver(Block::update);
 
-	cameraMovmentsTimer = Timer();
 	cameraMovmentsTimer.Start();
 
-	fpsTimer = Timer();
 	fpsTimer.Start();
 	fpsCount = 0;
 }
@@ -72,7 +80,7 @@ void gameLoop() {
 	while (!quitApplication)
 	{
 		updateFpsCount();
-		moveScreenBasedOnTimePassed();
+		moveScreen();
 		eventFactory->runEvents();
 		render();
 		renderer->present();
@@ -92,34 +100,39 @@ void updateFpsCount() {
 // https://gafferongames.com/post/fix_your_timestep/
 // https://www.daniweb.com/programming/software-development/threads/446383/sdl-and-time-based-movement-problem#post1925548
 // might have a bug here that makes it inconsistent
-void moveScreenBasedOnTimePassed() {
-	if (cameraMovmentsTimer.GetTime() >= 10) {
-		int diffTime = cameraMovmentsTimer.GetTime();
-		cameraMovmentsTimer.Start();
-		moveScreen(diffTime);
-	}
-}
+void moveScreen() {
+	if (screenMoveDirection != None) {
+		if (!cameraMovmentsTimer.Started()) {
+			cameraMovmentsTimer.Start();
+			return;
+		}
 
-void moveScreen(int timeDiff) {
-	if (isMouseInWindow) {
-		int moveAmount;
-		
-		if ((mousePositionABS.y > 0) && (mousePositionABS.y < SCREEN_HEIGHT / 9)) {
-			moveAmount = floor(0.2 * timeDiff);
-			camera.move({ 0, -moveAmount });
+		if (cameraMovmentsTimer.GetTime() >= 10) {
+			int timeDiff = cameraMovmentsTimer.GetTime();
+			cameraMovmentsTimer.Start();
+
+			int moveAmount;
+
+			if (screenMoveDirection & Down) {
+				moveAmount = floor(0.2 * timeDiff);
+				camera.move({ 0, -moveAmount });
+			}
+			if (screenMoveDirection & Up) {
+				moveAmount = floor(0.2 * timeDiff);
+				camera.move({ 0, moveAmount });
+			}
+			if (screenMoveDirection & Left) {
+				moveAmount = floor(0.2 * timeDiff);
+				camera.move({ -moveAmount, 0 });
+			}
+			if (screenMoveDirection & Right) {
+				moveAmount = floor(0.2 * timeDiff);
+				camera.move({ moveAmount, 0 });
+			}
 		}
-		if (mousePositionABS.y > SCREEN_HEIGHT - (SCREEN_HEIGHT / 9)) {
-			moveAmount = floor(0.2 * timeDiff);
-			camera.move({ 0, moveAmount });
-		}
-		if ((mousePositionABS.x > 0) && (mousePositionABS.x < SCREEN_WIDTH / 16)) {
-			moveAmount = floor(0.2 * timeDiff);
-			camera.move({ -moveAmount, 0 });
-		}
-		if (mousePositionABS.x > SCREEN_WIDTH - (SCREEN_WIDTH / 16)) {
-			moveAmount = floor(0.2 * timeDiff);
-			camera.move({ moveAmount, 0 });
-		}
+	}
+	else {
+		cameraMovmentsTimer.Stop(); // TODO find a way to not run stop every tick?
 	}
 }
 
@@ -181,6 +194,27 @@ void EventFactoryImpl::updateMousePosition()
 	mousePositionABS = { x, y };
 	mousePosition = (PointF)(mousePositionABS + camera.getLocation()) / (float)Block::getSizeScaled();
 	mousePositionABSText.get()->setText(std::to_string((int)floor(mousePosition.x)) + ", " + std::to_string((int)floor(mousePosition.y)));
+
+	bool mouseInArea = false;
+	if ((mousePositionABS.y > 0) && (mousePositionABS.y < SCREEN_HEIGHT / 9)) {
+		screenMoveDirection = Down;
+		mouseInArea = true;
+	}
+	if (mousePositionABS.y > SCREEN_HEIGHT - (SCREEN_HEIGHT / 9)) {
+		screenMoveDirection = Up;
+		mouseInArea = true;
+	}
+	if ((mousePositionABS.x > 0) && (mousePositionABS.x < SCREEN_WIDTH / 16)) {
+		screenMoveDirection = Left;
+		mouseInArea = true;
+	}
+	if (mousePositionABS.x > SCREEN_WIDTH - (SCREEN_WIDTH / 16)) {
+		screenMoveDirection = Right;
+		mouseInArea = true;
+	}
+	if (!mouseInArea) {
+		screenMoveDirection = None;
+	}
 }
 
 void EventFactoryImpl::changeScale(Sint32 mouseMovement)
@@ -212,6 +246,7 @@ void EventFactoryImpl::windowEvent(Uint8 event) {
 		break;
 	case SDL_WINDOWEVENT_LEAVE:
 		isMouseInWindow = false;
+		screenMoveDirection = None;
 		break;
 	}
 

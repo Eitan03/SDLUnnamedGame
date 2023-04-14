@@ -43,7 +43,7 @@ void Timer::Continue()
 	}
 }
 
-void Timer::stop()
+void Timer::Stop()
 {
 	started = false;
 	paused = false;

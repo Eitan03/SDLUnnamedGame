@@ -14,7 +14,8 @@ public:
 
 private:
     std::vector<PointI> points;
-    const unsigned int sampleSize = 100;
+    const unsigned int sampleSize = 128;
+    const unsigned int radius = 32;
 };
 
 std::vector<PointI> possionDisk(float raduis, PointI sampleRegionSize, int maxRejection = 30);
