@@ -18,7 +18,7 @@ void Text::setText(std::string text) //not efficient atm
     texture = std::unique_ptr<SDL_Texture, void(*)(SDL_Texture*)>(SDL_CreateTextureFromSurface(renderer.get(), textureSurface), SDL_DestroyTexture);
     if (texture.get() == NULL)
     {
-        GameEngineException("Unable to create texture from rendered text! SDL Error: " + std::string(SDL_GetError()) );
+        throw GameEngineException("Unable to create texture from rendered text! SDL Error: " + std::string(SDL_GetError()) );
     }
     //Get image dimensions
     this->textureRect.w = textureSurface->w;
@@ -26,12 +26,6 @@ void Text::setText(std::string text) //not efficient atm
 
     //Get rid of old surface
     SDL_FreeSurface(textureSurface);
-}
-
-Text::~Text()
-{
-	SDL_DestroyTexture((this->texture).get());
-	this->texture.release();
 }
 
 void Text::renderABS(int x, int y)

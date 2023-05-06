@@ -21,12 +21,6 @@ Texture::Texture( std::string path, Renderer& renderer, Rect textureRect )
 	SDL_FreeSurface(textureSurface);
 }
 
-Texture::~Texture()
-{
-	SDL_DestroyTexture((this->texture).get());
-	this->texture.release();
-}
-
 void Texture::renderABS(int x, int y)
 {
 	//Set rendering space and render to screen
