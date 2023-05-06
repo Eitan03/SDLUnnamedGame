@@ -23,7 +23,6 @@ class Text : Drawable
 {
 public:
 	Text(std::string text, Color color, TTF_Font& font, Renderer& renderer);
-	~Text();
 	void setText(std::string text);
 	std::string getText() const { return text; };
 	void renderABS(int x, int y) override;

@@ -10,7 +10,6 @@ class Texture: Drawable
 {
 public:
 	Texture(std::string path, Renderer& renderer, Rect textureRect = { -1, -1, -1, -1});
-	~Texture();
 	void renderABS(int x, int y) override;
 	void renderABS(Rect locationAndSize);
 
