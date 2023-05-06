@@ -9,7 +9,7 @@
 class Texture: Drawable
 {
 public:
-	Texture(std::string path, Renderer& renderer, Rect textureRect = { -1, -1, -1, -1});
+	Texture(Renderer& renderer, Rect textureRect = { -1, -1, -1, -1});
 	void renderABS(int x, int y) override;
 	void renderABS(Rect locationAndSize);
 
@@ -17,9 +17,11 @@ public:
 
 	//for the copy constructor
 	Renderer& getRenderer() const { return renderer; };
-	SDL_Texture* getTexture() const { return texture.get(); };
-private:
-	std::unique_ptr<SDL_Texture, void(*)(SDL_Texture*)> texture;
+	SDL_Texture* getTexture() const { return sdlTexture.get(); };
+
+	static Texture* CreateTextureFromImage(std::string path, Renderer& renderer, Rect textureRect);
+protected:
+	std::unique_ptr<SDL_Texture, void(*)(SDL_Texture*)> sdlTexture;
 	Renderer& renderer;
 	Rect textureRect;
 };

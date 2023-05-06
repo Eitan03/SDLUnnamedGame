@@ -8,10 +8,17 @@ Renderer::Renderer(Window& window)
 	{
 		throw GameEngineException("Renderer could not be created! SDL Error: " +  std::string(SDL_GetError()) );
 	}
+	
+	SDL_RendererInfo info;
+	SDL_GetRendererInfo(this->renderer.get(), &info);
+	if (!info.flags & SDL_RENDERER_TARGETTEXTURE) {
+		throw GameEngineException("Renderer does not support target texture, and the game require that");
+	}
 }
 
 Renderer::~Renderer()
 {
+	// TODO free renderer or add unique pointer
 }
 
 void Renderer::setBackgroundColor(Color color)
