@@ -9,6 +9,6 @@ class TargetTexture :
 public:
     TargetTexture(Renderer& renderer, Rect textureRect = { -1, -1, -1, -1});
 
-    void DrawToTexture(Texture* textures, PointI texturePositions, size_t texturesSize);
+    void DrawToTexture(const Texture** textures, PointI* texturePositions, size_t texturesSize);
 };
 

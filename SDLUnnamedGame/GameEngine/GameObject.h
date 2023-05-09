@@ -18,6 +18,7 @@ public:
 	void changeTexture(Texture* texture);
 	void render();
 	void renderABS(int x, int y) override;
+	const Texture* getTexture() { return this->texture; };
 
 	//debugging
 	Rect getPosABS() { return this->texture->getTextureRect(); };

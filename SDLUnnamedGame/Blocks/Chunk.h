@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "Block.h"
+#include "../Primitives/TargetTexture.h"
 #include "worldGenerators/GrassWorldGenerator.h"
 #include "worldGenerators/PossionDiscWorldGenerator.h"
 #define CHUNK_SIZE 8
@@ -33,6 +34,8 @@ protected:
 
 	PointI position;
 	Block* blocks[LAYERS][CHUNK_SIZE][CHUNK_SIZE];
+
+	TargetTexture* chunkTexture;
 
 	static WorldGenerator* const worldGenerator;
 };

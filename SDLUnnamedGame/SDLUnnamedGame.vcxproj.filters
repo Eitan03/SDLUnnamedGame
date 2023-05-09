@@ -66,6 +66,9 @@
     <ClCompile Include="Primitives\ComplexTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Primitives\TargetTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Blocks\Block.h">
@@ -132,6 +135,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Primitives\ComplexTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitives\TargetTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -171,6 +171,7 @@
     <ClCompile Include="Blocks\worldGenerators\PossionDiscWorldGenerator.cpp" />
     <ClCompile Include="Primitives\EventHandler.cpp" />
     <ClCompile Include="Primitives\Renderer.cpp" />
+    <ClCompile Include="Primitives\TargetTexture.cpp" />
     <ClCompile Include="Primitives\Texture.cpp" />
     <ClCompile Include="Primitives\Window.cpp" />
     <ClCompile Include="Globals.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="GameEngine\GameObject.h" />
     <ClInclude Include="Primitives\EventHandler.h" />
     <ClInclude Include="Primitives\Renderer.h" />
+    <ClInclude Include="Primitives\TargetTexture.h" />
     <ClInclude Include="Primitives\Texture.h" />
     <ClInclude Include="Primitives\Window.h" />
     <ClInclude Include="Globals.h" />
