@@ -4,7 +4,7 @@
 extern Texture* blockTextures[BlockTypes::Size];
 WorldGenerator* const Chunk::worldGenerator = new PossionDiscWorldGenerator();
 
-Chunk::Chunk(PointI position) : position(position), blocks(), chunkTexture(nullptr)
+Chunk::Chunk(PointI position) : GameObject(position, { Block::getSize() * CHUNK_SIZE, Block::getSize() * CHUNK_SIZE }, nullptr), blocks()
 {
 	for (int layer = 0; layer < LAYERS; layer++) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
@@ -46,8 +46,7 @@ void Chunk::loadFromFile(const char* path)
 	int row = 0;
 	int column = 0;
 
-	std::vector<const Texture*> texturesToDraw = std::vector<const Texture*>();
-	std::vector<PointI> texturesToDrawPos = std::vector<PointI>();
+	auto texturesToDraw = std::map<const Texture*, std::vector<PointI>>();
 
 	std::string line;
 	while (getline(ifStream, line)) {
@@ -67,8 +66,15 @@ void Chunk::loadFromFile(const char* path)
 			int blockTypeID = std::stoi(line.substr(0, line.find(",")));
 			if (blockTypeID != -1) {
 				blocks[currentLayer][column][row] = createBlock(blockTypeID, PointI(column, row));
-				texturesToDraw.push_back(blocks[currentLayer][column][row]->getTexture());
-				texturesToDrawPos.push_back({ row * blocks[currentLayer][column][row]->getSize(), column * blocks[currentLayer][column][row]->getSize()});
+
+				const Texture* texture = blocks[currentLayer][column][row]->getTexture();
+				// texturesToDraw.push_back(blocks[currentLayer][column][row]->getTexture());
+				if (texturesToDraw.find(texture) == texturesToDraw.end()) {
+					texturesToDraw[texture] = std::vector<PointI>();
+				}
+				PointI textureSize = texture->getTextureRect().getSize();
+				texturesToDraw[texture].push_back({ row * textureSize.x, column * textureSize.y});
+
 			} else {
 				blocks[currentLayer][column][row] = nullptr;
 			}
@@ -78,7 +84,7 @@ void Chunk::loadFromFile(const char* path)
 		row = 0;
 		column++;
 	}
-	this->chunkTexture->DrawToTexture(texturesToDraw.data(), texturesToDrawPos.data(), texturesToDraw.size());
+	this->chunkTexture->DrawToTexture(texturesToDraw);
 }
 
 
@@ -134,8 +140,8 @@ void Chunk::createChunk()
 
 void Chunk::render()
 {
-	this->chunkTexture.ren
-	return;
+	// this->chunkTexture.
+
 
 	bool rendered = false;
 	for (int row = 0; row < CHUNK_SIZE; row++) {

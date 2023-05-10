@@ -1,4 +1,7 @@
 #pragma once
+#include <map>
+#include <vector>
+
 #include "Texture.h"
 
 
@@ -9,6 +12,6 @@ class TargetTexture :
 public:
     TargetTexture(Renderer& renderer, Rect textureRect = { -1, -1, -1, -1});
 
-    void DrawToTexture(const Texture** textures, PointI* texturePositions, size_t texturesSize);
+    void DrawToTexture(std::map<const Texture*, std::vector<PointI>> textures);
 };
 

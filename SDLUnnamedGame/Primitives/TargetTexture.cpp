@@ -9,7 +9,7 @@ TargetTexture::TargetTexture(Renderer& renderer, Rect textureRect): Texture(rend
 	this->sdlTexture = std::unique_ptr<SDL_Texture, void(*)(SDL_Texture*)>(texture, SDL_DestroyTexture);
 }
 
-void TargetTexture::DrawToTexture(const Texture** textures, PointI* texturesPosition, size_t texturesSize)
+void TargetTexture::DrawToTexture(std::map<const Texture*, std::vector<PointI>> textures)
 {
 	SDL_Texture* prevTarget = SDL_GetRenderTarget(this->renderer.get());
 	
@@ -21,11 +21,12 @@ void TargetTexture::DrawToTexture(const Texture** textures, PointI* texturesPosi
     SDL_RenderClear(renderer);
 	
 	Rect textureRect = Rect();
-	for (int i = 0; i < texturesSize; i++) {
-
-		textureRect.setSize(textures[i]->getTextureRect().getSize());
-		textureRect.setPosition(texturesPosition[i]);
-		SDL_RenderCopy(renderer, textures[i]->getTexture(), &(textures[i]->getTextureRect()), &textureRect);
+	for (auto const& texture: textures) {
+		textureRect.setSize(texture.first->getTextureRect().getSize());
+		for (auto const& position : texture.second) {
+			textureRect.setPosition(position);
+			SDL_RenderCopy(renderer, texture.first->getTexture(), &(texture.first->getTextureRect()), &textureRect);
+		}
 	}
 
     SDL_SetRenderTarget(renderer, prevTarget);

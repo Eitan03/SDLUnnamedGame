@@ -16,7 +16,7 @@
 	2 everything else (trees, flowers, etc.)
 */
 
-class Chunk
+class Chunk: GameObject
 {
 public:
 	Chunk(PointI position);
@@ -24,7 +24,6 @@ public:
 
 	void render(); //renders all layers
 
-	PointI getPosition(void) const { return this->position; }
 
 protected:
 	
@@ -32,10 +31,7 @@ protected:
 	Block* createBlock(int textureNumber, PointI position); // takes the number from the file and returns a block
 	void createChunk();
 
-	PointI position;
 	Block* blocks[LAYERS][CHUNK_SIZE][CHUNK_SIZE];
-
-	TargetTexture* chunkTexture;
 
 	static WorldGenerator* const worldGenerator;
 };
