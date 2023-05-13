@@ -6,6 +6,8 @@ WorldGenerator* const Chunk::worldGenerator = new PossionDiscWorldGenerator();
 
 Chunk::Chunk(PointI position) : GameObject(position, { Block::getSize() * CHUNK_SIZE, Block::getSize() * CHUNK_SIZE }, nullptr), blocks()
 {
+	this->texture = new TargetTexture();
+
 	for (int layer = 0; layer < LAYERS; layer++) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int column = 0; column < CHUNK_SIZE; column++) {
@@ -84,7 +86,7 @@ void Chunk::loadFromFile(const char* path)
 		row = 0;
 		column++;
 	}
-	this->chunkTexture->DrawToTexture(texturesToDraw);
+	static_cast<TargetTexture*>(this->texture)->DrawToTexture(texturesToDraw);
 }
 
 
