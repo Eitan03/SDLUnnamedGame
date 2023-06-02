@@ -29,7 +29,7 @@ protected:
 	
 	void loadFromFile(const char* path);
 	Block* createBlock(int textureNumber, PointI position); // takes the number from the file and returns a block
-	void createChunk();
+	void createChunk(const char* path);
 
 	Block* blocks[LAYERS][CHUNK_SIZE][CHUNK_SIZE];
 

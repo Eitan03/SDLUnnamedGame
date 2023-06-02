@@ -17,7 +17,7 @@ Chunk::Chunk(PointI position) : GameObject(position, { Block::getSize() * CHUNK_
 		}
 	}
 
-	this->loadFromFile(std::string("./chunks/" + std::to_string(this->position.x) + "," + std::to_string(this->position.y) + ".chunk").c_str());
+	this->loadFromFile(std::string("./chunks/" + std::to_string((int)(this->position.x)) + "," + std::to_string((int)(this->position.y)) + ".chunk").c_str());
 }
 
 Chunk::~Chunk()
@@ -41,7 +41,7 @@ void Chunk::loadFromFile(const char* path)
 	if (!ifStream.is_open())
 	{
 		std::cout << "creating File : " << path << std::endl;
-		createChunk();
+		createChunk(path);
 		ifStream.open(path);
 	}
 
@@ -97,7 +97,7 @@ Block* Chunk::createBlock(int textureNumber, PointI position)
 
 }
 
-void Chunk::createChunk()
+void Chunk::createChunk(const char* path)
 {
 	
 	int chunkData[LAYERS][CHUNK_SIZE][CHUNK_SIZE];
@@ -121,11 +121,11 @@ void Chunk::createChunk()
 	}
 
 	std::ofstream ofStream;
-	ofStream.open(std::string("./chunks/" + std::to_string(this->position.x) + "," + std::to_string(this->position.y) + ".chunk").c_str());
+	ofStream.open(path);
 
 	if (!ofStream.is_open())
 	{
-		throw GameEngineException("Failed to open file : " + std::string("./chunks/") + std::to_string(this->position.x) + "," + std::to_string(this->position.y) + ".chunk");
+		throw GameEngineException(std::string("Failed to open file : ") + path);
 	}
 	for (int layer = 0; layer < LAYERS; layer++) {
 		ofStream << "layer " << std::to_string(layer) << ":" << "\n";
