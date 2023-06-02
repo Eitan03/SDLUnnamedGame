@@ -3,10 +3,11 @@
 #include "../Globals.h"
 extern Texture* blockTextures[BlockTypes::Size];
 WorldGenerator* const Chunk::worldGenerator = new PossionDiscWorldGenerator();
+std::shared_ptr<Renderer> Chunk::renderer = std::shared_ptr<Renderer>();
 
 Chunk::Chunk(PointI position) : GameObject(position, { Block::getSize() * CHUNK_SIZE, Block::getSize() * CHUNK_SIZE }, nullptr), blocks()
 {
-	this->texture = new TargetTexture();
+	this->texture = new TargetTexture(*(this->renderer.get()), { 0, 0, Block::getSize() * CHUNK_SIZE, Block::getSize() * CHUNK_SIZE });
 
 	for (int layer = 0; layer < LAYERS; layer++) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
@@ -92,7 +93,7 @@ void Chunk::loadFromFile(const char* path)
 
 Block* Chunk::createBlock(int textureNumber, PointI position)
 {
-	return new Block((this->position * CHUNK_SIZE) + position, blockTextures[textureNumber]);
+	return new Block((PointI)(this->position * ( 1.0f * CHUNK_SIZE)) + position, blockTextures[textureNumber]);
 
 }
 
@@ -109,7 +110,7 @@ void Chunk::createChunk()
 
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
-			chunkData[1][i][j] = worldGenerator->getBlock( (this->position * CHUNK_SIZE) + PointI(i, j) );
+			chunkData[1][i][j] = worldGenerator->getBlock( (PointI)(this->position * ( 1.0f * CHUNK_SIZE)) + PointI(i, j) );
 		}
 	}
 

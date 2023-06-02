@@ -25,7 +25,8 @@ void TargetTexture::DrawToTexture(std::map<const Texture*, std::vector<PointI>> 
 		textureRect.setSize(texture.first->getTextureRect().getSize());
 		for (auto const& position : texture.second) {
 			textureRect.setPosition(position);
-			SDL_RenderCopy(renderer, texture.first->getTexture(), &(texture.first->getTextureRect()), &textureRect);
+			Rect srcRect = (texture.first->getTextureRect());
+			SDL_RenderCopy(renderer, texture.first->getTexture(), &srcRect, &textureRect);
 		}
 	}
 

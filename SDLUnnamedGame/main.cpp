@@ -47,6 +47,7 @@ void initlializeGameEngine()
 	renderer->setBackgroundColor(colors.Black);
 	setUpTextures(*renderer);
 	
+	Chunk::SetRenderer(renderer);
 	chunkManager = new ChunkManager(&(camera)); //TODO shared ptr?
 
 	mousePositionABSText = std::make_unique<Text>("-1, -1", colors.White, *font, *renderer);

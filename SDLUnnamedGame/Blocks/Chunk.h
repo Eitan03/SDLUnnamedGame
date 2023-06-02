@@ -24,7 +24,7 @@ public:
 
 	void render(); //renders all layers
 
-
+	static void SetRenderer(std::shared_ptr<Renderer> renderer) { Chunk::renderer = renderer; }
 protected:
 	
 	void loadFromFile(const char* path);
@@ -34,5 +34,6 @@ protected:
 	Block* blocks[LAYERS][CHUNK_SIZE][CHUNK_SIZE];
 
 	static WorldGenerator* const worldGenerator;
+	static std::shared_ptr<Renderer> renderer; // used for the creating of the chunk textures
 };
 
