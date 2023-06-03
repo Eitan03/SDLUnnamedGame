@@ -415,9 +415,13 @@ FodyWeavers.xsd
 
 #-----------VISUAL STUDIO------------------
 
+*.vcxproj.filters
+
 #for the dependecies:
 
 !Dependecies/**
+
+
 
 #----------- GAME ENGINE-------------------
 
