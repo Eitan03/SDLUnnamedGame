@@ -17,9 +17,9 @@ void Texture::renderABS(Rect locationAndSize)
 	SDL_RenderCopy(renderer.get(), sdlTexture.get(), &textureRect, &locationAndSize);
 }
 
-Texture* Texture::CreateTextureFromImage(std::string path, Renderer& renderer, Rect textureRect)
+std::shared_ptr<Texture> Texture::CreateTextureFromImage(std::string path, Renderer& renderer, Rect textureRect)
 {
-	Texture* texture = new Texture(renderer, textureRect);
+	std::shared_ptr<Texture> texture = std::make_shared<Texture>(renderer, textureRect);
 
 	SDL_Surface* textureSurface = IMG_Load(path.c_str());
 	if (textureSurface == NULL) {

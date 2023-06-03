@@ -30,7 +30,7 @@ void closeSDL();
 void closeGameEngine();
 
 extern Camera camera;
-extern Texture* blockTextures[BlockTypes::Size];
+extern std::shared_ptr<Texture> blockTextures[BlockTypes::Size];
 extern Colors colors;
 extern void setUpTextures(Renderer& renderer);
 
@@ -56,7 +56,7 @@ std::unique_ptr<Text> mousePositionABSText;
 std::unique_ptr<Text> fpsText;
 void renderMouseRect();
 
-ChunkManager* chunkManager;
+std::unique_ptr<ChunkManager> chunkManager;
 
 
 class EventFactory {

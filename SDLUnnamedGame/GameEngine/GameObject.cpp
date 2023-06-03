@@ -3,7 +3,7 @@
 
 extern Camera camera;
 
-GameObject::GameObject(PointF position, PointI size, Texture* texture)
+GameObject::GameObject(PointF position, PointI size, std::shared_ptr<Texture> texture)
 	: position(position), size(size), texture(texture)
 {
 }
@@ -23,7 +23,7 @@ PointF GameObject::getPosition() const
 	return this->position;
 }
 
-void GameObject::changeTexture(Texture* texture)
+void GameObject::changeTexture(std::shared_ptr<Texture> texture)
 {
 	this->texture = texture;
 }

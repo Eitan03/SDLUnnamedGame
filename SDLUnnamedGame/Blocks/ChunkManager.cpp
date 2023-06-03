@@ -10,8 +10,8 @@ ChunkManager::~ChunkManager()
 
 void ChunkManager::loadChunk(PointI pos)
 {
-	Chunk* chunk = new Chunk(pos);
-	loadedChunks.emplace(pos, chunk);
+	std::unique_ptr<Chunk> chunk = std::make_unique<Chunk>(pos);
+	loadedChunks.emplace(pos, std::move(chunk));
 }
 
 void ChunkManager::unloadChunk(PointI pos)

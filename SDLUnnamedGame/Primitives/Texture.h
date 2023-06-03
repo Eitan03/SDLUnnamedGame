@@ -19,7 +19,7 @@ public:
 	Renderer& getRenderer() const { return renderer; };
 	SDL_Texture* getTexture() const { return sdlTexture.get(); };
 
-	static Texture* CreateTextureFromImage(std::string path, Renderer& renderer, Rect textureRect);
+	static std::shared_ptr<Texture> CreateTextureFromImage(std::string path, Renderer& renderer, Rect textureRect);
 protected:
 	std::unique_ptr<SDL_Texture, void(*)(SDL_Texture*)> sdlTexture;
 	Renderer& renderer;

@@ -9,7 +9,7 @@ TargetTexture::TargetTexture(Renderer& renderer, Rect textureRect): Texture(rend
 	this->sdlTexture = std::unique_ptr<SDL_Texture, void(*)(SDL_Texture*)>(texture, SDL_DestroyTexture);
 }
 
-void TargetTexture::DrawToTexture(std::map<const Texture*, std::vector<PointI>> textures)
+void TargetTexture::DrawToTexture(std::map<std::shared_ptr<Texture>, std::vector<PointI>> textures)
 {
 	SDL_Texture* prevTarget = SDL_GetRenderTarget(this->renderer.get());
 	

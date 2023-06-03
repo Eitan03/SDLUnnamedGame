@@ -20,7 +20,6 @@ class Chunk: GameObject
 {
 public:
 	Chunk(PointI position);
-	~Chunk();
 
 	void render(); //renders all layers
 
@@ -28,12 +27,12 @@ public:
 protected:
 	
 	void loadFromFile(const char* path);
-	Block* createBlock(int textureNumber, PointI position); // takes the number from the file and returns a block
+	std::unique_ptr<Block> createBlock(int textureNumber, PointI position); // takes the number from the file and returns a block
 	void createChunk(const char* path);
 
-	Block* blocks[LAYERS][CHUNK_SIZE][CHUNK_SIZE];
+	std::unique_ptr<Block> blocks[LAYERS][CHUNK_SIZE][CHUNK_SIZE];
 
-	static WorldGenerator* const worldGenerator;
+	static std::unique_ptr<WorldGenerator> worldGenerator;
 	static std::shared_ptr<Renderer> renderer; // used for the creating of the chunk textures
 };
 

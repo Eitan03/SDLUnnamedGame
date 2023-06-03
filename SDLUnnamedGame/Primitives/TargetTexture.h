@@ -12,6 +12,6 @@ class TargetTexture :
 public:
     TargetTexture(Renderer& renderer, Rect textureRect = { -1, -1, -1, -1});
 
-    void DrawToTexture(std::map<const Texture*, std::vector<PointI>> textures);
+    void DrawToTexture(std::map<std::shared_ptr<Texture>, std::vector<PointI>> textures);
 };
 

@@ -6,7 +6,7 @@ class Block: public GameObject
 {
 	friend class Camera; //camera calls the update function to change sizeScaled
 public:
-	Block(PointI position, Texture* texture);
+	Block(PointI position, std::shared_ptr<Texture> texture);
 	~Block();
 	static const int getSize() { return size; }
 	static int getSizeScaled() { return sizeScaled; }

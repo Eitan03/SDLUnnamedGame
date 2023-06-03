@@ -1,37 +1,24 @@
 #include "Chunk.h"
 
 #include "../Globals.h"
-extern Texture* blockTextures[BlockTypes::Size];
-WorldGenerator* const Chunk::worldGenerator = new PossionDiscWorldGenerator();
+extern std::shared_ptr<Texture> blockTextures[BlockTypes::Size];
+std::unique_ptr<WorldGenerator> Chunk::worldGenerator = std::make_unique<PossionDiscWorldGenerator>(PossionDiscWorldGenerator());
 std::shared_ptr<Renderer> Chunk::renderer = std::shared_ptr<Renderer>();
 
 Chunk::Chunk(PointI position) : GameObject(position, { Block::getSize() * CHUNK_SIZE, Block::getSize() * CHUNK_SIZE }, nullptr), blocks()
 {
-	this->texture = new TargetTexture(*(this->renderer.get()), { 0, 0, Block::getSize() * CHUNK_SIZE, Block::getSize() * CHUNK_SIZE });
+	// TODO make shared
+	this->texture = std::make_shared<TargetTexture>(TargetTexture(*(this->renderer.get()), { 0, 0, Block::getSize() * CHUNK_SIZE, Block::getSize() * CHUNK_SIZE }));
 
 	for (int layer = 0; layer < LAYERS; layer++) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int column = 0; column < CHUNK_SIZE; column++) {
-				blocks[layer][column][row] = nullptr;
+				this->blocks[layer][column][row] = std::unique_ptr<Block>{}; // TODO any cleaner way to init as empty?
 			}
 		}
 	}
 
 	this->loadFromFile(std::string("./chunks/" + std::to_string((int)(this->position.x)) + "," + std::to_string((int)(this->position.y)) + ".chunk").c_str());
-}
-
-Chunk::~Chunk()
-{
-	for (int layer = 0; layer < LAYERS; layer++) {
-		for (int row = 0; row < CHUNK_SIZE; row++) {
-			for (int column = 0; column < CHUNK_SIZE; column++) {
-				if (blocks[layer][column][row] != nullptr) {
-					delete blocks[layer][column][row];
-					blocks[layer][column][row] = nullptr;
-				}
-			}
-		}
-	}
 }
 
 void Chunk::loadFromFile(const char* path)
@@ -49,7 +36,7 @@ void Chunk::loadFromFile(const char* path)
 	int row = 0;
 	int column = 0;
 
-	auto texturesToDraw = std::map<const Texture*, std::vector<PointI>>();
+	auto texturesToDraw = std::map<std::shared_ptr<Texture>, std::vector<PointI>>();
 
 	std::string line;
 	while (getline(ifStream, line)) {
@@ -68,9 +55,9 @@ void Chunk::loadFromFile(const char* path)
 			}
 			int blockTypeID = std::stoi(line.substr(0, line.find(",")));
 			if (blockTypeID != -1) {
-				blocks[currentLayer][column][row] = createBlock(blockTypeID, PointI(column, row));
+				this->blocks[currentLayer][column][row] = createBlock(blockTypeID, PointI(column, row));
 
-				const Texture* texture = blocks[currentLayer][column][row]->getTexture();
+			std::shared_ptr<Texture> texture = blocks[currentLayer][column][row]->getTexture();
 				// texturesToDraw.push_back(blocks[currentLayer][column][row]->getTexture());
 				if (texturesToDraw.find(texture) == texturesToDraw.end()) {
 					texturesToDraw[texture] = std::vector<PointI>();
@@ -87,13 +74,13 @@ void Chunk::loadFromFile(const char* path)
 		row = 0;
 		column++;
 	}
-	static_cast<TargetTexture*>(this->texture)->DrawToTexture(texturesToDraw);
+	static_cast<TargetTexture*>(this->texture.get())->DrawToTexture(texturesToDraw);
 }
 
 
-Block* Chunk::createBlock(int textureNumber, PointI position)
+std::unique_ptr<Block> Chunk::createBlock(int textureNumber, PointI position)
 {
-	return new Block((PointI)(this->position * ( 1.0f * CHUNK_SIZE)) + position, blockTextures[textureNumber]);
+	return std::make_unique<Block>((PointI)(this->position * ( 1.0f * CHUNK_SIZE)) + position, blockTextures[textureNumber]);
 
 }
 

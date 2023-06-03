@@ -48,7 +48,7 @@ void initlializeGameEngine()
 	setUpTextures(*renderer);
 	
 	Chunk::SetRenderer(renderer);
-	chunkManager = new ChunkManager(&(camera)); //TODO shared ptr?
+	chunkManager = std::make_unique<ChunkManager>(&(camera)); //TODO shared ptr?
 
 	mousePositionABSText = std::make_unique<Text>("-1, -1", colors.White, *font, *renderer);
 	fpsText = std::make_unique<Text>("fps: -1", colors.White, *font, *renderer);
@@ -64,7 +64,7 @@ void initlializeGameEngine()
 }
 
 void initlializeGame() {
-	camera.addObserver(std::bind(&ChunkManager::cameraMoved, chunkManager, std::placeholders::_1));
+	camera.addObserver(std::bind(&ChunkManager::cameraMoved, chunkManager.get(), std::placeholders::_1));
 	camera.addObserver(Block::update);
 
 	cameraMovmentsTimer.Start();

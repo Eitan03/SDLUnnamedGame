@@ -162,7 +162,6 @@
     <ClCompile Include="Blocks\Block.cpp" />
     <ClCompile Include="Blocks\Chunk.cpp" />
     <ClCompile Include="Blocks\ChunkManager.cpp" />
-    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameEngine\Camera.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
     <ClCompile Include="Blocks\worldGenerators\GrassWorldGenerator.cpp" />
@@ -182,7 +181,6 @@
     <ClInclude Include="Blocks\Chunk.h" />
     <ClInclude Include="Blocks\ChunkManager.h" />
     <ClInclude Include="Blocks\worldGenerators\GrassWorldGenerator.h" />
-    <ClInclude Include="Entity.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Blocks\worldGenerators\PossionDiscWorldGenerator.h" />

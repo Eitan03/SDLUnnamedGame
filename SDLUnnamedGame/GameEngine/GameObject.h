@@ -10,21 +10,21 @@
 class GameObject : public Drawable
 {
 public:
-	GameObject(PointF position, PointI size, Texture* texture);
+	GameObject(PointF position, PointI size, std::shared_ptr<Texture> texture);
 	~GameObject();
 	virtual void setPosition(PointF position);
 	PointF getPosition() const;
 	PointI getSize() const { return this->size; };
-	void changeTexture(Texture* texture);
+	void changeTexture(std::shared_ptr<Texture> texture);
 	void render();
 	void renderABS(int x, int y) override;
-	const Texture* getTexture() { return this->texture; };
+	const std::shared_ptr<Texture> getTexture() { return this->texture; }; // TODO maybe weak ptr?
 
 	//debugging
 	Rect getPosABS() { return this->texture->getTextureRect(); };
 
 protected:
-	Texture* texture;
+	std::shared_ptr<Texture> texture;
 	PointF position;
 	PointI size;
 };

@@ -2,7 +2,7 @@
 
 int Block::sizeScaled = Block::getSize();
 
-Block::Block(PointI position, Texture* texture)
+Block::Block(PointI position, std::shared_ptr<Texture> texture)
 	: GameObject(PointF(position), { size, size }, texture)
 {
 }
