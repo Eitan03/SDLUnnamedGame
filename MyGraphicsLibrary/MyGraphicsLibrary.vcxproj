@@ -21,32 +21,32 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{4b9be197-b798-4647-80e0-a9ece1978932}</ProjectGuid>
-    <RootNamespace>SDLUnnamedGame</RootNamespace>
+    <ProjectGuid>{a913f2c7-5a1c-4ad0-b1b2-176e5945b217}</ProjectGuid>
+    <RootNamespace>MyGraphicsLibrary</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -70,37 +70,26 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Projects\C++\SDLUnnamedGame\MyGraphicsLibrary;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependecies\SDL2-2.0.12\include;$(SolutionDir)Dependecies\SDL2_image-2.0.5\include;$(SolutionDir)Dependecies\SDL2_ttf-2.0.15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>MyGraphicsLibrary.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Lib>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependecies\SDL2-2.0.12\lib\x86;$(SolutionDir)Dependecies\SDL2_image-2.0.5\lib\x86;$(SolutionDir)Dependecies\SDL2_ttf-2.0.15\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -108,35 +97,45 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Projects\C++\SDLUnnamedGame\MyGraphicsLibrary;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependecies\SDL2-2.0.12\include;$(SolutionDir)Dependecies\SDL2_image-2.0.5\include;$(SolutionDir)Dependecies\SDL2_ttf-2.0.15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>MyGraphicsLibrary.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Lib>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependecies\SDL2-2.0.12\lib\x86;$(SolutionDir)Dependecies\SDL2_image-2.0.5\lib\x86;$(SolutionDir)Dependecies\SDL2_ttf-2.0.15\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Projects\C++\SDLUnnamedGame\MyGraphicsLibrary;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependecies\SDL2-2.0.12\include;$(SolutionDir)Dependecies\SDL2_image-2.0.5\include;$(SolutionDir)Dependecies\SDL2_ttf-2.0.15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Lib>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependecies\SDL2_image-2.0.5\lib\x64;$(SolutionDir)Dependecies\SDL2-2.0.12\lib\x64;$(SolutionDir)Dependecies\SDL2_ttf-2.0.15\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -144,60 +143,45 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Projects\C++\SDLUnnamedGame\MyGraphicsLibrary;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependecies\SDL2-2.0.12\include;$(SolutionDir)Dependecies\SDL2_image-2.0.5\include;$(SolutionDir)Dependecies\SDL2_ttf-2.0.15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Lib>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependecies\SDL2_image-2.0.5\lib\x64;$(SolutionDir)Dependecies\SDL2-2.0.12\lib\x64;$(SolutionDir)Dependecies\SDL2_ttf-2.0.15\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Blocks\Block.cpp" />
-    <ClCompile Include="Blocks\Chunk.cpp" />
-    <ClCompile Include="Blocks\ChunkManager.cpp" />
-    <ClCompile Include="GameEngine\Camera.cpp" />
-    <ClCompile Include="GameEngine\GameObject.cpp" />
-    <ClCompile Include="Blocks\worldGenerators\GrassWorldGenerator.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Blocks\worldGenerators\PossionDiscWorldGenerator.cpp" />
-    <ClCompile Include="Globals.cpp" />
-    <ClCompile Include="Timer.cpp" />
+    <ClInclude Include="MyGraphicsLibrary.h" />
+    <ClInclude Include="MyGraphicsLibrary\Drawable.h" />
+    <ClInclude Include="MyGraphicsLibrary\EventHandler.h" />
+    <ClInclude Include="MyGraphicsLibrary\Point.h" />
+    <ClInclude Include="MyGraphicsLibrary\Renderer.h" />
+    <ClInclude Include="MyGraphicsLibrary\TargetTexture.h" />
+    <ClInclude Include="MyGraphicsLibrary\Text.h" />
+    <ClInclude Include="MyGraphicsLibrary\Texture.h" />
+    <ClInclude Include="MyGraphicsLibrary\Utilities.h" />
+    <ClInclude Include="MyGraphicsLibrary\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Blocks\Block.h" />
-    <ClInclude Include="Blocks\Chunk.h" />
-    <ClInclude Include="Blocks\ChunkManager.h" />
-    <ClInclude Include="Blocks\worldGenerators\GrassWorldGenerator.h" />
-    <ClInclude Include="main.h" />
-    <ClInclude Include="Blocks\worldGenerators\PossionDiscWorldGenerator.h" />
-    <ClInclude Include="GameEngine\Camera.h" />
-    <ClInclude Include="GameEngine\GameObject.h" />
-    <ClInclude Include="Globals.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="tinyxml2\tinyxml2 .h" />
-    <ClInclude Include="Utilities.h" />
-    <ClInclude Include="Blocks\worldGenerators\WorldGenerator.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="DLL\libjpeg-9.dll" />
-    <None Include="DLL\libpng16-16.dll" />
-    <None Include="DLL\libtiff-5.dll" />
-    <None Include="DLL\libwebp-7.dll" />
-    <None Include="DLL\SDL2.dll" />
-    <None Include="DLL\SDL2_image.dll" />
-    <None Include="DLL\zlib1.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MyGraphicsLibrary\MyGraphicsLibrary.vcxproj">
-      <Project>{a913f2c7-5a1c-4ad0-b1b2-176e5945b217}</Project>
-    </ProjectReference>
+    <ClCompile Include="MyGraphicsLibrary.cpp" />
+    <ClCompile Include="MyGraphicsLibrary\EventHandler.cpp" />
+    <ClCompile Include="MyGraphicsLibrary\Renderer.cpp" />
+    <ClCompile Include="MyGraphicsLibrary\TargetTexture.cpp" />
+    <ClCompile Include="MyGraphicsLibrary\Text.cpp" />
+    <ClCompile Include="MyGraphicsLibrary\Texture.cpp" />
+    <ClCompile Include="MyGraphicsLibrary\Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

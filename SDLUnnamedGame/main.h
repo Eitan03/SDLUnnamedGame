@@ -3,15 +3,12 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
 
-#include "Primitives/Window.h"
-#include "Primitives/Renderer.h"
-#include "Primitives/Texture.h"
-#include "Primitives/Text.h"
-#include "Primitives/EventHandler.h"
+#include "MyGraphicsLibrary/Window.h"
+#include "MyGraphicsLibrary/Renderer.h"
+#include "MyGraphicsLibrary/Texture.h"
+#include "MyGraphicsLibrary/Text.h"
+#include "MyGraphicsLibrary/EventHandler.h"
 
 #include "Globals.h"
 #include "GameEngine/Camera.h"
@@ -30,13 +27,13 @@ void closeSDL();
 void closeGameEngine();
 
 extern Camera camera;
-extern std::shared_ptr<Texture> blockTextures[BlockTypes::Size];
+extern std::shared_ptr<MGL::Texture> blockTextures[BlockTypes::Size];
 extern Colors colors;
-extern void setUpTextures(Renderer& renderer);
+extern void setUpTextures(MGL::Renderer& renderer);
 
-std::shared_ptr<Window> window;
-std::shared_ptr<Renderer> renderer;
-TTF_Font* font;
+std::shared_ptr<MGL::Window> window;
+std::shared_ptr<MGL::Renderer> renderer;
+Font* font;
 
 
 bool quitApplication = false;
