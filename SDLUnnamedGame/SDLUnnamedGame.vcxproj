@@ -168,7 +168,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Blocks\worldGenerators\PossionDiscWorldGenerator.cpp" />
     <ClCompile Include="Globals.cpp" />
-    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Blocks\Block.h" />
@@ -180,7 +179,6 @@
     <ClInclude Include="GameEngine\Camera.h" />
     <ClInclude Include="GameEngine\GameObject.h" />
     <ClInclude Include="Globals.h" />
-    <ClInclude Include="Timer.h" />
     <ClInclude Include="tinyxml2\tinyxml2 .h" />
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="Blocks\worldGenerators\WorldGenerator.h" />

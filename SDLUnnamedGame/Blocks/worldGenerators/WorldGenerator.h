@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Point.h"
+#include <MyGraphicsLibrary/Point.h>
 
 class WorldGenerator
 {
@@ -7,6 +7,6 @@ class WorldGenerator
 		an abstract class representing an interface to any world generator
 	*/
 public:
-	virtual int getBlock(PointI pos) = 0;
+	virtual int getBlock(MGL::PointI pos) = 0;
 };
 

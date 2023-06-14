@@ -7,11 +7,8 @@
 #include "Drawable.h"
 #include "Renderer.h"
 
+
 namespace MGL {
-
-	struct Font : public TTF_Font {};
-
-
 	/* 
 	* https://github.com/grimfang4/SDL_FontCache
 	* https://stackoverflow.com/questions/22852226/c-sdl2-how-to-regularly-update-a-renderered-text-ttf
@@ -22,11 +19,12 @@ namespace MGL {
 	fonts
 	size
 	*/
+	typedef TTF_Font Font;
 
 	class Text : Drawable
 	{
 	public:
-		Text(std::string text, Color color, TTF_Font& font, Renderer& renderer);
+		Text(std::string text, Color color, Font& font, Renderer& renderer);
 		void setText(std::string text);
 		std::string getText() const { return text; };
 		void renderABS(int x, int y) override;
@@ -44,7 +42,7 @@ namespace MGL {
 
 		std::string text;
 		Color color;
-		TTF_Font& font;
+		Font& font;
 	};
 }
 

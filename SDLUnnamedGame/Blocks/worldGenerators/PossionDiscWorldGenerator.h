@@ -10,17 +10,17 @@ class PossionDiscWorldGenerator :
 {
 public:
     PossionDiscWorldGenerator();
-    int getBlock(PointI pos) override;
+    int getBlock(MGL::PointI pos) override;
 
 private:
-    std::vector<PointI> points;
+    std::vector<MGL::PointI> points;
     const unsigned int sampleSize = 128;
     const unsigned int radius = 32;
 };
 
-std::vector<PointI> possionDisk(float raduis, PointI sampleRegionSize, int maxRejection = 30);
+std::vector<MGL::PointI> possionDisk(float raduis, MGL::PointI sampleRegionSize, int maxRejection = 30);
 
-bool isValid(PointI candidatePoint, float radius, PointI sampleRegionSize, float cellSize, std::vector<PointI> points, std::vector< std::vector<int> > grid);
+bool isValid(MGL::PointI candidatePoint, float radius, MGL::PointI sampleRegionSize, float cellSize, std::vector<MGL::PointI> points, std::vector< std::vector<int> > grid);
 
 float randValue();
 

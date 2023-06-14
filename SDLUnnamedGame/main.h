@@ -9,21 +9,20 @@
 #include "MyGraphicsLibrary/Texture.h"
 #include "MyGraphicsLibrary/Text.h"
 #include "MyGraphicsLibrary/EventHandler.h"
+#include "MyGraphicsLibrary/SetupFunctions.h"
 
 #include "Globals.h"
 #include "GameEngine/Camera.h"
 #include "Blocks/Block.h"
 #include "Blocks/ChunkManager.h"
 
-#include "Timer.h"
+#include <MyGraphicsLibrary/Timer.h>
 
 void initlialize();
-void initlializeSDL();
 void initlializeGameEngine();
 void initlializeGame();
 
 void close();
-void closeSDL();
 void closeGameEngine();
 
 extern Camera camera;
@@ -33,24 +32,24 @@ extern void setUpTextures(MGL::Renderer& renderer);
 
 std::shared_ptr<MGL::Window> window;
 std::shared_ptr<MGL::Renderer> renderer;
-Font* font;
+MGL::Font* font;
 
 
 bool quitApplication = false;
 bool isMouseInWindow = true;
 void moveScreen();
-Timer cameraMovmentsTimer;
+MGL::Timer cameraMovmentsTimer;
 
-Timer fpsTimer;
+MGL::Timer fpsTimer;
 int fpsCount;
 void updateFpsCount();
 
 Direction screenMoveDirection = None;
-PointI mousePositionABS = { -1 , -1 };
-PointF mousePosition = { -1 , -1 };
-Rect mouseRect = { -1, -1, Block::getSize(), Block::getSize() };
-std::unique_ptr<Text> mousePositionABSText;
-std::unique_ptr<Text> fpsText;
+MGL::PointI mousePositionABS = { -1 , -1 };
+MGL::PointF mousePosition = { -1 , -1 };
+MGL::Rect mouseRect = { -1, -1, Block::getSize(), Block::getSize() };
+std::unique_ptr<MGL::Text> mousePositionABSText;
+std::unique_ptr<MGL::Text> fpsText;
 void renderMouseRect();
 
 std::unique_ptr<ChunkManager> chunkManager;

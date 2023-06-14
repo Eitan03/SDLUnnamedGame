@@ -1,16 +1,14 @@
 #pragma once
 #include <iostream>
-#include <SDL.h>
-#include <SDL_image.h>
 #include <vector>
 
 #include "Utilities.h"
 #include "./GameEngine/Camera.h"
-#include "./Primitives/Texture.h"
+#include <MyGraphicsLibrary/Texture.h>
 
 struct Colors {
-    const Color White;
-    const Color Black;
+    const MGL::Color White;
+    const MGL::Color Black;
 };
 enum BlockTypes {
     Grass,

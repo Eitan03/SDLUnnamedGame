@@ -1,9 +1,8 @@
 #include "Text.h"
 
 namespace MGL {
-	struct Font : public TTF_Font {};
 
-	Text::Text(std::string text, Color color, TTF_Font& font, Renderer& renderer)
+	Text::Text(std::string text, Color color, Font& font, Renderer& renderer)
 		: texture(nullptr, nullptr), text(text), font(font), color(color), renderer(renderer), textureRect({0 ,0 ,0, 0})
 	{
 		setText(text);

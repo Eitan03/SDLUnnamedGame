@@ -1,9 +1,9 @@
 #pragma once
 #include <vector>
 #include <fstream>
+#include <MyGraphicsLibrary/TargetTexture.h>
 
 #include "Block.h"
-#include "../Primitives/TargetTexture.h"
 #include "worldGenerators/GrassWorldGenerator.h"
 #include "worldGenerators/PossionDiscWorldGenerator.h"
 #define CHUNK_SIZE 8
@@ -19,20 +19,20 @@
 class Chunk: GameObject
 {
 public:
-	Chunk(PointI position);
+	Chunk(MGL::PointI position);
 
 	void render(); //renders all layers
 
-	static void SetRenderer(std::shared_ptr<Renderer> renderer) { Chunk::renderer = renderer; }
+	static void SetRenderer(std::shared_ptr<MGL::Renderer> renderer) { Chunk::renderer = renderer; }
 protected:
 	
 	void loadFromFile(const char* path);
-	std::unique_ptr<Block> createBlock(int textureNumber, PointI position); // takes the number from the file and returns a block
+	std::unique_ptr<Block> createBlock(int textureNumber, MGL::PointI position); // takes the number from the file and returns a block
 	void createChunk(const char* path);
 
 	std::unique_ptr<Block> blocks[LAYERS][CHUNK_SIZE][CHUNK_SIZE];
 
 	static std::unique_ptr<WorldGenerator> worldGenerator;
-	static std::shared_ptr<Renderer> renderer; // used for the creating of the chunk textures
+	static std::shared_ptr<MGL::Renderer> renderer; // used for the creating of the chunk textures
 };
 

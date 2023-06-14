@@ -168,20 +168,24 @@
     <ClInclude Include="MyGraphicsLibrary\EventHandler.h" />
     <ClInclude Include="MyGraphicsLibrary\Point.h" />
     <ClInclude Include="MyGraphicsLibrary\Renderer.h" />
+    <ClInclude Include="MyGraphicsLibrary\SetupFunctions.h" />
     <ClInclude Include="MyGraphicsLibrary\TargetTexture.h" />
     <ClInclude Include="MyGraphicsLibrary\Text.h" />
     <ClInclude Include="MyGraphicsLibrary\Texture.h" />
     <ClInclude Include="MyGraphicsLibrary\Utilities.h" />
     <ClInclude Include="MyGraphicsLibrary\Window.h" />
+    <ClInclude Include="MyGraphicsLibrary\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyGraphicsLibrary.cpp" />
     <ClCompile Include="MyGraphicsLibrary\EventHandler.cpp" />
     <ClCompile Include="MyGraphicsLibrary\Renderer.cpp" />
+    <ClCompile Include="MyGraphicsLibrary\SetupFunctions.cpp" />
     <ClCompile Include="MyGraphicsLibrary\TargetTexture.cpp" />
     <ClCompile Include="MyGraphicsLibrary\Text.cpp" />
     <ClCompile Include="MyGraphicsLibrary\Texture.cpp" />
     <ClCompile Include="MyGraphicsLibrary\Window.cpp" />
+    <ClCompile Include="MyGraphicsLibrary\Timer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
