@@ -8,7 +8,7 @@
 #include "MyGraphicsLibrary/Renderer.h"
 #include "MyGraphicsLibrary/Texture.h"
 #include "MyGraphicsLibrary/Text.h"
-#include "MyGraphicsLibrary/EventHandler.h"
+#include "MyGraphicsLibrary/Event.h"
 #include "MyGraphicsLibrary/SetupFunctions.h"
 
 #include "Globals.h"
@@ -75,7 +75,7 @@ private:
 
 	void changeScale(Sint32 mouseMovement);
 
-	void proccessEvent(SDL_Event event) override;
+	void proccessEvent(MGL::Event event) override;
 
 	void windowEvent(Uint8 event) override;
 

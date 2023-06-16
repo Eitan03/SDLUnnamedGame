@@ -135,9 +135,9 @@ void EventFactoryImpl::runEvents() {
 	}
 }
 
-void EventFactoryImpl::proccessEvent(SDL_Event event) {
+void EventFactoryImpl::proccessEvent(MGL::Event event) {
 	switch (event.type) {
-	case SDL_QUIT:
+	case MGL::Events::QUIT :
 		quitApplication = false;
 		break;
 
