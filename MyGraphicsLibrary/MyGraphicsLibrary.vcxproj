@@ -163,9 +163,10 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="MyGraphicsLibrary\Event\Enums.h" />
     <ClInclude Include="MyGraphicsLibrary.h" />
     <ClInclude Include="MyGraphicsLibrary\Drawable.h" />
-    <ClInclude Include="MyGraphicsLibrary\Event.h" />
+    <ClInclude Include="MyGraphicsLibrary\Event\Event.h" />
     <ClInclude Include="MyGraphicsLibrary\Point.h" />
     <ClInclude Include="MyGraphicsLibrary\Renderer.h" />
     <ClInclude Include="MyGraphicsLibrary\SetupFunctions.h" />
@@ -178,7 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyGraphicsLibrary.cpp" />
-    <ClCompile Include="MyGraphicsLibrary\Event.cpp" />
+    <ClCompile Include="MyGraphicsLibrary\Event\Event.cpp" />
     <ClCompile Include="MyGraphicsLibrary\Renderer.cpp" />
     <ClCompile Include="MyGraphicsLibrary\SetupFunctions.cpp" />
     <ClCompile Include="MyGraphicsLibrary\TargetTexture.cpp" />

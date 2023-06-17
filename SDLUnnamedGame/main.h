@@ -8,7 +8,7 @@
 #include "MyGraphicsLibrary/Renderer.h"
 #include "MyGraphicsLibrary/Texture.h"
 #include "MyGraphicsLibrary/Text.h"
-#include "MyGraphicsLibrary/Event.h"
+#include "MyGraphicsLibrary/Event/Event.h"
 #include "MyGraphicsLibrary/SetupFunctions.h"
 
 #include "Globals.h"
@@ -59,9 +59,9 @@ class EventFactory {
 public:
 	virtual void runEvents() = 0;
 private:
-	virtual  void proccessEvent(SDL_Event event) = 0;
-	virtual void windowEvent(Uint8 event) = 0;
-	virtual void keydownEvent(SDL_Keycode key) = 0;
+	virtual  void proccessEvent(MGL::Event event) = 0;
+	virtual void windowEvent(uint8_t event) = 0;
+	virtual void keydownEvent(MGL::Events_KeyCode key) = 0;
 };
 
 class EventFactoryImpl : public EventFactory {
@@ -73,13 +73,13 @@ public:
 private:
 	void updateMousePosition();
 
-	void changeScale(Sint32 mouseMovement);
+	void changeScale(int32_t mouseMovement);
 
 	void proccessEvent(MGL::Event event) override;
 
-	void windowEvent(Uint8 event) override;
+	void windowEvent(uint8_t event) override;
 
-	void keydownEvent(SDL_Keycode key) override;
+	void keydownEvent(MGL::Events_KeyCode key) override;
 };
 
 std::unique_ptr<EventFactory> eventFactory;

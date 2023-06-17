@@ -128,8 +128,8 @@ void renderMouseRect()
 }
 
 void EventFactoryImpl::runEvents() { 
-	SDL_Event event;
-	while (SDL_PollEvent(&event) != 0)
+	MGL::Event event;
+	while (MGL::GetEvent(&event) != 0)
 	{
 		this->proccessEvent(event);
 	}
@@ -137,25 +137,25 @@ void EventFactoryImpl::runEvents() {
 
 void EventFactoryImpl::proccessEvent(MGL::Event event) {
 	switch (event.type) {
-	case MGL::Events::QUIT :
+	case MGL::Events::QUIT:
 		quitApplication = false;
 		break;
 
-	case SDL_MOUSEMOTION: //on mouse move
+		case MGL::Events::MOUSEMOTION:
 		if (isMouseInWindow) {
 			this->updateMousePosition();
 		}
 		break;
 
-	case (SDL_MOUSEWHEEL): //on mouse scroll
+		case (MGL::Events::MOUSEWHEEL): //on mouse scroll
 		this->changeScale(event.wheel.y);
 		break;
 
-	case SDL_WINDOWEVENT:
+	case MGL::Events::WINDOWEVENT:
 		this->windowEvent(event.window.event);
 		break;
 
-	case SDL_KEYDOWN:
+	case MGL::Events::KEYDOWN:
 		this->keydownEvent(event.key.keysym.sym);
 		break;
 	}
@@ -165,7 +165,7 @@ void EventFactoryImpl::proccessEvent(MGL::Event event) {
 void EventFactoryImpl::updateMousePosition()
 {
 	int x, y;
-	SDL_GetMouseState(&x, &y);
+	MGL::GetMouseState(&x, &y);
 	mousePositionABS = { x, y };
 	mousePosition = (MGL::PointF)(mousePositionABS + camera.getLocation()) / (float)Block::getSizeScaled();
 	mousePositionABSText.get()->setText(std::to_string((int)floor(mousePosition.x)) + ", " + std::to_string((int)floor(mousePosition.y)));
@@ -192,7 +192,7 @@ void EventFactoryImpl::updateMousePosition()
 	}
 }
 
-void EventFactoryImpl::changeScale(Sint32 mouseMovement)
+void EventFactoryImpl::changeScale(int32_t mouseMovement)
 {
 	if (mouseMovement != 0) {
 		float scaleDelta = 0.05;
@@ -213,13 +213,13 @@ void EventFactoryImpl::changeScale(Sint32 mouseMovement)
 	}
 }
 
-void EventFactoryImpl::windowEvent(Uint8 event) {
+void EventFactoryImpl::windowEvent(uint8_t event) {
 	switch (event)
 	{
-	case SDL_WINDOWEVENT_ENTER:
+	case MGL::Events_Window::WINDOWEVENT_ENTER:
 		isMouseInWindow = true;
 		break;
-	case SDL_WINDOWEVENT_LEAVE:
+	case MGL::Events_Window::WINDOWEVENT_LEAVE:
 		isMouseInWindow = false;
 		screenMoveDirection = None;
 		break;
@@ -227,11 +227,11 @@ void EventFactoryImpl::windowEvent(Uint8 event) {
 
 }
 
-void EventFactoryImpl::keydownEvent(SDL_Keycode key) {
+void EventFactoryImpl::keydownEvent(MGL::Events_KeyCode key) {
 
 	switch (key)
 	{
-	case SDLK_w:
+	case MGL::Events_KeyCode::w :
 		std::cout << "pressed W" << std::endl;
 		break;
 	}
