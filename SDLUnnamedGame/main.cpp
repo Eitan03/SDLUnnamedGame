@@ -20,6 +20,8 @@ void initlializeGameEngine()
 	renderer = std::make_shared<MGL::Renderer>( *window );
 	renderer->setBackgroundColor(colors.Black);
 	setUpTextures(*renderer);
+
+	font = MGL::initializeFont("assets\\fonts\\Pixeled.ttf");
 	
 	Chunk::SetRenderer(renderer);
 	chunkManager = std::make_unique<ChunkManager>(&(camera)); //TODO shared ptr?
@@ -137,26 +139,26 @@ void EventFactoryImpl::runEvents() {
 
 void EventFactoryImpl::proccessEvent(MGL::Event event) {
 	switch (event.type) {
-	case MGL::Events::QUIT:
+	case static_cast<uint32_t>(MGL::Events::QUIT):
 		quitApplication = false;
 		break;
 
-		case MGL::Events::MOUSEMOTION:
+		case static_cast<uint32_t>(MGL::Events::MOUSEMOTION):
 		if (isMouseInWindow) {
 			this->updateMousePosition();
 		}
 		break;
 
-		case (MGL::Events::MOUSEWHEEL): //on mouse scroll
+		case static_cast<uint32_t>(MGL::Events::MOUSEWHEEL): //on mouse scroll
 		this->changeScale(event.wheel.y);
 		break;
 
-	case MGL::Events::WINDOWEVENT:
+	case static_cast<uint32_t>(MGL::Events::WINDOWEVENT):
 		this->windowEvent(event.window.event);
 		break;
 
-	case MGL::Events::KEYDOWN:
-		this->keydownEvent(event.key.keysym.sym);
+	case static_cast<uint32_t>(MGL::Events::KEYDOWN):
+		this->keydownEvent(static_cast<MGL::Events_KeyCode>(event.key.keysym.sym));
 		break;
 	}
 
@@ -216,10 +218,10 @@ void EventFactoryImpl::changeScale(int32_t mouseMovement)
 void EventFactoryImpl::windowEvent(uint8_t event) {
 	switch (event)
 	{
-	case MGL::Events_Window::WINDOWEVENT_ENTER:
+	case static_cast<int>(MGL::Events_Window::WINDOWEVENT_ENTER):
 		isMouseInWindow = true;
 		break;
-	case MGL::Events_Window::WINDOWEVENT_LEAVE:
+	case static_cast<int>(MGL::Events_Window::WINDOWEVENT_LEAVE):
 		isMouseInWindow = false;
 		screenMoveDirection = None;
 		break;

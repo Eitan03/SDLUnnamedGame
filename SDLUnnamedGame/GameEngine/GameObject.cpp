@@ -30,7 +30,7 @@ void GameObject::changeTexture(std::shared_ptr<MGL::Texture> texture)
 
 void GameObject::render()
 {
-	MGL::PointI location = round((MGL::PointI)this->position * Block::getSizeScaled() - static_cast<Point_impl<int>>(camera.getLocation()));
+	MGL::PointI location = round((MGL::PointI)this->position * Block::getSizeScaled() - static_cast<MGL::PointI>(camera.getLocation()));
 	this->texture->renderABS({ 
 		location.x,
 		location.y,

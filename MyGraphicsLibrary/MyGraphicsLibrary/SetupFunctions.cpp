@@ -22,17 +22,20 @@ namespace MGL {
 			throw "SDL_ttf could not initialize! SDL_ttf Error: " + std::string(TTF_GetError());
 		}
 
-		/*
+	}
+
+	Font* initializeFont(const char* fontPath)
+	{
 			//Open the font
-			font = TTF_OpenFont("assets\\fonts\\Pixeled.ttf", 28);
+			Font* font = TTF_OpenFont(fontPath, 28);
 			if (font == NULL)
 			{
 				throw "Failed to load lazy font! SDL_ttf Error: " + std::string(TTF_GetError());
 			}
-		*/
+			return font;
 	}
 
-	void closeSDL()
+	void close()
 	{
 		//Free global font
 		// TTF_CloseFont(font);

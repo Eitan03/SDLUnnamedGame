@@ -32,7 +32,7 @@ extern void setUpTextures(MGL::Renderer& renderer);
 
 std::shared_ptr<MGL::Window> window;
 std::shared_ptr<MGL::Renderer> renderer;
-MGL::Font* font;
+MGL::Font* font; // erro when turining to shared_ptr?
 
 
 bool quitApplication = false;

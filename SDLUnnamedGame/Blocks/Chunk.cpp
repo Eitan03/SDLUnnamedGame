@@ -8,7 +8,7 @@ std::shared_ptr<MGL::Renderer> Chunk::renderer = std::shared_ptr<MGL::Renderer>(
 Chunk::Chunk(MGL::PointI position) : GameObject(position, { Block::getSize() * CHUNK_SIZE, Block::getSize() * CHUNK_SIZE }, nullptr), blocks()
 {
 	// TODO make shared
-	this->texture = std::make_shared<TargetTexture>(TargetTexture(*(this->renderer.get()), { 0, 0, Block::getSize() * CHUNK_SIZE, Block::getSize() * CHUNK_SIZE }));
+	this->texture = std::make_shared<MGL::TargetTexture>(MGL::TargetTexture(*(this->renderer.get()), { 0, 0, Block::getSize() * CHUNK_SIZE, Block::getSize() * CHUNK_SIZE }));
 
 	for (int layer = 0; layer < LAYERS; layer++) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
@@ -74,7 +74,7 @@ void Chunk::loadFromFile(const char* path)
 		row = 0;
 		column++;
 	}
-	static_cast<TargetTexture*>(this->texture.get())->DrawToTexture(texturesToDraw);
+	static_cast<MGL::TargetTexture*>(this->texture.get())->DrawToTexture(texturesToDraw);
 }
 
 

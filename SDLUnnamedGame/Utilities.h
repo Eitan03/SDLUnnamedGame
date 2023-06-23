@@ -2,7 +2,7 @@
 #include <iostream>
 #include <exception>
 
-#include "Point.h"
+#include <MyGraphicsLibrary/Point.h>
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720

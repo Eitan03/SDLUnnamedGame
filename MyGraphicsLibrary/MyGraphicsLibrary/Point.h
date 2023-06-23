@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <cmath>
 
 namespace MGL {
 	template<typename T>
@@ -156,17 +157,17 @@ namespace MGL {
 	//math functions
 	template<typename L>
 	Point_impl<L> floor(const Point_impl<L>& lhs) {
-		return Point_impl<L>(floor(lhs.x), floor(lhs.y));
+		return Point_impl<L>(std::floor(lhs.x), std::floor(lhs.y));
 	}
 
 	template<typename L>
 	Point_impl<L> round(const Point_impl<L>& lhs) {
-		return Point_impl<L>(round(lhs.x), round(lhs.y));
+		return Point_impl<L>(std::round(lhs.x), std::round(lhs.y));
 	}
 
 	template<typename L>
 	Point_impl<L> abs(const Point_impl<L>& lhs) {
-		return Point_impl<L>(abs(lhs.x), abs(lhs.y));
+		return Point_impl<L>(std::abs(lhs.x), std::abs(lhs.y));
 	}
 
 	//vector functions

@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include <memory>
 #include <SDL.h>
 #include <string>
@@ -15,7 +14,7 @@ namespace MGL {
 
 	int GetEvent(Event* event);
 
-	uint32_t GetMouseState(int *x, int *y) { return SDL_GetMouseState(x, y); }
+	uint32_t GetMouseState(int* x, int* y);
 	
 }
 
