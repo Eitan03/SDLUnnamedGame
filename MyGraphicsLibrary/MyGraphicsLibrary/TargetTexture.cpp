@@ -33,4 +33,23 @@ namespace MGL {
 
 		SDL_SetRenderTarget(renderer, prevTarget);
 	}
+	void TargetTexture::DrawToTexture1(std::shared_ptr<Texture> texture, PointI textureLocation)
+	{
+		SDL_Texture* prevTarget = SDL_GetRenderTarget(this->renderer.get());
+
+		SDL_Renderer* renderer = this->renderer.get();
+
+		SDL_SetRenderTarget(renderer, this->sdlTexture.get());
+
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+		SDL_RenderClear(renderer);
+
+		Rect textureRect = Rect();
+		textureRect.setSize(texture->getTextureRect().getSize());
+		textureRect.setPosition(textureLocation);
+		Rect srcRect = (texture->getTextureRect());
+		SDL_RenderCopy(renderer, texture->getTexture(), &srcRect, &textureRect);
+
+		SDL_SetRenderTarget(renderer, prevTarget);
+	}
 }

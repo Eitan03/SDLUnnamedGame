@@ -1,4 +1,5 @@
 #include "ChunkManager.h"
+#include <cmath>
 
 ChunkManager::ChunkManager(Camera* camera)
 {
@@ -75,6 +76,16 @@ void ChunkManager::updateLoadedChunks(std::set<MGL::PointI> chunksToLoad) {
 			this->loadChunk(it);
 		}
 	}
+}
+
+void ChunkManager::setBlock(std::unique_ptr<Block> block, int layer, MGL::PointI position)
+{
+	MGL::PointI chunkPos = MGL::PointI{ (int)std::floor(position.x / 6.0), (int)std::floor(position.y / 6.0) };
+	MGL::PointI blockPos = position - (chunkPos * 6);
+	if (loadedChunks.find(chunkPos) == loadedChunks.end()) {
+		loadChunk(chunkPos);
+	}
+	loadedChunks[chunkPos]->setBlock(std::move(block), layer, blockPos);
 }
 
 // TODO only calc if needed

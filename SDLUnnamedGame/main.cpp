@@ -234,6 +234,7 @@ void EventFactoryImpl::keydownEvent(MGL::Events_KeyCode key) {
 	switch (key)
 	{
 	case MGL::Events_KeyCode::w :
+		chunkManager->setBlock(std::make_unique<Block>(mousePosition, blockTextures[Sand], Sand), 1, mousePosition);
 		std::cout << "pressed W" << std::endl;
 		break;
 	}

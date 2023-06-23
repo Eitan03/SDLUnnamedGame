@@ -13,6 +13,7 @@ namespace MGL {
 		TargetTexture(Renderer& renderer, Rect textureRect = { -1, -1, -1, -1});
 
 		void DrawToTexture(std::map<std::shared_ptr<Texture>, std::vector<PointI>> textures);
+		void DrawToTexture1(std::shared_ptr<Texture>, PointI textureLocation);
 	};
 }
 
