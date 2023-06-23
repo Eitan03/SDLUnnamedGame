@@ -1,14 +1,14 @@
 #include "Chunk.h"
 
 #include "../Globals.h"
-extern std::shared_ptr<Texture> blockTextures[BlockTypes::Size];
+extern std::shared_ptr<MGL::Texture> blockTextures[BlockTypes::Size];
 std::unique_ptr<WorldGenerator> Chunk::worldGenerator = std::make_unique<PossionDiscWorldGenerator>(PossionDiscWorldGenerator());
-std::shared_ptr<Renderer> Chunk::renderer = std::shared_ptr<Renderer>();
+std::shared_ptr<MGL::Renderer> Chunk::renderer = std::shared_ptr<MGL::Renderer>();
 
-Chunk::Chunk(PointI position) : GameObject(position, { Block::getSize() * CHUNK_SIZE, Block::getSize() * CHUNK_SIZE }, nullptr), blocks()
+Chunk::Chunk(MGL::PointI position) : GameObject(position, { Block::getSize() * CHUNK_SIZE, Block::getSize() * CHUNK_SIZE }, nullptr), blocks()
 {
 	// TODO make shared
-	this->texture = std::make_shared<TargetTexture>(TargetTexture(*(this->renderer.get()), { 0, 0, Block::getSize() * CHUNK_SIZE, Block::getSize() * CHUNK_SIZE }));
+	this->texture = std::make_shared<MGL::TargetTexture>(MGL::TargetTexture(*(this->renderer.get()), { 0, 0, Block::getSize() * CHUNK_SIZE, Block::getSize() * CHUNK_SIZE }));
 
 	for (int layer = 0; layer < LAYERS; layer++) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
@@ -36,7 +36,7 @@ void Chunk::loadFromFile(const char* path)
 	int row = 0;
 	int column = 0;
 
-	auto texturesToDraw = std::map<std::shared_ptr<Texture>, std::vector<PointI>>();
+	auto texturesToDraw = std::map<std::shared_ptr<MGL::Texture>, std::vector<MGL::PointI>>();
 
 	std::string line;
 	while (getline(ifStream, line)) {
@@ -55,14 +55,14 @@ void Chunk::loadFromFile(const char* path)
 			}
 			int blockTypeID = std::stoi(line.substr(0, line.find(",")));
 			if (blockTypeID != -1) {
-				this->blocks[currentLayer][column][row] = createBlock(blockTypeID, PointI(column, row));
+				this->blocks[currentLayer][column][row] = createBlock(blockTypeID, MGL::PointI(column, row));
 
-			std::shared_ptr<Texture> texture = blocks[currentLayer][column][row]->getTexture();
+			std::shared_ptr<MGL::Texture> texture = blocks[currentLayer][column][row]->getTexture();
 				// texturesToDraw.push_back(blocks[currentLayer][column][row]->getTexture());
 				if (texturesToDraw.find(texture) == texturesToDraw.end()) {
-					texturesToDraw[texture] = std::vector<PointI>();
+					texturesToDraw[texture] = std::vector<MGL::PointI>();
 				}
-				PointI textureSize = texture->getTextureRect().getSize();
+				MGL::PointI textureSize = texture->getTextureRect().getSize();
 				texturesToDraw[texture].push_back({ row * textureSize.x, column * textureSize.y});
 
 			} else {
@@ -74,13 +74,13 @@ void Chunk::loadFromFile(const char* path)
 		row = 0;
 		column++;
 	}
-	static_cast<TargetTexture*>(this->texture.get())->DrawToTexture(texturesToDraw);
+	static_cast<MGL::TargetTexture*>(this->texture.get())->DrawToTexture(texturesToDraw);
 }
 
 
-std::unique_ptr<Block> Chunk::createBlock(int textureNumber, PointI position)
+std::unique_ptr<Block> Chunk::createBlock(int textureNumber, MGL::PointI position)
 {
-	return std::make_unique<Block>((PointI)(this->position * ( 1.0f * CHUNK_SIZE)) + position, blockTextures[textureNumber]);
+	return std::make_unique<Block>((MGL::PointI)(this->position * ( 1.0f * CHUNK_SIZE)) + position, blockTextures[textureNumber]);
 
 }
 
@@ -97,7 +97,7 @@ void Chunk::createChunk(const char* path)
 
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
-			chunkData[1][i][j] = worldGenerator->getBlock( (PointI)(this->position * ( 1.0f * CHUNK_SIZE)) + PointI(i, j) );
+			chunkData[1][i][j] = worldGenerator->getBlock( (MGL::PointI)(this->position * ( 1.0f * CHUNK_SIZE)) + MGL::PointI(i, j) );
 		}
 	}
 

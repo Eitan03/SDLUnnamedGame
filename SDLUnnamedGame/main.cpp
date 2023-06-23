@@ -1,6 +1,5 @@
 #include "main.h"
 
-
 int main( int argc, char* args[] ) {
 	initlialize();
 	gameLoop();
@@ -9,56 +8,33 @@ int main( int argc, char* args[] ) {
 }
 
 void initlialize() {
-	initlializeSDL();
+	MGL::initialize();
 	initlializeGameEngine();
 	initlializeGame();
 }
 
-void initlializeSDL()
-{
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
-	{
-		throw "SDL could not initialize! SDL_Error: " + std::string(SDL_GetError());
-	}
-	//Initialize PNG loading
-	int imgFlags = IMG_INIT_PNG;
-	if (!(IMG_Init(imgFlags) & imgFlags))
-	{
-		throw "SDL_image could not initialize! SDL_image Error: " + std::string(IMG_GetError());
-	}
-	if (TTF_Init() == -1)
-	{
-		throw "SDL_ttf could not initialize! SDL_ttf Error: " + std::string(TTF_GetError());
-	}
-
-	//Open the font
-	font = TTF_OpenFont("assets\\fonts\\Pixeled.ttf", 28);
-	if (font == NULL)
-	{
-		throw "Failed to load lazy font! SDL_ttf Error: " + std::string(TTF_GetError());
-	}
-
-}
 
 void initlializeGameEngine()
 {
-	window = std::make_shared<Window>("Game", SCREEN_WIDTH, SCREEN_HEIGHT );
-	renderer = std::make_shared<Renderer>( *window );
+	window = std::make_shared<MGL::Window>("Game", SCREEN_WIDTH, SCREEN_HEIGHT );
+	renderer = std::make_shared<MGL::Renderer>( *window );
 	renderer->setBackgroundColor(colors.Black);
 	setUpTextures(*renderer);
+
+	font = MGL::initializeFont("assets\\fonts\\Pixeled.ttf");
 	
 	Chunk::SetRenderer(renderer);
 	chunkManager = std::make_unique<ChunkManager>(&(camera)); //TODO shared ptr?
 
-	mousePositionABSText = std::make_unique<Text>("-1, -1", colors.White, *font, *renderer);
-	fpsText = std::make_unique<Text>("fps: -1", colors.White, *font, *renderer);
+	mousePositionABSText = std::make_unique<MGL::Text>("-1, -1", colors.White, *font, *renderer);
+	fpsText = std::make_unique<MGL::Text>("fps: -1", colors.White, *font, *renderer);
 
 	eventFactory = std::make_unique<EventFactoryImpl>(EventFactoryImpl());
 	
 
-	cameraMovmentsTimer = Timer();
+	cameraMovmentsTimer = MGL::Timer();
 
-	fpsTimer = Timer();
+	fpsTimer = MGL::Timer();
 
 	std::srand(1);
 }
@@ -148,41 +124,41 @@ void render() {
 void renderMouseRect()
 {
 	if (isMouseInWindow) {
-		mouseRect.setPosition((PointI)floor(mousePosition) * Block::getSizeScaled() - camera.getLocation());
+		mouseRect.setPosition((MGL::PointI)floor(mousePosition) * Block::getSizeScaled() - camera.getLocation());
 		renderer->renderRectABS(mouseRect);
 	}
 }
 
 void EventFactoryImpl::runEvents() { 
-	SDL_Event event;
-	while (SDL_PollEvent(&event) != 0)
+	MGL::Event event;
+	while (MGL::GetEvent(&event) != 0)
 	{
 		this->proccessEvent(event);
 	}
 }
 
-void EventFactoryImpl::proccessEvent(SDL_Event event) {
+void EventFactoryImpl::proccessEvent(MGL::Event event) {
 	switch (event.type) {
-	case SDL_QUIT:
+	case static_cast<uint32_t>(MGL::Events::QUIT):
 		quitApplication = false;
 		break;
 
-	case SDL_MOUSEMOTION: //on mouse move
+		case static_cast<uint32_t>(MGL::Events::MOUSEMOTION):
 		if (isMouseInWindow) {
 			this->updateMousePosition();
 		}
 		break;
 
-	case (SDL_MOUSEWHEEL): //on mouse scroll
+		case static_cast<uint32_t>(MGL::Events::MOUSEWHEEL): //on mouse scroll
 		this->changeScale(event.wheel.y);
 		break;
 
-	case SDL_WINDOWEVENT:
+	case static_cast<uint32_t>(MGL::Events::WINDOWEVENT):
 		this->windowEvent(event.window.event);
 		break;
 
-	case SDL_KEYDOWN:
-		this->keydownEvent(event.key.keysym.sym);
+	case static_cast<uint32_t>(MGL::Events::KEYDOWN):
+		this->keydownEvent(static_cast<MGL::Events_KeyCode>(event.key.keysym.sym));
 		break;
 	}
 
@@ -191,9 +167,9 @@ void EventFactoryImpl::proccessEvent(SDL_Event event) {
 void EventFactoryImpl::updateMousePosition()
 {
 	int x, y;
-	SDL_GetMouseState(&x, &y);
+	MGL::GetMouseState(&x, &y);
 	mousePositionABS = { x, y };
-	mousePosition = (PointF)(mousePositionABS + camera.getLocation()) / (float)Block::getSizeScaled();
+	mousePosition = (MGL::PointF)(mousePositionABS + camera.getLocation()) / (float)Block::getSizeScaled();
 	mousePositionABSText.get()->setText(std::to_string((int)floor(mousePosition.x)) + ", " + std::to_string((int)floor(mousePosition.y)));
 
 	bool mouseInArea = false;
@@ -218,7 +194,7 @@ void EventFactoryImpl::updateMousePosition()
 	}
 }
 
-void EventFactoryImpl::changeScale(Sint32 mouseMovement)
+void EventFactoryImpl::changeScale(int32_t mouseMovement)
 {
 	if (mouseMovement != 0) {
 		float scaleDelta = 0.05;
@@ -232,20 +208,20 @@ void EventFactoryImpl::changeScale(Sint32 mouseMovement)
 			camera.addToScale(-scaleDelta);
 		}
 		float after = camera.getScale();
-		camera.move((PointI)round((PointF)(mousePositionABS + camera.getLocation()) * (1 - after / before)) * -1);
+		camera.move((MGL::PointI)round((MGL::PointF)(mousePositionABS + camera.getLocation()) * (1 - after / before)) * -1);
 
 		mouseRect.w = Block::getSizeScaled();
 		mouseRect.h = Block::getSizeScaled();
 	}
 }
 
-void EventFactoryImpl::windowEvent(Uint8 event) {
+void EventFactoryImpl::windowEvent(uint8_t event) {
 	switch (event)
 	{
-	case SDL_WINDOWEVENT_ENTER:
+	case static_cast<int>(MGL::Events_Window::WINDOWEVENT_ENTER):
 		isMouseInWindow = true;
 		break;
-	case SDL_WINDOWEVENT_LEAVE:
+	case static_cast<int>(MGL::Events_Window::WINDOWEVENT_LEAVE):
 		isMouseInWindow = false;
 		screenMoveDirection = None;
 		break;
@@ -253,11 +229,11 @@ void EventFactoryImpl::windowEvent(Uint8 event) {
 
 }
 
-void EventFactoryImpl::keydownEvent(SDL_Keycode key) {
+void EventFactoryImpl::keydownEvent(MGL::Events_KeyCode key) {
 
 	switch (key)
 	{
-	case SDLK_w:
+	case MGL::Events_KeyCode::w :
 		std::cout << "pressed W" << std::endl;
 		break;
 	}
@@ -265,20 +241,10 @@ void EventFactoryImpl::keydownEvent(SDL_Keycode key) {
 }
 
 void close() {
-	closeSDL();
+	MGL::close();
 	closeGameEngine();
 }
 
-void closeSDL()
-{
-	//Free global font
-	TTF_CloseFont(font);
-	font = NULL;
-	//Quit SDL subsystems
-	TTF_Quit();
-	IMG_Quit();
-	SDL_Quit();
-}
 
 void closeGameEngine()
 {

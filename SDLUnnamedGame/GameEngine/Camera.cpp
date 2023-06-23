@@ -8,7 +8,7 @@ Camera::Camera()
 
 
 
-void Camera::setLocation(PointI location)
+void Camera::setLocation(MGL::PointI location)
 {
 	this->location = location; this->update(this);
 }

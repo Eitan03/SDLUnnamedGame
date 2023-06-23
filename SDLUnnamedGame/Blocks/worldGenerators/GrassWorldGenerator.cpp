@@ -4,7 +4,7 @@ GrassWorldGenerator::GrassWorldGenerator()
 {
 }
 
-int GrassWorldGenerator::getBlock(PointI pos)
+int GrassWorldGenerator::getBlock(MGL::PointI pos)
 {
     return 0;
 }

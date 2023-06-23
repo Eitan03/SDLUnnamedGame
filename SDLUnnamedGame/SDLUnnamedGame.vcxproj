@@ -72,19 +72,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)$(platformTarget)\$(Configuration);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)$(platformTarget)\$(Configuration);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)$(platformTarget)\$(Configuration);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)$(platformTarget)\$(Configuration);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -92,14 +92,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependecies\SDL2-2.0.12\include;$(SolutionDir)Dependecies\SDL2_image-2.0.5\include;$(SolutionDir)Dependecies\SDL2_ttf-2.0.15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MyGraphicsLibrary;$(SolutionDir)Dependecies\SDL2-2.0.12\include;$(SolutionDir)Dependecies\SDL2_image-2.0.5\include;$(SolutionDir)Dependecies\SDL2_ttf-2.20.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependecies\SDL2-2.0.12\lib\x86;$(SolutionDir)Dependecies\SDL2_image-2.0.5\lib\x86;$(SolutionDir)Dependecies\SDL2_ttf-2.0.15\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>MyGraphicsLibrary.lib;MyGraphicsLibrary.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(platformTarget)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -110,7 +110,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependecies\SDL2-2.0.12\include;$(SolutionDir)Dependecies\SDL2_image-2.0.5\include;$(SolutionDir)Dependecies\SDL2_ttf-2.0.15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MyGraphicsLibrary;$(SolutionDir)Dependecies\SDL2-2.0.12\include;$(SolutionDir)Dependecies\SDL2_image-2.0.5\include;$(SolutionDir)Dependecies\SDL2_ttf-2.20.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -118,8 +118,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependecies\SDL2-2.0.12\lib\x86;$(SolutionDir)Dependecies\SDL2_image-2.0.5\lib\x86;$(SolutionDir)Dependecies\SDL2_ttf-2.0.15\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>MyGraphicsLibrary.lib;MyGraphicsLibrary.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(platformTarget)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -128,14 +128,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependecies\SDL2-2.0.12\include;$(SolutionDir)Dependecies\SDL2_image-2.0.5\include;$(SolutionDir)Dependecies\SDL2_ttf-2.0.15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MyGraphicsLibrary;$(SolutionDir)Dependecies\SDL2-2.0.12\include;$(SolutionDir)Dependecies\SDL2_image-2.0.5\include;$(SolutionDir)Dependecies\SDL2_ttf-2.20.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependecies\SDL2_image-2.0.5\lib\x64;$(SolutionDir)Dependecies\SDL2-2.0.12\lib\x64;$(SolutionDir)Dependecies\SDL2_ttf-2.0.15\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>MyGraphicsLibrary.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(platformTarget)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -146,7 +146,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependecies\SDL2-2.0.12\include;$(SolutionDir)Dependecies\SDL2_image-2.0.5\include;$(SolutionDir)Dependecies\SDL2_ttf-2.0.15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MyGraphicsLibrary;$(SolutionDir)Dependecies\SDL2-2.0.12\include;$(SolutionDir)Dependecies\SDL2_image-2.0.5\include;$(SolutionDir)Dependecies\SDL2_ttf-2.20.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -154,8 +154,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependecies\SDL2_image-2.0.5\lib\x64;$(SolutionDir)Dependecies\SDL2-2.0.12\lib\x64;$(SolutionDir)Dependecies\SDL2_ttf-2.0.15\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>MyGraphicsLibrary.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(platformTarget)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -167,14 +167,7 @@
     <ClCompile Include="Blocks\worldGenerators\GrassWorldGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Blocks\worldGenerators\PossionDiscWorldGenerator.cpp" />
-    <ClCompile Include="Primitives\EventHandler.cpp" />
-    <ClCompile Include="Primitives\Renderer.cpp" />
-    <ClCompile Include="Primitives\TargetTexture.cpp" />
-    <ClCompile Include="Primitives\Texture.cpp" />
-    <ClCompile Include="Primitives\Window.cpp" />
     <ClCompile Include="Globals.cpp" />
-    <ClCompile Include="Primitives\Text.cpp" />
-    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Blocks\Block.h" />
@@ -182,19 +175,10 @@
     <ClInclude Include="Blocks\ChunkManager.h" />
     <ClInclude Include="Blocks\worldGenerators\GrassWorldGenerator.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="Point.h" />
     <ClInclude Include="Blocks\worldGenerators\PossionDiscWorldGenerator.h" />
-    <ClInclude Include="Primitives\Drawable.h" />
     <ClInclude Include="GameEngine\Camera.h" />
     <ClInclude Include="GameEngine\GameObject.h" />
-    <ClInclude Include="Primitives\EventHandler.h" />
-    <ClInclude Include="Primitives\Renderer.h" />
-    <ClInclude Include="Primitives\TargetTexture.h" />
-    <ClInclude Include="Primitives\Texture.h" />
-    <ClInclude Include="Primitives\Window.h" />
     <ClInclude Include="Globals.h" />
-    <ClInclude Include="Primitives\Text.h" />
-    <ClInclude Include="Timer.h" />
     <ClInclude Include="tinyxml2\tinyxml2 .h" />
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="Blocks\worldGenerators\WorldGenerator.h" />
@@ -207,6 +191,11 @@
     <None Include="DLL\SDL2.dll" />
     <None Include="DLL\SDL2_image.dll" />
     <None Include="DLL\zlib1.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyGraphicsLibrary\MyGraphicsLibrary.vcxproj">
+      <Project>{a913f2c7-5a1c-4ad0-b1b2-176e5945b217}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

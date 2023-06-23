@@ -1,31 +1,30 @@
 #pragma once
 #include <memory>
-#include <SDL.h>
 #include <string>
 #include <iostream>
 
-#include "../Primitives/Texture.h"
+#include <MyGraphicsLibrary/Texture.h>
 #include "../GameEngine/Camera.h"
 
-class GameObject : public Drawable
+class GameObject : public MGL::Drawable
 {
 public:
-	GameObject(PointF position, PointI size, std::shared_ptr<Texture> texture);
+	GameObject(MGL::PointF position, MGL::PointI size, std::shared_ptr<MGL::Texture> texture);
 	~GameObject();
-	virtual void setPosition(PointF position);
-	PointF getPosition() const;
-	PointI getSize() const { return this->size; };
-	void changeTexture(std::shared_ptr<Texture> texture);
+	virtual void setPosition(MGL::PointF position);
+	MGL::PointF getPosition() const;
+	MGL::PointI getSize() const { return this->size; };
+	void changeTexture(std::shared_ptr<MGL::Texture> texture);
 	void render();
 	void renderABS(int x, int y) override;
-	const std::shared_ptr<Texture> getTexture() { return this->texture; }; // TODO maybe weak ptr?
+	const std::shared_ptr<MGL::Texture> getTexture() { return this->texture; }; // TODO maybe weak ptr?
 
 	//debugging
-	Rect getPosABS() { return this->texture->getTextureRect(); };
+	MGL::Rect getPosABS() { return this->texture->getTextureRect(); };
 
 protected:
-	std::shared_ptr<Texture> texture;
-	PointF position;
-	PointI size;
+	std::shared_ptr<MGL::Texture> texture;
+	MGL::PointF position;
+	MGL::PointI size;
 };
 

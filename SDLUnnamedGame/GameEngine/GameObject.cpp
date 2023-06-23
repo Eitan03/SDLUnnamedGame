@@ -3,7 +3,7 @@
 
 extern Camera camera;
 
-GameObject::GameObject(PointF position, PointI size, std::shared_ptr<Texture> texture)
+GameObject::GameObject(MGL::PointF position, MGL::PointI size, std::shared_ptr<MGL::Texture> texture)
 	: position(position), size(size), texture(texture)
 {
 }
@@ -12,25 +12,25 @@ GameObject::~GameObject()
 {
 }
 
-void GameObject::setPosition(PointF position)
+void GameObject::setPosition(MGL::PointF position)
 {
 	this->position.x = position.x;
 	this->position.y = position.y;
 }
 
-PointF GameObject::getPosition() const
+MGL::PointF GameObject::getPosition() const
 {
 	return this->position;
 }
 
-void GameObject::changeTexture(std::shared_ptr<Texture> texture)
+void GameObject::changeTexture(std::shared_ptr<MGL::Texture> texture)
 {
 	this->texture = texture;
 }
 
 void GameObject::render()
 {
-	PointI location = round((PointI)this->position * Block::getSizeScaled() - static_cast<Point_impl<int>>(camera.getLocation()));
+	MGL::PointI location = round((MGL::PointI)this->position * Block::getSizeScaled() - static_cast<MGL::PointI>(camera.getLocation()));
 	this->texture->renderABS({ 
 		location.x,
 		location.y,

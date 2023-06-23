@@ -2,12 +2,12 @@
 
 
 PossionDiscWorldGenerator::PossionDiscWorldGenerator() {
-	points = possionDisk(radius, PointI(sampleSize, sampleSize));
+	points = possionDisk(radius, MGL::PointI(sampleSize, sampleSize));
 }
 
-int PossionDiscWorldGenerator::getBlock(PointI position) {
+int PossionDiscWorldGenerator::getBlock(MGL::PointI position) {
 	
-	PointI currPosition = position; // abs(position) % (int)sampleSize;
+	MGL::PointI currPosition = position; // abs(position) % (int)sampleSize;
 	if (std::find(points.begin(), points.end(), currPosition) != points.end()) {
 		return 1;
 	}
@@ -19,7 +19,7 @@ int PossionDiscWorldGenerator::getBlock(PointI position) {
 
 
 // @TODO srand to seed the random generator
-std::vector<PointI> possionDisk(float raduis, PointI sampleRegionSize, int maxRejection
+std::vector<MGL::PointI> possionDisk(float raduis, MGL::PointI sampleRegionSize, int maxRejection
 ) {
 	float cellSize = raduis / sqrt(2);
 
@@ -28,20 +28,20 @@ std::vector<PointI> possionDisk(float raduis, PointI sampleRegionSize, int maxRe
 		ceil(sampleRegionSize.x / cellSize), std::vector<int>( ceil(sampleRegionSize.y / cellSize), -1 )
 		);
 
-	std::vector<PointI> points = std::vector<PointI>();
-	std::vector<PointI> spawnPoints = std::vector<PointI>();
+	std::vector<MGL::PointI> points = std::vector<MGL::PointI>();
+	std::vector<MGL::PointI> spawnPoints = std::vector<MGL::PointI>();
 	
-	spawnPoints.push_back(PointI(sampleRegionSize / 2));
+	spawnPoints.push_back(MGL::PointI(sampleRegionSize / 2));
 
 	while (spawnPoints.size() > 0) {
 		int spawnIndex = randrange(0, spawnPoints.size() - 1 );
-		PointI spawnCentre = spawnPoints[spawnIndex];
+		MGL::PointI spawnCentre = spawnPoints[spawnIndex];
 		bool candidateAccepted = false;
 
 		for (int i = 0; i < maxRejection; i++) {
 			float angle = randValue() * M_PI * 2; //random angle in radians
-			PointF dir = { sin(angle), cos(angle) }; // random direction
-			PointI candidate = (PointI)((PointF)spawnCentre + dir * (float)randrange(raduis, raduis * 2));
+			MGL::PointF dir = { sin(angle), cos(angle) }; // random direction
+			MGL::PointI candidate = (MGL::PointI)((MGL::PointF)spawnCentre + dir * (float)randrange(raduis, raduis * 2));
 
 			if (isValid(candidate, raduis, sampleRegionSize, cellSize, points, grid)) {
 				points.push_back(candidate);
@@ -61,9 +61,9 @@ std::vector<PointI> possionDisk(float raduis, PointI sampleRegionSize, int maxRe
 	return points;
 }
 
-bool isValid(PointI candidatePoint, float radius, PointI sampleRegionSize, float cellSize, std::vector<PointI> points, std::vector< std::vector<int> > grid) {
+bool isValid(MGL::PointI candidatePoint, float radius, MGL::PointI sampleRegionSize, float cellSize, std::vector<MGL::PointI> points, std::vector< std::vector<int> > grid) {
 	if ((candidatePoint.x < sampleRegionSize.x) && (candidatePoint.x >= 0) && (candidatePoint.y < sampleRegionSize.y) && (candidatePoint.y >= 0)) {
-		PointI cell = (PointI)( (PointF)candidatePoint / cellSize );
+		MGL::PointI cell = (MGL::PointI)( (MGL::PointF)candidatePoint / cellSize );
 
 		int searchStartX = std::max(0, cell.x - 2);
 		int searchEndX = std::min(cell.x + 2, int(grid.size()) );
