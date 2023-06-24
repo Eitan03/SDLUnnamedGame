@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../GameEngine/GameObject.h"
+#include "../GameEngine/Gridable.h"
 #include <MyGraphicsLibrary/Texture.h>
 #include <MyGraphicsLibrary/Point.h>
 
-class Block: public GameObject
+class Block: public Gridable
 {
 	friend class Camera; //camera calls the update function to change sizeScaled
 public:

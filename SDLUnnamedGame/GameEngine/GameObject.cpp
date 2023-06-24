@@ -28,15 +28,20 @@ void GameObject::changeTexture(std::shared_ptr<MGL::Texture> texture)
 	this->texture = texture;
 }
 
-void GameObject::render()
+void GameObject::render(MGL::PointF position, MGL::PointI size)
 {
-	MGL::PointI location = round((MGL::PointI)this->position * Block::getSizeScaled() - static_cast<MGL::PointI>(camera.getLocation()));
-	this->texture->renderABS({ 
+	MGL::PointI location = (MGL::PointI)round(position * (float)Block::getSizeScaled() - ((MGL::PointF)camera.getLocation()));
+	this->texture->renderABS({
 		location.x,
 		location.y,
-		camera.applyScale(this->size.x),
-		camera.applyScale(this->size.y)
+		camera.applyScale(size.x),
+		camera.applyScale(size.y)
 		});
+}
+
+void GameObject::render()
+{
+	this->render(this->position, this->size);
 }
 
 void GameObject::renderABS(int x, int y) //abs render

@@ -17,13 +17,13 @@
 	2 everything else (trees, flowers, etc.)
 */
 
-class Chunk: GameObject
+class Chunk: public Gridable
 {
 public:
 	Chunk(MGL::PointI position);
 	~Chunk();
 
-	void render(); //renders all layers
+	void render() override; //renders all layers
 
 	static void SetRenderer(std::shared_ptr<MGL::Renderer> renderer) { Chunk::renderer = renderer; }
 

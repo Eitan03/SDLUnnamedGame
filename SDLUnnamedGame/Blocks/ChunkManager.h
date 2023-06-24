@@ -16,7 +16,7 @@ public:
 	void render();
 
 	void update(MGL::PointI cameraPosition, float scale);
-	std::set<MGL::PointI> chunksToLoad(MGL::PointI cameraChunkPosition, float scale);
+	std::set<MGL::PointI> getChunksToLoad(MGL::PointI cameraChunkPosition, float scale);
 	void updateLoadedChunks(std::set<MGL::PointI> chunksToLoad);
 
 	void setBlock(std::unique_ptr<Block> block, int layer, MGL::PointI position);
