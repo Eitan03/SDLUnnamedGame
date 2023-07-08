@@ -18,8 +18,9 @@ namespace MGL {
 
 		SDL_SetRenderTarget(renderer, this->sdlTexture.get());
 
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-		SDL_RenderClear(renderer);
+		// SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+		// SDL_RenderClear(renderer);
+		// TODO add as clear func
 		
 		Rect textureRect = Rect();
 		for (auto const& texture: textures) {
