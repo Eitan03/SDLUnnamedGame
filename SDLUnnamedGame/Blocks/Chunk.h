@@ -40,5 +40,11 @@ protected:
 
 	static std::unique_ptr<WorldGenerator> worldGenerator;
 	static std::shared_ptr<MGL::Renderer> renderer; // used for the creating of the chunk textures
+
+#ifndef NDEBUG // if debug
+private:
+	void printLayer(int layerNum);
+#endif
+
 };
 

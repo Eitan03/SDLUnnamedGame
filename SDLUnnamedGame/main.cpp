@@ -140,7 +140,7 @@ void EventFactoryImpl::runEvents() {
 void EventFactoryImpl::proccessEvent(MGL::Event event) {
 	switch (event.type) {
 	case static_cast<uint32_t>(MGL::Events::QUIT):
-		quitApplication = false;
+		quitApplication = true;
 		break;
 
 		case static_cast<uint32_t>(MGL::Events::MOUSEMOTION):
@@ -242,6 +242,7 @@ void EventFactoryImpl::keydownEvent(MGL::Events_KeyCode key) {
 }
 
 void close() {
+	std::cout << "beginning shutdown..." << std::endl;
 	MGL::close();
 	closeGameEngine();
 }

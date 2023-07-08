@@ -7,6 +7,7 @@ ChunkManager::ChunkManager(Camera* camera)
 
 ChunkManager::~ChunkManager()
 {
+	std::cout << "called chunk manager dsetructor" << std::endl;
 }
 
 void ChunkManager::loadChunk(MGL::PointI pos)
@@ -81,8 +82,8 @@ void ChunkManager::updateLoadedChunks(std::set<MGL::PointI> chunksToLoad) {
 
 void ChunkManager::setBlock(std::unique_ptr<Block> block, int layer, MGL::PointI position)
 {
-	MGL::PointI chunkPos = MGL::PointI{ (int)std::floor(position.x / 6.0), (int)std::floor(position.y / 6.0) };
-	MGL::PointI blockPos = position - (chunkPos * 6);
+	MGL::PointI chunkPos = MGL::PointI{ (int)std::floor(position.x / (CHUNK_SIZE * 1.0)), (int)std::floor(position.y / (CHUNK_SIZE * 1.0)) };
+	MGL::PointI blockPos = position - (chunkPos * CHUNK_SIZE);
 	if (loadedChunks.find(chunkPos) == loadedChunks.end()) {
 		loadChunk(chunkPos);
 	}

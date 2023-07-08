@@ -42,6 +42,9 @@ void Chunk::setBlock(std::unique_ptr<Block> block, int layer, MGL::PointI positi
 	}
 
 	this->blocks[layer][position.x][position.y] = std::move(block);
+	system("cls");
+	std::cout << "layer " << layer << std::endl;
+	this->printLayer(layer);
 
 	std::shared_ptr<MGL::Texture> blockTexture = this->blocks[layer][position.x][position.y]->getTexture();
 	static_cast<MGL::TargetTexture*>(this->texture.get())->DrawToTexture(blockTexture, position * blockTexture->getTextureRect().getSize());
@@ -101,17 +104,14 @@ void Chunk::loadChunk()
 		chunkData = createChunk(path.c_str());
 	}
 
-	int currentLayer = 0;
-	int row = 0;
-	int column = 0;
 
+	for (int currentLayer = 0; currentLayer < LAYERS; currentLayer++) {
 	auto texturesToDraw = std::map<std::shared_ptr<MGL::Texture>, std::vector<MGL::PointI>>();
 
-	for (int layer = 0; layer < LAYERS; layer++) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int column = 0; column < CHUNK_SIZE; column++) {
 
-				int blockTypeID = chunkData[layer][column][row];
+				int blockTypeID = chunkData[currentLayer][column][row];
 				if (blockTypeID != -1) {
 					this->blocks[currentLayer][column][row] = createBlock(blockTypeID, MGL::PointI(column, row));
 
@@ -125,9 +125,9 @@ void Chunk::loadChunk()
 				}
 			}
 		}
+		static_cast<MGL::TargetTexture*>(this->texture.get())->DrawToTexture(texturesToDraw);
+		// TODO debug func that opens a texture in a differenty window?
 	}
-
-	static_cast<MGL::TargetTexture*>(this->texture.get())->DrawToTexture(texturesToDraw);
 }
 
 
@@ -144,13 +144,13 @@ std::array<std::array<std::array<int, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::c
 
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
-			chunkData[0][i][j] = -1;
+			chunkData[0][i][j] = worldGenerator->getBlock( (this->position * CHUNK_SIZE) + MGL::PointI(i, j) );
 		}
 	}
 
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
-			chunkData[1][i][j] = worldGenerator->getBlock( (this->position * CHUNK_SIZE) + MGL::PointI(i, j) );
+			chunkData[1][i][j] = -1;
 		}
 	}
 
@@ -177,11 +177,11 @@ void Chunk::saveChunk(const char* path)
 		ofStream << "layer " << std::to_string(layer) << ":" << "\n";
 		for (int i = 0; i < CHUNK_SIZE; i++) {
 			for (int j = 0; j < CHUNK_SIZE; j++) {
-				if (this->blocks[layer][i][j]) {
-					ofStream << std::to_string(this->blocks[layer][i][j]->BlockId) + ",";
+				if (this->blocks[layer][j][i]) {
+					ofStream << std::to_string(this->blocks[layer][j][i]->BlockId) + ",";
 				}
 				else {
-					ofStream << "0,";
+					ofStream << "-1,";
 				}
 			}
 			ofStream << "\n";
@@ -192,26 +192,19 @@ void Chunk::saveChunk(const char* path)
 	ofStream.close();
 }
 
-/*
-void Chunk::render()
+#ifndef NDEBUG // if debug
+void Chunk::printLayer(int layer)
 {
-	// this->chunkTexture.
-
-	bool rendered = false;
-	for (int row = 0; row < CHUNK_SIZE; row++) {
 		for (int column = 0; column < CHUNK_SIZE; column++) {
-			for (int layer = 2; layer >= 0; layer--) {
-				if (blocks[layer][column][row] != nullptr) {
-					blocks[layer][column][row]->render();
-					rendered = true;
-					break;
-				}
+	for (int row = 0; row < CHUNK_SIZE; row++) {
+			if (this->blocks[layer][row][column]) {
+			std::cout << this->blocks[layer][row][column].get()->BlockId << ", ";
 			}
-			if (!rendered) {
-				throw GameEngineException("block is nullptr");
+			else {
+				std::cout << " , ";
 			}
-			rendered = false;
 		}
+		std::cout << std::endl;
 	}
 }
-*/
+#endif
