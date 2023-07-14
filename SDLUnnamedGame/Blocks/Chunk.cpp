@@ -12,7 +12,7 @@ Chunk::Chunk(MGL::PointI position) : Gridable(position, { Block::getSize() * CHU
 	for (int layer = 0; layer < LAYERS; layer++) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int column = 0; column < CHUNK_SIZE; column++) {
-				this->blocks[layer][column][row] = std::unique_ptr<Block>{}; // TODO any cleaner way to init as empty?
+				this->blocks[layer][row][column] = std::unique_ptr<Block>{}; // TODO any cleaner way to init as empty?
 			}
 		}
 	}
@@ -34,9 +34,9 @@ void Chunk::render()
 void Chunk::setBlock(std::unique_ptr<Block> block, int layer, MGL::PointI position)
 {
 	if (
-		position.x > CHUNK_SIZE || position.y > CHUNK_SIZE ||
+		position.x >= CHUNK_SIZE || position.y >= CHUNK_SIZE ||
 		position.x < 0 || position.y < 0 ||
-		layer < 0 || layer > LAYERS
+		layer < 0 || layer >= LAYERS
 		) {
 		throw GameEngineException("invalid block to save!");
 	}
@@ -78,7 +78,7 @@ std::array<std::array<std::array<int, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::l
 				throw GameEngineException("either layer error, or row or column too big");
 			}
 			int blockTypeID = std::stoi(line.substr(0, line.find(",")));
-			chunkData[currentLayer][column][row] = blockTypeID;
+			chunkData[currentLayer][row][column] = blockTypeID;
 			row++;
 			line = line.substr(line.find(",") + 1);
 		}
@@ -111,11 +111,11 @@ void Chunk::loadChunk()
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int column = 0; column < CHUNK_SIZE; column++) {
 
-				int blockTypeID = chunkData[currentLayer][column][row];
+				int blockTypeID = chunkData[currentLayer][row][column];
 				if (blockTypeID != -1) {
-					this->blocks[currentLayer][column][row] = createBlock(blockTypeID, MGL::PointI(column, row));
+					this->blocks[currentLayer][row][column] = createBlock(blockTypeID, MGL::PointI(column, row));
 
-					std::shared_ptr<MGL::Texture> texture = this->blocks[currentLayer][column][row]->getTexture();
+					std::shared_ptr<MGL::Texture> texture = this->blocks[currentLayer][row][column]->getTexture();
 					if (texturesToDraw.find(texture) == texturesToDraw.end()) {
 						texturesToDraw[texture] = std::vector<MGL::PointI>();
 					}
@@ -195,8 +195,8 @@ void Chunk::saveChunk(const char* path)
 #ifndef NDEBUG // if debug
 void Chunk::printLayer(int layer)
 {
-		for (int column = 0; column < CHUNK_SIZE; column++) {
-	for (int row = 0; row < CHUNK_SIZE; row++) {
+	for (int column = 0; column < CHUNK_SIZE; column++) {
+		for (int row = 0; row < CHUNK_SIZE; row++) {
 			if (this->blocks[layer][row][column]) {
 			std::cout << this->blocks[layer][row][column].get()->BlockId << ", ";
 			}

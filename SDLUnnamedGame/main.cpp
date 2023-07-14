@@ -203,7 +203,7 @@ void EventFactoryImpl::changeScale(int32_t mouseMovement)
 		{
 			camera.addToScale(scaleDelta);
 		}
-		else if (mouseMovement < 0) // scroll down
+		else if (mouseMovement < 0 && camera.getScale() > 0.1) // scroll down
 		{
 			camera.addToScale(-scaleDelta);
 		}
@@ -234,7 +234,8 @@ void EventFactoryImpl::keydownEvent(MGL::Events_KeyCode key) {
 	switch (key)
 	{
 	case MGL::Events_KeyCode::w :
-		chunkManager->setBlock(std::make_unique<Block>(mousePosition, blockTextures[Sand], Sand), 1, mousePosition);
+		auto mousePos = MGL::PointI{ (int)floor(mousePosition.x), (int)floor(mousePosition.y) };
+		chunkManager->setBlock(std::make_unique<Block>(mousePos, blockTextures[Sand], Sand), 1, mousePos);
 		std::cout << "pressed W" << std::endl;
 		break;
 	}
