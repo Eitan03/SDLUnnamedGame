@@ -203,7 +203,7 @@ void EventFactoryImpl::changeScale(int32_t mouseMovement)
 		{
 			camera.addToScale(scaleDelta);
 		}
-		else if (mouseMovement < 0 && camera.getScale() > 0.1) // scroll down
+		else if (mouseMovement < 0 && camera.getScale() > 0.2) // scroll down
 		{
 			camera.addToScale(-scaleDelta);
 		}
