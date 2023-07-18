@@ -15,5 +15,7 @@ struct Colors {
 enum BlockTypes {
     Grass,
     Sand,
+    Log,
+    Leaf,
     Size
 };

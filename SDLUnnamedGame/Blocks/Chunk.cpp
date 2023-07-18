@@ -1,4 +1,5 @@
 #include "Chunk.h"
+#include <fstream>
 
 #include "../Globals.h"
 extern std::shared_ptr<MGL::Texture> blockTextures[BlockTypes::Size];
