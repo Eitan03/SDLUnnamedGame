@@ -140,7 +140,7 @@ void EventFactoryImpl::runEvents() {
 void EventFactoryImpl::proccessEvent(MGL::Event event) {
 	switch (event.type) {
 	case static_cast<uint32_t>(MGL::Events::QUIT):
-		quitApplication = false;
+		quitApplication = true;
 		break;
 
 		case static_cast<uint32_t>(MGL::Events::MOUSEMOTION):
@@ -203,7 +203,7 @@ void EventFactoryImpl::changeScale(int32_t mouseMovement)
 		{
 			camera.addToScale(scaleDelta);
 		}
-		else if (mouseMovement < 0) // scroll down
+		else if (mouseMovement < 0 && camera.getScale() > 0.1) // scroll down
 		{
 			camera.addToScale(-scaleDelta);
 		}
@@ -234,6 +234,8 @@ void EventFactoryImpl::keydownEvent(MGL::Events_KeyCode key) {
 	switch (key)
 	{
 	case MGL::Events_KeyCode::w :
+		auto mousePos = MGL::PointI{ (int)floor(mousePosition.x), (int)floor(mousePosition.y) };
+		chunkManager->setBlock(std::make_unique<Block>(mousePos, blockTextures[Sand], Sand), 1, mousePos);
 		std::cout << "pressed W" << std::endl;
 		break;
 	}
@@ -241,6 +243,7 @@ void EventFactoryImpl::keydownEvent(MGL::Events_KeyCode key) {
 }
 
 void close() {
+	std::cout << "beginning shutdown..." << std::endl;
 	MGL::close();
 	closeGameEngine();
 }

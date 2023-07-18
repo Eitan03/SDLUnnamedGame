@@ -1,4 +1,5 @@
 #include "ChunkManager.h"
+#include <cmath>
 
 ChunkManager::ChunkManager(Camera* camera)
 {
@@ -6,6 +7,7 @@ ChunkManager::ChunkManager(Camera* camera)
 
 ChunkManager::~ChunkManager()
 {
+	std::cout << "called chunk manager dsetructor" << std::endl;
 }
 
 void ChunkManager::loadChunk(MGL::PointI pos)
@@ -35,11 +37,12 @@ void ChunkManager::update(MGL::PointI cameraPosition, float scale)
 	MGL::PointI cameraPos = (MGL::PointI)floor( (MGL::PointF)cameraPosition / (float)Block::getSizeScaled() );
 	MGL::PointI cameraChunkPos = (MGL::PointI)floor( (MGL::PointF)cameraPos / (float)CHUNK_SIZE );
 	
-	updateLoadedChunks( chunksToLoad(cameraChunkPos, scale) );
+	updateLoadedChunks( getChunksToLoad(cameraChunkPos, scale) );
 	
 }
 
-std::set<MGL::PointI> ChunkManager::chunksToLoad(MGL::PointI cameraChunkPosition, float scale) {
+std::set<MGL::PointI> ChunkManager::getChunksToLoad(MGL::PointI cameraChunkPosition, float scale) {
+	// return std::set<MGL::PointI>{MGL::PointI{ 0, 0 }};
 	std::set<MGL::PointI> chunksToLoad;
 	
 
@@ -75,6 +78,23 @@ void ChunkManager::updateLoadedChunks(std::set<MGL::PointI> chunksToLoad) {
 			this->loadChunk(it);
 		}
 	}
+}
+
+void ChunkManager::setBlock(std::unique_ptr<Block> block, int layer, MGL::PointI position)
+{
+	MGL::PointI chunkPos = MGL::PointI{ (int)std::floor(position.x / (CHUNK_SIZE * 1.0)), (int)std::floor(position.y / (CHUNK_SIZE * 1.0)) };
+	MGL::PointI blockPos = position - (chunkPos * CHUNK_SIZE);
+	/*
+	if (chunkPos.x < 0) {
+		blockPos.x += chunkPos.x;
+	}
+	if (chunkPos.y < 0) {
+		blockPos.y += chunkPos.y;
+	}*/
+	if (loadedChunks.find(chunkPos) == loadedChunks.end()) {
+		loadChunk(chunkPos);
+	}
+	loadedChunks[chunkPos]->setBlock(std::move(block), layer, blockPos);
 }
 
 // TODO only calc if needed

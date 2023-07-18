@@ -154,6 +154,11 @@ namespace MGL {
 		return lhs.x < rhs.x || (rhs.x == lhs.x && rhs.y < lhs.y);
 	}
 
+	template<typename L, typename R>
+	auto operator>(const Point_impl<L>& lhs, const Point_impl<R>& rhs) {
+		return lhs.x > rhs.x || (rhs.x == lhs.x && rhs.y > lhs.y);
+	}
+
 	//math functions
 	template<typename L>
 	Point_impl<L> floor(const Point_impl<L>& lhs) {
