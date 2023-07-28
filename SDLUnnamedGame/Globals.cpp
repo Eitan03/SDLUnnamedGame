@@ -7,13 +7,13 @@
 #include <MyGraphicsLibrary/Texture.h>
 
 Camera camera = Camera();
+std::shared_ptr<MGL::Texture> blockTextures[BlockTypes::Size];
 
 Colors colors = {
 				{255, 255, 255}, //White
 				{0 ,0 ,0} //Black
 };
 
-std::shared_ptr<MGL::Texture> blockTextures[BlockTypes::Size];
 void setUpTextures(MGL::Renderer& renderer) {
 	//setting up textures
 	/*

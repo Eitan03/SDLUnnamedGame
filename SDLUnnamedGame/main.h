@@ -15,6 +15,7 @@
 #include "GameEngine/Camera.h"
 #include "Blocks/Block.h"
 #include "Blocks/ChunkManager.h"
+#include "Blocks/Generators/StructureGenerator.h"
 
 #include <MyGraphicsLibrary/Timer.h>
 
@@ -26,7 +27,6 @@ void close();
 void closeGameEngine();
 
 extern Camera camera;
-extern std::shared_ptr<MGL::Texture> blockTextures[BlockTypes::Size];
 extern Colors colors;
 extern void setUpTextures(MGL::Renderer& renderer);
 
@@ -52,7 +52,10 @@ std::unique_ptr<MGL::Text> mousePositionABSText;
 std::unique_ptr<MGL::Text> fpsText;
 void renderMouseRect();
 
-std::unique_ptr<ChunkManager> chunkManager;
+
+std::unique_ptr<StructureGenerator> treeStructure;
+
+std::shared_ptr<ChunkManager> chunkManager;
 
 
 class EventFactory {

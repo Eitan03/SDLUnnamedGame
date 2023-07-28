@@ -81,8 +81,9 @@ void ChunkManager::updateLoadedChunks(std::set<MGL::PointI> chunksToLoad) {
 	}
 }
 
-void ChunkManager::setBlock(std::unique_ptr<Block> block, int layer, MGL::PointI position)
+void ChunkManager::setBlock(std::unique_ptr<Block> block, int layer)
 {
+	auto position = block->getPosition();
 	MGL::PointI chunkPos = MGL::PointI{ (int)std::floor(position.x / (CHUNK_SIZE * 1.0)), (int)std::floor(position.y / (CHUNK_SIZE * 1.0)) };
 	MGL::PointI blockPos = position - (chunkPos * CHUNK_SIZE);
 	if (loadedChunks.find(chunkPos) == loadedChunks.end()) {
@@ -96,3 +97,4 @@ void ChunkManager::cameraMoved(Camera* cam)
 {
 	this->update(cam->getLocation(), cam->getScale());
 }
+

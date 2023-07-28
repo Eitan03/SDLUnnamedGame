@@ -20,3 +20,5 @@ protected:
 	static const int size = SCREEN_WIDTH / 16;
 };
 
+std::unique_ptr<Block> createBlock(int textureNumber, MGL::PointI position); // takes the number from the file and returns a block
+
