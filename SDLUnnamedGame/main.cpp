@@ -24,13 +24,14 @@ void initlializeGameEngine()
 	font = MGL::initializeFont("assets\\fonts\\Pixeled.ttf");
 	
 	Chunk::SetRenderer(renderer);
-	chunkManager = std::make_unique<ChunkManager>(&(camera)); //TODO shared ptr?
+	chunkManager = std::make_shared<ChunkManager>(&(camera)); //TODO shared ptr?
 
 	mousePositionABSText = std::make_unique<MGL::Text>("-1, -1", colors.White, *font, *renderer);
 	fpsText = std::make_unique<MGL::Text>("fps: -1", colors.White, *font, *renderer);
 
+	treeStructure = std::unique_ptr<StructureGenerator>(StructureGenerator::loadFromFile("assets\\structures\\tree.struct", chunkManager, "tree"));
+
 	eventFactory = std::make_unique<EventFactoryImpl>(EventFactoryImpl());
-	
 
 	cameraMovmentsTimer = MGL::Timer();
 
@@ -231,12 +232,16 @@ void EventFactoryImpl::windowEvent(uint8_t event) {
 
 void EventFactoryImpl::keydownEvent(MGL::Events_KeyCode key) {
 
+	auto mousePos = MGL::PointI{ (int)floor(mousePosition.x), (int)floor(mousePosition.y) };
 	switch (key)
 	{
 	case MGL::Events_KeyCode::w :
-		auto mousePos = MGL::PointI{ (int)floor(mousePosition.x), (int)floor(mousePosition.y) };
-		chunkManager->setBlock(std::make_unique<Block>(mousePos, blockTextures[Sand], Sand), 1, mousePos);
+		chunkManager->setBlock(createBlock(Sand, mousePos), 1);
 		std::cout << "pressed W" << std::endl;
+		break;
+	case MGL::Events_KeyCode::e :
+		treeStructure->place(mousePos);
+		std::cout << "pressed E" << std::endl;
 		break;
 	}
 

@@ -164,31 +164,31 @@
     <ClCompile Include="Blocks\ChunkManager.cpp" />
     <ClCompile Include="GameEngine\Camera.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
-    <ClCompile Include="Blocks\worldGenerators\GrassWorldGenerator.cpp" />
+    <ClCompile Include="Blocks\Generators\WorldGenerators\GrassWorldGenerator.cpp" />
     <ClCompile Include="GameEngine\Gridable.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Blocks\worldGenerators\PossionDiscWorldGenerator.cpp" />
+    <ClCompile Include="Blocks\Generators\WorldGenerators\PossionDiscWorldGenerator.cpp" />
     <ClCompile Include="Globals.cpp" />
-    <ClCompile Include="Blocks\Structure.cpp" />
+    <ClCompile Include="Blocks\Generators\StructureGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Blocks\Block.h" />
     <ClInclude Include="Blocks\Chunk.h" />
     <ClInclude Include="Blocks\ChunkManager.h" />
-    <ClInclude Include="Blocks\worldGenerators\GrassWorldGenerator.h" />
+    <ClInclude Include="Blocks\Generators\WorldGenerators\GrassWorldGenerator.h" />
     <ClInclude Include="GameEngine\Gridable.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="Blocks\worldGenerators\PossionDiscWorldGenerator.h" />
+    <ClInclude Include="Blocks\Generators\WorldGenerators\PossionDiscWorldGenerator.h" />
     <ClInclude Include="GameEngine\Camera.h" />
     <ClInclude Include="GameEngine\GameObject.h" />
     <ClInclude Include="Globals.h" />
-    <ClInclude Include="Blocks\Structure.h" />
+    <ClInclude Include="Blocks\Generators\StructureGenerator.h" />
     <ClInclude Include="tinyxml2\tinyxml2 .h" />
     <ClInclude Include="Utilities.h" />
-    <ClInclude Include="Blocks\worldGenerators\WorldGenerator.h" />
+    <ClInclude Include="Blocks\Generators\WorldGenerators\WorldGenerator.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Blocks\Structures\Tree.struct" />
+    <None Include="assets\structures\tree.struct" />
     <None Include="DLL\libjpeg-9.dll" />
     <None Include="DLL\libpng16-16.dll" />
     <None Include="DLL\libtiff-5.dll" />

@@ -19,3 +19,5 @@ enum BlockTypes {
     Leaf,
     Size
 };
+
+extern std::shared_ptr<MGL::Texture> blockTextures[BlockTypes::Size];

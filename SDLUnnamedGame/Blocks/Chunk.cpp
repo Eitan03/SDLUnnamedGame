@@ -1,8 +1,7 @@
 #include "Chunk.h"
 #include <fstream>
-
 #include "../Globals.h"
-extern std::shared_ptr<MGL::Texture> blockTextures[BlockTypes::Size];
+
 std::unique_ptr<WorldGenerator> Chunk::worldGenerator = std::make_unique<PossionDiscWorldGenerator>(PossionDiscWorldGenerator());
 std::shared_ptr<MGL::Renderer> Chunk::renderer = std::shared_ptr<MGL::Renderer>();
 
@@ -61,7 +60,6 @@ std::array<std::array<std::array<int, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::l
 	int row = 0;
 	int column = 0;
 
-	auto texturesToDraw = std::map<std::shared_ptr<MGL::Texture>, std::vector<MGL::PointI>>();
 
 	std::string line;
 	while (getline(ifStream, line)) {
@@ -114,7 +112,7 @@ void Chunk::loadChunk()
 
 				int blockTypeID = chunkData[currentLayer][row][column];
 				if (blockTypeID != -1) {
-					this->blocks[currentLayer][row][column] = createBlock(blockTypeID, MGL::PointI(column, row));
+					this->blocks[currentLayer][row][column] = createBlock(blockTypeID,this->position +  MGL::PointI(column, row));
 
 					std::shared_ptr<MGL::Texture> texture = this->blocks[currentLayer][row][column]->getTexture();
 					if (texturesToDraw.find(texture) == texturesToDraw.end()) {
@@ -129,13 +127,6 @@ void Chunk::loadChunk()
 		static_cast<MGL::TargetTexture*>(this->texture.get())->DrawToTexture(texturesToDraw);
 		// TODO debug func that opens a texture in a differenty window?
 	}
-}
-
-
-std::unique_ptr<Block> Chunk::createBlock(int textureNumber, MGL::PointI position)
-{
-	return std::make_unique<Block>((MGL::PointI)(this->position) + position, blockTextures[textureNumber], textureNumber);
-
 }
 
 std::array<std::array<std::array<int, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::createChunk(const char* path)

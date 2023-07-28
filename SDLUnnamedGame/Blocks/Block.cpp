@@ -1,4 +1,5 @@
 #include "Block.h"
+#include "../Globals.h"
 
 int Block::sizeScaled = Block::getSize();
 
@@ -14,4 +15,9 @@ Block::~Block()
 void Block::update(Camera* cam)
 {
 	sizeScaled =  cam->applyScale(Block::size);
+}
+
+std::unique_ptr<Block> createBlock(int textureNumber, MGL::PointI position)
+{
+	return std::make_unique<Block>(position, blockTextures[textureNumber], textureNumber);
 }

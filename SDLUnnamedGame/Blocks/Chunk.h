@@ -4,8 +4,8 @@
 #include <MyGraphicsLibrary/TargetTexture.h>
 
 #include "Block.h"
-#include "worldGenerators/GrassWorldGenerator.h"
-#include "worldGenerators/PossionDiscWorldGenerator.h"
+#include "Generators/WorldGenerators/GrassWorldGenerator.h"
+#include "Generators/WorldGenerators/PossionDiscWorldGenerator.h"
 #define CHUNK_SIZE 8
 #define LAYERS 3
 /*
@@ -31,7 +31,6 @@ protected:
 	
 	std::array<std::array<std::array<int, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> loadBlockIdsFromFile(const char* path);
 	void loadChunk();
-	std::unique_ptr<Block> createBlock(int textureNumber, MGL::PointI position); // takes the number from the file and returns a block
 	std::array<std::array<std::array<int, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> createChunk(const char* path);
 	void saveChunk(const char* path);
 
