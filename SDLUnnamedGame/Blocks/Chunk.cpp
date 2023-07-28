@@ -1,5 +1,6 @@
 #include "Chunk.h"
-#include <fstream>
+#include <sstream>
+#include <iostream>
 
 #include "../Globals.h"
 extern std::shared_ptr<MGL::Texture> blockTextures[BlockTypes::Size];
@@ -24,7 +25,7 @@ Chunk::Chunk(MGL::PointI position) : Gridable(position, { Block::getSize() * CHU
 Chunk::~Chunk()
 {
 	std::string path = std::string("./chunks/" + std::to_string((int)(this->position.x)) + "," + std::to_string((int)(this->position.y)) + ".chunk");
-	saveChunk(path.c_str());
+	// saveChunk(path.c_str());
 }
 
 void Chunk::render()
@@ -74,14 +75,15 @@ std::array<std::array<std::array<int, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::l
 			continue;
 		}
 		
-		while (line != "" && line.find(",") != std::string::npos) {
+		std::stringstream line;
+		std::string numberAsString;
+		while (getline(line, numberAsString, ',')) {
 			if (row > CHUNK_SIZE || column > CHUNK_SIZE || currentLayer < 0 || currentLayer > LAYERS) {
 				throw GameEngineException("either layer error, or row or column too big");
 			}
-			int blockTypeID = std::stoi(line.substr(0, line.find(",")));
+			int blockTypeID = std::stoi(numberAsString);
 			chunkData[currentLayer][row][column] = blockTypeID;
 			row++;
-			line = line.substr(line.find(",") + 1);
 		}
 		row = 0;
 		column++;
@@ -121,7 +123,7 @@ void Chunk::loadChunk()
 						texturesToDraw[texture] = std::vector<MGL::PointI>();
 					}
 					MGL::PointI textureSize = texture->getTextureRect().getSize();
-					texturesToDraw[texture].push_back({ row * textureSize.x, column * textureSize.y });
+					texturesToDraw[texture].emplace_back(MGL::PointI{ row * textureSize.x, column * textureSize.y });
 
 				}
 			}
