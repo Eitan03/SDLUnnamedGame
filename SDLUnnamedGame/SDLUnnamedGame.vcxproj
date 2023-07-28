@@ -169,6 +169,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Blocks\worldGenerators\PossionDiscWorldGenerator.cpp" />
     <ClCompile Include="Globals.cpp" />
+    <ClCompile Include="Blocks\Structure.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Blocks\Block.h" />
@@ -181,11 +182,13 @@
     <ClInclude Include="GameEngine\Camera.h" />
     <ClInclude Include="GameEngine\GameObject.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="Blocks\Structure.h" />
     <ClInclude Include="tinyxml2\tinyxml2 .h" />
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="Blocks\worldGenerators\WorldGenerator.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Blocks\Structures\Tree.struct" />
     <None Include="DLL\libjpeg-9.dll" />
     <None Include="DLL\libpng16-16.dll" />
     <None Include="DLL\libtiff-5.dll" />
