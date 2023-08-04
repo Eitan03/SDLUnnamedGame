@@ -1,7 +1,5 @@
 #include "Chunk.h"
-#include <sstream>
-#include <iostream>
-
+#include <fstream>
 #include "../Globals.h"
 
 std::unique_ptr<WorldGenerator> Chunk::worldGenerator = std::make_unique<PossionDiscWorldGenerator>(PossionDiscWorldGenerator());
