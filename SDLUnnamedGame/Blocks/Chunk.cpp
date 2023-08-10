@@ -25,7 +25,7 @@ Chunk::Chunk(MGL::PointI position) : Gridable(position, { Block::getSize() * CHU
 Chunk::~Chunk()
 {
 	std::string path = std::string("./chunks/" + std::to_string((int)(this->position.x)) + "," + std::to_string((int)(this->position.y)) + ".chunk");
-	// saveChunk(path.c_str());
+	saveChunk(path.c_str());
 }
 
 void Chunk::render()
@@ -172,12 +172,7 @@ void Chunk::saveChunk(const char* path)
 		ofStream << "layer " << std::to_string(layer) << ":" << "\n";
 		for (int i = 0; i < CHUNK_SIZE; i++) {
 			for (int j = 0; j < CHUNK_SIZE; j++) {
-				if (this->blocks[layer][j][i]) {
-					ofStream << std::to_string(this->blocks[layer][j][i]) + ",";
-				}
-				else {
-					ofStream << "0,";
-				}
+				ofStream << std::to_string(this->blocks[layer][j][i]) + ",";
 			}
 			ofStream << "\n";
 		}

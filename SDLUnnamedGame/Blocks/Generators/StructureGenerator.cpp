@@ -3,7 +3,7 @@
 #include <map>
 #include "../../Globals.h"
 
-StructureGenerator::StructureGenerator(std::weak_ptr<ChunkManager> chunkManager, std::string name, std::array<std::vector<std::vector<int>>, LAYERS> blocks): 
+StructureGenerator::StructureGenerator(std::weak_ptr<ChunkManager> chunkManager, std::string name, std::array<std::vector<std::vector<ID>>, LAYERS> blocks): 
 	name(name), chunkManager(chunkManager),
 	blocks(blocks)
 {
@@ -33,7 +33,7 @@ void StructureGenerator::place(MGL::PointI position)
 						chunkManagerPtr->setBlock(
 							this->blocks[layer][row][col],
 							layer,
-							MGL::PointI{ row, col }
+							position + MGL::PointI{ row, col }
 						);
 					}
 				}
@@ -42,12 +42,12 @@ void StructureGenerator::place(MGL::PointI position)
 	}
 }
 
-std::array<std::vector<std::vector<int>>, LAYERS> StructureGenerator::loadBlocksIdFromFile(const char* path)
+std::array<std::vector<std::vector<ID>>, LAYERS> StructureGenerator::loadBlocksIdFromFile(const char* path)
 {
-	std::array<std::vector<std::vector<int>>, LAYERS> blocksId{
-			std::vector<std::vector<int>>{},
-			std::vector<std::vector<int>>{},
-			std::vector<std::vector<int>>{}
+	std::array<std::vector<std::vector<ID>>, LAYERS> blocksId{
+			std::vector<std::vector<ID>>{},
+			std::vector<std::vector<ID>>{},
+			std::vector<std::vector<ID>>{}
 		};
 	std::ifstream ifStream;
 	ifStream.open(path);
@@ -75,8 +75,12 @@ std::array<std::vector<std::vector<int>>, LAYERS> StructureGenerator::loadBlocks
 		}
 
 		if (line.find("layer ") == 0) { //if the line starts with "layer "
+			if (size[0] == -1) {
+				throw GameEngineException("size was not specified in struct!");
+			}
+
 			currentLayer = std::stoi(line.substr(5, line.size() - 1));
-			blocksId[currentLayer] = std::vector<std::vector<int>>(size[0], std::vector<int>(size[1], 0));
+			blocksId[currentLayer] = std::vector<std::vector<ID>>(size[0], std::vector<ID>(size[1], 0));
 
 			row = 0;
 			column = 0;
@@ -87,7 +91,7 @@ std::array<std::vector<std::vector<int>>, LAYERS> StructureGenerator::loadBlocks
 			if (row > CHUNK_SIZE || column > CHUNK_SIZE || currentLayer < 0 || currentLayer > LAYERS) {
 				throw GameEngineException("either layer error, or row or column too big");
 			}
-			int blockTypeID = std::stoi(line.substr(0, line.find(",")));
+			ID blockTypeID = std::stoi(line.substr(0, line.find(",")));
 			blocksId[currentLayer][row][column] = blockTypeID;
 			row++;
 			auto nextDelim = line.find(",");
