@@ -28,12 +28,12 @@ void StructureGenerator::place(MGL::PointI position)
 
 		for (int row = 0; row < this->blocks[layer].size(); row++) {
 			for (int col = 0; col < this->blocks[layer][0].size(); col++) {
-				if (this->blocks[layer][row][col] != -1) {
+				if (this->blocks[layer][row][col] != 0) {
 					if (auto chunkManagerPtr = this->chunkManager.lock()) {
-						auto temp = createBlock(this->blocks[layer][row][col], position + MGL::PointI{ row, col });
 						chunkManagerPtr->setBlock(
-							std::move(temp),
-							layer
+							this->blocks[layer][row][col],
+							layer,
+							MGL::PointI{ row, col }
 						);
 					}
 				}
@@ -76,7 +76,7 @@ std::array<std::vector<std::vector<int>>, LAYERS> StructureGenerator::loadBlocks
 
 		if (line.find("layer ") == 0) { //if the line starts with "layer "
 			currentLayer = std::stoi(line.substr(5, line.size() - 1));
-			blocksId[currentLayer] = std::vector<std::vector<int>>(size[0], std::vector<int>(size[1], -1));
+			blocksId[currentLayer] = std::vector<std::vector<int>>(size[0], std::vector<int>(size[1], 0));
 
 			row = 0;
 			column = 0;

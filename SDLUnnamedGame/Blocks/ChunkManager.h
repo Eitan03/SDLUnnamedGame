@@ -19,7 +19,7 @@ public:
 	std::set<MGL::PointI> getChunksToLoad(MGL::PointI cameraChunkPosition, float scale);
 	void updateLoadedChunks(std::set<MGL::PointI> chunksToLoad);
 
-	void setBlock(std::unique_ptr<Block> block, int layer);
+	void setBlock(ID blockId, int layer, MGL::PointI position);
 
 	// observer pattren
 	void cameraMoved(Camera* cam);

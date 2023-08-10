@@ -1,4 +1,5 @@
 #include "PossionDiscWorldGenerator.h"
+#include "../../../Globals.h"
 
 
 PossionDiscWorldGenerator::PossionDiscWorldGenerator() {
@@ -9,10 +10,10 @@ int PossionDiscWorldGenerator::getBlock(MGL::PointI position) {
 	
 	MGL::PointI currPosition = position; // abs(position) % (int)sampleSize;
 	if (std::find(points.begin(), points.end(), currPosition) != points.end()) {
-		return 1;
+		return BlockTypes::Sand;
 	}
 	else {
-		return 0;
+		return BlockTypes::Grass;
 	}
 
 }

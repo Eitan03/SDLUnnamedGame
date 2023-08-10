@@ -1,4 +1,5 @@
 #include "grassWorldGenerator.h"
+#include "../../../Globals.h"
 
 GrassWorldGenerator::GrassWorldGenerator()
 {
@@ -6,5 +7,5 @@ GrassWorldGenerator::GrassWorldGenerator()
 
 int GrassWorldGenerator::getBlock(MGL::PointI pos)
 {
-    return 0;
+    return BlockTypes::Grass;
 }

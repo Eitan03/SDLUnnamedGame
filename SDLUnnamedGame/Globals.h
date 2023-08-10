@@ -4,6 +4,7 @@
 
 #include "Utilities.h"
 #include "./GameEngine/Camera.h"
+#include "./GameEngine/Camera.h"
 #include <MyGraphicsLibrary/Texture.h>
 
 #define BLOCK_TEXTURE_SIZE 250
@@ -13,6 +14,7 @@ struct Colors {
     const MGL::Color Black;
 };
 enum BlockTypes {
+    Null = 0,
     Grass,
     Sand,
     Log,
