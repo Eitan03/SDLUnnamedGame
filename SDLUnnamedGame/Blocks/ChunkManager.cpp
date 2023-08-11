@@ -81,15 +81,14 @@ void ChunkManager::updateLoadedChunks(std::set<MGL::PointI> chunksToLoad) {
 	}
 }
 
-void ChunkManager::setBlock(std::unique_ptr<Block> block, int layer)
+void ChunkManager::setBlock(ID blockId, int layer, MGL::PointI position)
 {
-	auto position = block->getPosition();
 	MGL::PointI chunkPos = MGL::PointI{ (int)std::floor(position.x / (CHUNK_SIZE * 1.0)), (int)std::floor(position.y / (CHUNK_SIZE * 1.0)) };
 	MGL::PointI blockPos = position - (chunkPos * CHUNK_SIZE);
 	if (loadedChunks.find(chunkPos) == loadedChunks.end()) {
 		loadChunk(chunkPos);
 	}
-	loadedChunks[chunkPos]->setBlock(std::move(block), layer, blockPos);
+	loadedChunks[chunkPos]->setBlock(blockId, layer, blockPos);
 }
 
 // TODO only calc if needed

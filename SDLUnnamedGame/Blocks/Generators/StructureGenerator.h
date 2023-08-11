@@ -6,7 +6,7 @@
 class StructureGenerator
 {
 public:
-	StructureGenerator(std::weak_ptr<ChunkManager> chunkManager, std::string name, std::array<std::vector<std::vector<int>>, LAYERS> blocks);
+	StructureGenerator(std::weak_ptr<ChunkManager> chunkManager, std::string name, std::array<std::vector<std::vector<ID>>, LAYERS> blocks);
 
 	
 	// Warning! returns an heap object!
@@ -15,10 +15,10 @@ public:
 
 	void place(MGL::PointI position);
 protected:
-	std::array<std::vector<std::vector<int>>, LAYERS> blocks;
+	std::array<std::vector<std::vector<ID>>, LAYERS> blocks;
 	std::string name;
 	std::weak_ptr<ChunkManager> chunkManager;
 
-	static std::array<std::vector<std::vector<int>>, LAYERS> loadBlocksIdFromFile(const char* path);
+	static std::array<std::vector<std::vector<ID>>, LAYERS> loadBlocksIdFromFile(const char* path);
 };
 

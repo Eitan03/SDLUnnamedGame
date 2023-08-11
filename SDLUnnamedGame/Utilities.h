@@ -4,6 +4,8 @@
 
 #include <MyGraphicsLibrary/Point.h>
 
+typedef unsigned int ID;
+
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 

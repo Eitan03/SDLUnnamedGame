@@ -1,6 +1,8 @@
 #include "Chunk.h"
+#include <sstream>
 #include <fstream>
 #include "../Globals.h"
+#include "./Block.h"
 
 std::unique_ptr<WorldGenerator> Chunk::worldGenerator = std::make_unique<PossionDiscWorldGenerator>(PossionDiscWorldGenerator());
 std::shared_ptr<MGL::Renderer> Chunk::renderer = std::shared_ptr<MGL::Renderer>();
@@ -12,7 +14,7 @@ Chunk::Chunk(MGL::PointI position) : Gridable(position, { Block::getSize() * CHU
 	for (int layer = 0; layer < LAYERS; layer++) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int column = 0; column < CHUNK_SIZE; column++) {
-				this->blocks[layer][row][column] = std::unique_ptr<Block>{}; // TODO any cleaner way to init as empty?
+				this->blocks[layer][row][column] = 0; // TODO any cleaner way to init as empty?
 			}
 		}
 	}
@@ -23,7 +25,7 @@ Chunk::Chunk(MGL::PointI position) : Gridable(position, { Block::getSize() * CHU
 Chunk::~Chunk()
 {
 	std::string path = std::string("./chunks/" + std::to_string((int)(this->position.x)) + "," + std::to_string((int)(this->position.y)) + ".chunk");
-	// saveChunk(path.c_str());
+	saveChunk(path.c_str());
 }
 
 void Chunk::render()
@@ -31,7 +33,7 @@ void Chunk::render()
 	Gridable::render(this->position * CHUNK_SIZE, this->size);
 }
 
-void Chunk::setBlock(std::unique_ptr<Block> block, int layer, MGL::PointI position)
+void Chunk::setBlock(ID blockId, int layer, MGL::PointI position)
 {
 	if (
 		position.x >= CHUNK_SIZE || position.y >= CHUNK_SIZE ||
@@ -41,18 +43,18 @@ void Chunk::setBlock(std::unique_ptr<Block> block, int layer, MGL::PointI positi
 		throw GameEngineException("invalid block to save!");
 	}
 
-	this->blocks[layer][position.x][position.y] = std::move(block);
+	this->blocks[layer][position.x][position.y] = blockId;
 	system("cls");
 	std::cout << "layer " << layer << std::endl;
 	this->printLayer(layer);
 
-	std::shared_ptr<MGL::Texture> blockTexture = this->blocks[layer][position.x][position.y]->getTexture();
+	std::shared_ptr<MGL::Texture> blockTexture = Block::getTexture(this->blocks[layer][position.x][position.y]);
 	static_cast<MGL::TargetTexture*>(this->texture.get())->DrawToTexture(blockTexture, position * blockTexture->getTextureRect().getSize());
 }
 
-std::array<std::array<std::array<int, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::loadBlockIdsFromFile(const char* path) {
+std::array<std::array<std::array<ID, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::loadBlockIdsFromFile(const char* path) {
 
-	std::array<std::array<std::array<int, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> chunkData{};
+	std::array<std::array<std::array<ID, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> chunkData{};
 	std::ifstream ifStream;
 	ifStream.open(path);
 
@@ -72,9 +74,9 @@ std::array<std::array<std::array<int, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::l
 			continue;
 		}
 		
-		std::stringstream line;
+		std::istringstream lineStream(line);
 		std::string numberAsString;
-		while (getline(line, numberAsString, ',')) {
+		while (getline(lineStream, numberAsString, ',')) {
 			if (row > CHUNK_SIZE || column > CHUNK_SIZE || currentLayer < 0 || currentLayer > LAYERS) {
 				throw GameEngineException("either layer error, or row or column too big");
 			}
@@ -94,7 +96,7 @@ void Chunk::loadChunk()
 	std::string path = std::string("./chunks/" + std::to_string((int)(this->position.x)) + "," + std::to_string((int)(this->position.y)) + ".chunk");
 	std::ifstream ifStream(path);
 
-	std::array<std::array<std::array<int, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> chunkData{};
+	std::array<std::array<std::array<ID, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> chunkData{};
 	if (ifStream.good())
 	{
 		chunkData = loadBlockIdsFromFile(path.c_str());
@@ -112,10 +114,10 @@ void Chunk::loadChunk()
 			for (int column = 0; column < CHUNK_SIZE; column++) {
 
 				int blockTypeID = chunkData[currentLayer][row][column];
-				if (blockTypeID != -1) {
-					this->blocks[currentLayer][row][column] = createBlock(blockTypeID,this->position +  MGL::PointI(column, row));
+				if (blockTypeID != 0) {
+					this->blocks[currentLayer][row][column] = blockTypeID;
 
-					std::shared_ptr<MGL::Texture> texture = this->blocks[currentLayer][row][column]->getTexture();
+					std::shared_ptr<MGL::Texture> texture = Block::getTexture(this->blocks[currentLayer][row][column]);
 					if (texturesToDraw.find(texture) == texturesToDraw.end()) {
 						texturesToDraw[texture] = std::vector<MGL::PointI>();
 					}
@@ -130,10 +132,10 @@ void Chunk::loadChunk()
 	}
 }
 
-std::array<std::array<std::array<int, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::createChunk(const char* path)
+std::array<std::array<std::array<ID, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::createChunk(const char* path)
 {
 	
-	std::array<std::array<std::array<int, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> chunkData{};
+	std::array<std::array<std::array<ID, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> chunkData{};
 
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
@@ -143,13 +145,13 @@ std::array<std::array<std::array<int, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::c
 
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
-			chunkData[1][i][j] = -1;
+			chunkData[1][i][j] = 0;
 		}
 	}
 
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
-			chunkData[2][i][j] = -1;
+			chunkData[2][i][j] = 0;
 		}
 	}
 
@@ -166,16 +168,12 @@ void Chunk::saveChunk(const char* path)
 	{
 		throw GameEngineException(std::string("Failed to open file : ") + path);
 	}
+
 	for (int layer = 0; layer < LAYERS; layer++) {
 		ofStream << "layer " << std::to_string(layer) << ":" << "\n";
 		for (int i = 0; i < CHUNK_SIZE; i++) {
 			for (int j = 0; j < CHUNK_SIZE; j++) {
-				if (this->blocks[layer][j][i]) {
-					ofStream << std::to_string(this->blocks[layer][j][i]->BlockId) + ",";
-				}
-				else {
-					ofStream << "-1,";
-				}
+				ofStream << std::to_string(this->blocks[layer][j][i]) + ",";
 			}
 			ofStream << "\n";
 		}
@@ -191,7 +189,7 @@ void Chunk::printLayer(int layer)
 	for (int column = 0; column < CHUNK_SIZE; column++) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			if (this->blocks[layer][row][column]) {
-			std::cout << this->blocks[layer][row][column].get()->BlockId << ", ";
+			std::cout << this->blocks[layer][row][column] << ", ";
 			}
 			else {
 				std::cout << " , ";
