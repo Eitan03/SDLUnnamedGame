@@ -74,9 +74,9 @@ std::array<std::array<std::array<ID, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::lo
 			continue;
 		}
 		
-		std::stringstream line;
+		std::istringstream lineStream(line);
 		std::string numberAsString;
-		while (getline(line, numberAsString, ',')) {
+		while (getline(lineStream, numberAsString, ',')) {
 			if (row > CHUNK_SIZE || column > CHUNK_SIZE || currentLayer < 0 || currentLayer > LAYERS) {
 				throw GameEngineException("either layer error, or row or column too big");
 			}
@@ -168,6 +168,7 @@ void Chunk::saveChunk(const char* path)
 	{
 		throw GameEngineException(std::string("Failed to open file : ") + path);
 	}
+
 	for (int layer = 0; layer < LAYERS; layer++) {
 		ofStream << "layer " << std::to_string(layer) << ":" << "\n";
 		for (int i = 0; i < CHUNK_SIZE; i++) {
