@@ -16,7 +16,7 @@
 	2 everything else (trees, flowers, etc.)
 */
 
-class Chunk: GameObject
+class Chunk: ImmobileGameObject
 {
 public:
 	Chunk(PointI position);

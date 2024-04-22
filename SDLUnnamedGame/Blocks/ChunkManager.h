@@ -15,13 +15,21 @@ public:
 
 	void render();
 
-	void update(PointI cameraPosition, float scale);
-	std::set<PointI> chunksToLoad(PointI cameraChunkPosition, float scale);
-	void updateLoadedChunks(std::set<PointI> chunksToLoad);
-
 	// observer pattren
 	void cameraMoved(Camera* cam);
 private:
+	void update(PointI cameraPosition, float scale);
+	std::set<PointI> calculateChunksToLoad(PointI cameraChunkPosition, float scale);
+	void updateLoadedChunks(std::set<PointI> chunksToLoad);
+
 	std::map<PointI, std::unique_ptr<Chunk>> loadedChunks;
+
+
+	PointI cameraChunkPos = PointI(-1, -1);
+	float cameraScale = 0;
+	bool shouldUpdateLoadedChunks(PointI newCameraPosition, float newScale) {
+		return (newCameraPosition != this->cameraChunkPos) || (newScale != this->cameraScale);
+	}
+
 };
 

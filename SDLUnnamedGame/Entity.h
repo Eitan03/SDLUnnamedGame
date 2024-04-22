@@ -1,7 +1,7 @@
 #pragma once
-#include "./GameEngine/GameObject.h"
+#include "./GameEngine/MobileGameObject.h"
 
-class Entity: GameObject
+class Entity: MobileGameObject
 {
 public:
 	Entity(PointF position, PointI size, Texture* texture, int speed);

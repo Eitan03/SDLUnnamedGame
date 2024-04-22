@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../GameEngine/GameObject.h"
+#include "../GameEngine/ImmobileGameObject.h"
 
-class Block: public GameObject
+class Block: public ImmobileGameObject
 {
-	friend class Camera; //camera calls the update function to change sizeScaled
+	friend class Camera; // camera calls the update function to change sizeScaled
 public:
 	Block(PointI position, Texture* texture);
 	~Block();

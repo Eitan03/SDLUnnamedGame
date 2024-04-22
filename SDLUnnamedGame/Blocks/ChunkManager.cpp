@@ -35,11 +35,16 @@ void ChunkManager::update(PointI cameraPosition, float scale)
 	PointI cameraPos = (PointI)floor( (PointF)cameraPosition / (float)Block::getSizeScaled() );
 	PointI cameraChunkPos = (PointI)floor( (PointF)cameraPos / (float)CHUNK_SIZE );
 	
-	updateLoadedChunks( chunksToLoad(cameraChunkPos, scale) );
+	if (this->shouldUpdateLoadedChunks(cameraChunkPos, scale)) {
+		std::cout << "upading loaded chunks" << std::endl;
+		this->updateLoadedChunks( this->calculateChunksToLoad(cameraChunkPos, scale) );
+		this->cameraChunkPos = cameraChunkPos;
+		this->cameraScale = scale;
+	}
 	
 }
 
-std::set<PointI> ChunkManager::chunksToLoad(PointI cameraChunkPosition, float scale) {
+std::set<PointI> ChunkManager::calculateChunksToLoad(PointI cameraChunkPosition, float scale) {
 	std::set<PointI> chunksToLoad;
 	
 

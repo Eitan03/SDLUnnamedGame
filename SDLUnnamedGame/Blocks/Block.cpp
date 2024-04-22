@@ -3,7 +3,7 @@
 int Block::sizeScaled = Block::getSize();
 
 Block::Block(PointI position, Texture* texture)
-	: GameObject(PointF(position), { size, size }, texture)
+	: ImmobileGameObject(position, { size, size }, texture)
 {
 }
 

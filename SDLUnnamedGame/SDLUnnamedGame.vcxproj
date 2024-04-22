@@ -164,7 +164,8 @@
     <ClCompile Include="Blocks\ChunkManager.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameEngine\Camera.cpp" />
-    <ClCompile Include="GameEngine\GameObject.cpp" />
+    <ClCompile Include="GameEngine\ImmobileGameObject.cpp" />
+    <ClCompile Include="GameEngine\MobileGameObject.cpp" />
     <ClCompile Include="Blocks\worldGenerators\GrassWorldGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Blocks\worldGenerators\PossionDiscWorldGenerator.cpp" />
@@ -183,12 +184,13 @@
     <ClInclude Include="Blocks\ChunkManager.h" />
     <ClInclude Include="Blocks\worldGenerators\GrassWorldGenerator.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="GameEngine\ImmobileGameObject.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Blocks\worldGenerators\PossionDiscWorldGenerator.h" />
     <ClInclude Include="Primitives\Drawable.h" />
     <ClInclude Include="GameEngine\Camera.h" />
-    <ClInclude Include="GameEngine\GameObject.h" />
+    <ClInclude Include="GameEngine\MobileGameObject.h" />
     <ClInclude Include="Primitives\EventHandler.h" />
     <ClInclude Include="Primitives\Renderer.h" />
     <ClInclude Include="Primitives\TargetTexture.h" />
