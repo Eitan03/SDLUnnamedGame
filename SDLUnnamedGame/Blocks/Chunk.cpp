@@ -7,7 +7,7 @@
 std::unique_ptr<WorldGenerator> Chunk::worldGenerator = std::make_unique<PossionDiscWorldGenerator>(PossionDiscWorldGenerator());
 std::shared_ptr<MGL::Renderer> Chunk::renderer = std::shared_ptr<MGL::Renderer>();
 
-Chunk::Chunk(MGL::PointI position) : Gridable(position, { Block::getSize() * CHUNK_SIZE, Block::getSize() * CHUNK_SIZE }, nullptr), blocks()
+Chunk::Chunk(MGL::PointI position) : ImmobileGameObject(position, { Block::getSize() * CHUNK_SIZE, Block::getSize() * CHUNK_SIZE }, nullptr), blocks()
 {
 	this->texture = std::make_shared<MGL::TargetTexture>(MGL::TargetTexture(*(this->renderer.get()), { 0, 0, BLOCK_TEXTURE_SIZE * CHUNK_SIZE, BLOCK_TEXTURE_SIZE * CHUNK_SIZE }));
 
@@ -30,7 +30,7 @@ Chunk::~Chunk()
 
 void Chunk::render()
 {
-	Gridable::render(this->position * CHUNK_SIZE, this->size);
+	ImmobileGameObject::render(this->position * CHUNK_SIZE, this->size);
 }
 
 void Chunk::setBlock(ID blockId, int layer, MGL::PointI position)
@@ -73,7 +73,7 @@ std::array<std::array<std::array<ID, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::lo
 			column = 0;
 			continue;
 		}
-		
+
 		std::istringstream lineStream(line);
 		std::string numberAsString;
 		while (getline(lineStream, numberAsString, ',')) {
@@ -108,7 +108,7 @@ void Chunk::loadChunk()
 
 
 	for (int currentLayer = 0; currentLayer < LAYERS; currentLayer++) {
-	auto texturesToDraw = std::map<std::shared_ptr<MGL::Texture>, std::vector<MGL::PointI>>();
+		auto texturesToDraw = std::map<std::shared_ptr<MGL::Texture>, std::vector<MGL::PointI>>();
 
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int column = 0; column < CHUNK_SIZE; column++) {
@@ -134,12 +134,12 @@ void Chunk::loadChunk()
 
 std::array<std::array<std::array<ID, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::createChunk(const char* path)
 {
-	
+
 	std::array<std::array<std::array<ID, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> chunkData{};
 
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		for (int j = 0; j < CHUNK_SIZE; j++) {
-			chunkData[0][i][j] = worldGenerator->getBlock( (this->position * CHUNK_SIZE) + MGL::PointI(i, j) );
+			chunkData[0][i][j] = worldGenerator->getBlock((this->position * CHUNK_SIZE) + MGL::PointI(i, j));
 		}
 	}
 
@@ -189,7 +189,7 @@ void Chunk::printLayer(int layer)
 	for (int column = 0; column < CHUNK_SIZE; column++) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			if (this->blocks[layer][row][column]) {
-			std::cout << this->blocks[layer][row][column] << ", ";
+				std::cout << this->blocks[layer][row][column] << ", ";
 			}
 			else {
 				std::cout << " , ";

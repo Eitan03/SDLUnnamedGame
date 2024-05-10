@@ -6,12 +6,11 @@
 #include <MyGraphicsLibrary/Texture.h>
 #include "../GameEngine/Camera.h"
 
-// can be placed anywhere
-class GameObject : public MGL::Drawable
+class ImmobileGameObject : public MGL::Drawable
 {
 public:
-	GameObject(MGL::PointF position, MGL::PointI size, std::shared_ptr<MGL::Texture> texture);
-	~GameObject();
+	ImmobileGameObject(MGL::PointF position, MGL::PointI size, std::shared_ptr<MGL::Texture> texture);
+	~ImmobileGameObject();
 	virtual void setPosition(MGL::PointF position);
 	MGL::PointF getPosition() const;
 	MGL::PointI getSize() const { return this->size; };
@@ -26,7 +25,7 @@ public:
 
 protected:
 	std::shared_ptr<MGL::Texture> texture;
-	MGL::PointF position;
+	MGL::PointI position;
 	MGL::PointI size;
 };
 

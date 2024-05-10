@@ -1,34 +1,34 @@
-#include "GameObject.h"
+#include "MobileGameObject.h"
 #include "../Blocks/Block.h"
 
 extern Camera camera;
 
-GameObject::GameObject(MGL::PointF position, MGL::PointI size, std::shared_ptr<MGL::Texture> texture)
+MobileGameObject::MobileGameObject(MGL::PointF position, MGL::PointI size, std::shared_ptr<MGL::Texture> texture)
 	: position(position), size(size), texture(texture)
 {
 }
 
-GameObject::~GameObject()
+MobileGameObject::~MobileGameObject()
 {
 }
 
-void GameObject::setPosition(MGL::PointF position)
+void MobileGameObject::setPosition(MGL::PointF position)
 {
 	this->position.x = position.x;
 	this->position.y = position.y;
 }
 
-MGL::PointF GameObject::getPosition() const
+MGL::PointF MobileGameObject::getPosition() const
 {
 	return this->position;
 }
 
-void GameObject::changeTexture(std::shared_ptr<MGL::Texture> texture)
+void MobileGameObject::changeTexture(std::shared_ptr<MGL::Texture> texture)
 {
 	this->texture = texture;
 }
 
-void GameObject::render(MGL::PointF position, MGL::PointI size)
+void MobileGameObject::render(MGL::PointF position, MGL::PointI size)
 {
 	MGL::PointI location = (MGL::PointI)round(position * (float)Block::getSizeScaled() - ((MGL::PointF)camera.getLocation()));
 	this->texture->renderABS({
@@ -39,12 +39,12 @@ void GameObject::render(MGL::PointF position, MGL::PointI size)
 		});
 }
 
-void GameObject::render()
+void MobileGameObject::render()
 {
 	this->render(this->position, this->size);
 }
 
-void GameObject::renderABS(int x, int y) //abs render
+void MobileGameObject::renderABS(int x, int y) //abs render
 {
 	this->position.x = x;
 	this->position.y = y;

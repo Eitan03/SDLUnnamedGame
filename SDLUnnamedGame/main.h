@@ -38,7 +38,7 @@ MGL::Font* font; // erro when turining to shared_ptr?
 bool quitApplication = false;
 bool isMouseInWindow = true;
 void moveScreen();
-MGL::Timer cameraMovmentsTimer;
+MGL::Timer cameraMovmentsTimer; //TODO replace with general tick/fps system
 
 MGL::Timer fpsTimer;
 int fpsCount;
@@ -67,11 +67,11 @@ private:
 	virtual void keydownEvent(MGL::Events_KeyCode key) = 0;
 };
 
-class EventFactoryImpl : public EventFactory {
+class GameplayEventFactory : public EventFactory {
 
 public:
 
-	EventFactoryImpl();
+	GameplayEventFactory();
 	void runEvents() override;
 private:
 	void updateMousePosition();
@@ -85,7 +85,7 @@ private:
 	void keydownEvent(MGL::Events_KeyCode key) override;
 };
 
-std::unique_ptr<EventFactory> eventFactory;
+std::unique_ptr<EventFactory> gameplayEventFactory;
 
 void gameLoop();
 

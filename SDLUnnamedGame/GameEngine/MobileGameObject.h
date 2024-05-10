@@ -6,17 +6,16 @@
 #include <MyGraphicsLibrary/Texture.h>
 #include "../GameEngine/Camera.h"
 
-// can only be placed in the game grid
-class Gridable : public MGL::Drawable
+class MobileGameObject : public MGL::Drawable
 {
 public:
-	Gridable(MGL::PointI position, MGL::PointI size, std::shared_ptr<MGL::Texture> texture);
-	~Gridable();
-	virtual void setPosition(MGL::PointI position);
-	MGL::PointI getPosition() const;
+	MobileGameObject(MGL::PointF position, MGL::PointI size, std::shared_ptr<MGL::Texture> texture);
+	~MobileGameObject();
+	virtual void setPosition(MGL::PointF position);
+	MGL::PointF getPosition() const;
 	MGL::PointI getSize() const { return this->size; };
 	void changeTexture(std::shared_ptr<MGL::Texture> texture);
-	void render(MGL::PointI position, MGL::PointI size);
+	void render(MGL::PointF position, MGL::PointI size);
 	virtual void render();
 	void renderABS(int x, int y) override;
 	const std::shared_ptr<MGL::Texture> getTexture() { return this->texture; }; // TODO maybe weak ptr?
@@ -26,7 +25,7 @@ public:
 
 protected:
 	std::shared_ptr<MGL::Texture> texture;
-	MGL::PointI position;
+	MGL::PointF position;
 	MGL::PointI size;
 };
 

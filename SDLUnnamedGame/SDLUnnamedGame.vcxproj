@@ -163,9 +163,9 @@
     <ClCompile Include="Blocks\Chunk.cpp" />
     <ClCompile Include="Blocks\ChunkManager.cpp" />
     <ClCompile Include="GameEngine\Camera.cpp" />
-    <ClCompile Include="GameEngine\GameObject.cpp" />
     <ClCompile Include="Blocks\Generators\WorldGenerators\GrassWorldGenerator.cpp" />
-    <ClCompile Include="GameEngine\Gridable.cpp" />
+    <ClCompile Include="GameEngine\ImmobileGameObject.cpp" />
+    <ClCompile Include="GameEngine\MobileGameObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Blocks\Generators\WorldGenerators\PossionDiscWorldGenerator.cpp" />
     <ClCompile Include="Globals.cpp" />
@@ -176,11 +176,11 @@
     <ClInclude Include="Blocks\Chunk.h" />
     <ClInclude Include="Blocks\ChunkManager.h" />
     <ClInclude Include="Blocks\Generators\WorldGenerators\GrassWorldGenerator.h" />
-    <ClInclude Include="GameEngine\Gridable.h" />
+    <ClInclude Include="GameEngine\ImmobileGameObject.h" />
+    <ClInclude Include="GameEngine\MobileGameObject.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Blocks\Generators\WorldGenerators\PossionDiscWorldGenerator.h" />
     <ClInclude Include="GameEngine\Camera.h" />
-    <ClInclude Include="GameEngine\GameObject.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Blocks\Generators\StructureGenerator.h" />
     <ClInclude Include="tinyxml2\tinyxml2 .h" />

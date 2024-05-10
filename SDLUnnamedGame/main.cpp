@@ -1,6 +1,6 @@
 #include "main.h"
 
-int main( int argc, char* args[] ) {
+int main(int argc, char* args[]) {
 	initlialize();
 	gameLoop();
 	close();
@@ -16,22 +16,22 @@ void initlialize() {
 
 void initlializeGameEngine()
 {
-	window = std::make_shared<MGL::Window>("Game", SCREEN_WIDTH, SCREEN_HEIGHT );
-	renderer = std::make_shared<MGL::Renderer>( *window );
+	window = std::make_shared<MGL::Window>("Game", SCREEN_WIDTH, SCREEN_HEIGHT);
+	renderer = std::make_shared<MGL::Renderer>(*window);
 	renderer->setBackgroundColor(colors.Black);
 	setUpTextures(*renderer);
 
 	font = MGL::initializeFont("assets\\fonts\\Pixeled.ttf");
-	
+
 	Chunk::SetRenderer(renderer);
-	chunkManager = std::make_shared<ChunkManager>(&(camera)); //TODO shared ptr?
+	chunkManager = std::make_shared<ChunkManager>(&(camera));
 
 	mousePositionABSText = std::make_unique<MGL::Text>("-1, -1", colors.White, *font, *renderer);
 	fpsText = std::make_unique<MGL::Text>("fps: -1", colors.White, *font, *renderer);
 
 	treeStructure = std::unique_ptr<StructureGenerator>(StructureGenerator::loadFromFile("assets\\structures\\tree.struct", chunkManager, "tree"));
 
-	eventFactory = std::make_unique<EventFactoryImpl>(EventFactoryImpl());
+	gameplayEventFactory = std::make_unique<GameplayEventFactory>(GameplayEventFactory());
 
 	cameraMovmentsTimer = MGL::Timer();
 
@@ -50,7 +50,7 @@ void initlializeGame() {
 	fpsCount = 0;
 }
 
-EventFactoryImpl::EventFactoryImpl() {
+GameplayEventFactory::GameplayEventFactory() {
 	this->updateMousePosition();
 }
 
@@ -59,7 +59,7 @@ void gameLoop() {
 	{
 		updateFpsCount();
 		moveScreen();
-		eventFactory->runEvents();
+		gameplayEventFactory->runEvents();
 		render();
 		renderer->present();
 	}
@@ -130,7 +130,7 @@ void renderMouseRect()
 	}
 }
 
-void EventFactoryImpl::runEvents() { 
+void GameplayEventFactory::runEvents() {
 	MGL::Event event;
 	while (MGL::GetEvent(&event) != 0)
 	{
@@ -138,19 +138,19 @@ void EventFactoryImpl::runEvents() {
 	}
 }
 
-void EventFactoryImpl::proccessEvent(MGL::Event event) {
+void GameplayEventFactory::proccessEvent(MGL::Event event) {
 	switch (event.type) {
 	case static_cast<uint32_t>(MGL::Events::QUIT):
 		quitApplication = true;
 		break;
 
-		case static_cast<uint32_t>(MGL::Events::MOUSEMOTION):
+	case static_cast<uint32_t>(MGL::Events::MOUSEMOTION):
 		if (isMouseInWindow) {
 			this->updateMousePosition();
 		}
 		break;
 
-		case static_cast<uint32_t>(MGL::Events::MOUSEWHEEL): //on mouse scroll
+	case static_cast<uint32_t>(MGL::Events::MOUSEWHEEL): //on mouse scroll
 		this->changeScale(event.wheel.y);
 		break;
 
@@ -165,7 +165,7 @@ void EventFactoryImpl::proccessEvent(MGL::Event event) {
 
 }
 
-void EventFactoryImpl::updateMousePosition()
+void GameplayEventFactory::updateMousePosition()
 {
 	int x, y;
 	MGL::GetMouseState(&x, &y);
@@ -195,7 +195,7 @@ void EventFactoryImpl::updateMousePosition()
 	}
 }
 
-void EventFactoryImpl::changeScale(int32_t mouseMovement)
+void GameplayEventFactory::changeScale(int32_t mouseMovement)
 {
 	if (mouseMovement != 0) {
 		float scaleDelta = 0.05;
@@ -204,7 +204,7 @@ void EventFactoryImpl::changeScale(int32_t mouseMovement)
 		{
 			camera.addToScale(scaleDelta);
 		}
-		else if (mouseMovement < 0 && camera.getScale() > 0.2) // scroll down
+		else if (mouseMovement < 0 && camera.getScale() > 0.2) // scroll down // TODO not have 0.2 hardcoded
 		{
 			camera.addToScale(-scaleDelta);
 		}
@@ -216,7 +216,7 @@ void EventFactoryImpl::changeScale(int32_t mouseMovement)
 	}
 }
 
-void EventFactoryImpl::windowEvent(uint8_t event) {
+void GameplayEventFactory::windowEvent(uint8_t event) {
 	switch (event)
 	{
 	case static_cast<int>(MGL::Events_Window::WINDOWEVENT_ENTER):
@@ -230,16 +230,16 @@ void EventFactoryImpl::windowEvent(uint8_t event) {
 
 }
 
-void EventFactoryImpl::keydownEvent(MGL::Events_KeyCode key) {
+void GameplayEventFactory::keydownEvent(MGL::Events_KeyCode key) {
 
 	auto mousePos = MGL::PointI{ (int)floor(mousePosition.x), (int)floor(mousePosition.y) };
 	switch (key)
 	{
-	case MGL::Events_KeyCode::w :
+	case MGL::Events_KeyCode::w:
 		chunkManager->setBlock(Sand, 1, mousePos);
 		std::cout << "pressed W" << std::endl;
 		break;
-	case MGL::Events_KeyCode::e :
+	case MGL::Events_KeyCode::e:
 		treeStructure->place(mousePos);
 		std::cout << "pressed E" << std::endl;
 		break;

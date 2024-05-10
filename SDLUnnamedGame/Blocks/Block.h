@@ -6,7 +6,7 @@
 #include "../Globals.h"
 #include "../GameEngine/Camera.h"
 
-class Block
+static class Block
 {
 	friend class Camera; //camera calls the update function to change sizeScaled
 public:
