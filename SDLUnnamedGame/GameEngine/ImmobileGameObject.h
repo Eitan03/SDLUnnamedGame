@@ -9,13 +9,13 @@
 class ImmobileGameObject : public MGL::Drawable
 {
 public:
-	ImmobileGameObject(MGL::PointF position, MGL::PointI size, std::shared_ptr<MGL::Texture> texture);
+	ImmobileGameObject(MGL::PointI position, MGL::PointI size, std::shared_ptr<MGL::Texture> texture);
 	~ImmobileGameObject();
-	virtual void setPosition(MGL::PointF position);
-	MGL::PointF getPosition() const;
+	virtual void setPosition(MGL::PointI position);
+	MGL::PointI getPosition() const;
 	MGL::PointI getSize() const { return this->size; };
 	void changeTexture(std::shared_ptr<MGL::Texture> texture);
-	void render(MGL::PointF position, MGL::PointI size);
+	void render(MGL::PointI position, MGL::PointI size);
 	virtual void render();
 	void renderABS(int x, int y) override;
 	const std::shared_ptr<MGL::Texture> getTexture() { return this->texture; }; // TODO maybe weak ptr?
