@@ -4,7 +4,6 @@
 
 #include "Utilities.h"
 #include "./GameEngine/Camera.h"
-#include "./GameEngine/Camera.h"
 #include <MyGraphicsLibrary/Texture.h>
 
 #define BLOCK_TEXTURE_SIZE 250

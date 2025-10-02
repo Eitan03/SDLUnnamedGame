@@ -40,10 +40,12 @@ protected:
 	static std::unique_ptr<WorldGenerator> worldGenerator;
 	static std::shared_ptr<MGL::Renderer> renderer; // used for the creation of the chunk textures
 
-#ifndef NDEBUG // if debug
 private:
+#ifndef NDEBUG // if debug
 	void printLayer(int layerNum);
 #endif
+
+	void _drawToChunk(std::shared_ptr<MGL::Texture> texture, MGL::PointI position);
 
 };
 

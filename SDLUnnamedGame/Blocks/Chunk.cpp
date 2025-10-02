@@ -44,12 +44,15 @@ void Chunk::setBlock(ID blockId, int layer, MGL::PointI position)
 	}
 
 	this->blocks[layer][position.x][position.y] = blockId;
+
+#ifndef NDEBUG // if debug
 	system("cls");
 	std::cout << "layer " << layer << std::endl;
 	this->printLayer(layer);
+#endif
 
 	std::shared_ptr<MGL::Texture> blockTexture = Block::getTexture(this->blocks[layer][position.x][position.y]);
-	static_cast<MGL::TargetTexture*>(this->texture.get())->DrawToTexture(blockTexture, position * blockTexture->getTextureRect().getSize());
+	this->_drawToChunk(blockTexture, position);
 }
 
 std::array<std::array<std::array<ID, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::loadBlockIdsFromFile(const char* path) {
@@ -199,3 +202,8 @@ void Chunk::printLayer(int layer)
 	}
 }
 #endif
+
+void Chunk::_drawToChunk(std::shared_ptr<MGL::Texture> texture, MGL::PointI position)
+{
+	static_cast<MGL::TargetTexture*>(this->texture.get())->DrawToTexture(texture, position * texture->getTextureRect().getSize());
+}
