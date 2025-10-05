@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 #include <SDL.h>
-#include <SDL_image.h>
 
 #include "Drawable.h"
 #include "Renderer.h"
@@ -16,13 +15,20 @@ namespace MGL {
 
 		inline Rect getTextureRect() const { return this->textureRect; };
 
+
+
+	protected:
+		struct pimpl;
+		std::unique_ptr<pimpl> pImpl;
+	public:
+		static std::shared_ptr<Texture> CreateTextureFromImage(std::string path, Renderer& renderer, Rect textureRect);
+
 		//for the copy constructor
 		Renderer& getRenderer() const { return renderer; };
-		SDL_Texture* getTexture() const { return sdlTexture.get(); };
+		pimpl* getTexture() const { return pImpl.get(); };
 
-		static std::shared_ptr<Texture> CreateTextureFromImage(std::string path, Renderer& renderer, Rect textureRect);
 	protected:
-		std::unique_ptr<SDL_Texture, void(*)(SDL_Texture*)> sdlTexture;
+		inline pimpl* get() const { return pImpl.get(); }
 		Renderer& renderer;
 		Rect textureRect;
 	};

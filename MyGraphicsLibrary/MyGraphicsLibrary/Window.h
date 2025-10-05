@@ -1,6 +1,5 @@
 #pragma once
 #include <memory>
-#include <SDL.h>
 #include <string>
 #include <iostream>
 #include "Utilities.h"
@@ -14,9 +13,10 @@ namespace MGL {
 		Window(const Window&) = default;
 		~Window();
 	protected:
-		inline SDL_Window* get() const { return window.get(); }
+		struct pimpl;
+		inline pimpl* get() const { return pImpl.get(); }
 	private:
-		std::unique_ptr<SDL_Window, void(*)(SDL_Window*)> window;
+		std::unique_ptr<pimpl> pImpl;
 		int width;
 		int height;
 	};

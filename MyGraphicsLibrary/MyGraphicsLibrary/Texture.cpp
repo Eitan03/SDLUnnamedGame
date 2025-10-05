@@ -1,8 +1,10 @@
 #include "Texture.h"
 
+#include "./pimpl.h" 
+
 namespace MGL {
 	Texture::Texture(Renderer& renderer, Rect textureRect )
-		:	sdlTexture( nullptr, nullptr), renderer(renderer), textureRect(textureRect)
+		:	pImpl(std::make_unique<Texture::pimpl>()), renderer(renderer), textureRect(textureRect)
 	{
 	}
 
@@ -10,12 +12,12 @@ namespace MGL {
 	{
 		//Set rendering space and render to screen
 		Rect renderQuad = { x, y, this->textureRect.w, this->textureRect.h };
-		SDL_RenderCopy(renderer.get(), sdlTexture.get(), &textureRect, &renderQuad);
+		pImpl.get()->renderCopy(this->renderer, this->textureRect, renderQuad);
 	}
 
 	void Texture::renderABS(Rect locationAndSize)
 	{
-		SDL_RenderCopy(renderer.get(), sdlTexture.get(), &textureRect, &locationAndSize);
+		pImpl.get()->renderCopy(this->renderer, this->textureRect, locationAndSize);
 	}
 
 	std::shared_ptr<Texture> Texture::CreateTextureFromImage(std::string path, Renderer& renderer, Rect textureRect)

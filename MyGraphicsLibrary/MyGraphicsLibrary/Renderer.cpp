@@ -1,17 +1,13 @@
 #include "Renderer.h"
 
+#include "./pimpl.h"
+
 namespace MGL {
 	Renderer::Renderer(Window& window)
-		: renderer(SDL_CreateRenderer(window.get(), -1, SDL_RENDERER_ACCELERATED), SDL_DestroyRenderer)
-
+		: pImpl(std::make_unique<Renderer::pimpl>(window.pImpl.get()))
 	{
-		if (renderer == nullptr)
-		{
-			throw MyGraphicsLibraryException("Renderer could not be created! SDL Error: " +  std::string(SDL_GetError()) );
-		}
-		
 		SDL_RendererInfo info;
-		SDL_GetRendererInfo(this->renderer.get(), &info);
+		SDL_GetRendererInfo(this->pImpl.get()->renderer, &info);
 		if (!info.flags & SDL_RENDERER_TARGETTEXTURE) {
 			throw MyGraphicsLibraryException("Renderer does not support target texture, and the game require that");
 		}
@@ -25,24 +21,23 @@ namespace MGL {
 	void Renderer::setBackgroundColor(Color color)
 	{
 		//Initialize renderer color
-		SDL_SetRenderDrawColor(renderer.get(), color.r, color.b, color.g, color.a);
+		this->pImpl.get()->setRenderDrawColor(color);
 	}
 
 	Color Renderer::getBackgroundColor()
 	{
-		Color color = { 0, 0 ,0 , 0 };
-		SDL_GetRenderDrawColor(renderer.get(), &color.r, &color.g, &color.b, &color.a);
+		Color color = this->pImpl.get()->getRenderDrawColor();
 		return color;
 	}
 
 	void Renderer::activeBlendMode()
 	{
-		SDL_SetRenderDrawBlendMode(renderer.get(), SDL_BLENDMODE_BLEND);
+		this->pImpl.get()->activeBlendMode();
 	}
 
 	void Renderer::deactiveBlendMode()
 	{
-		SDL_SetRenderDrawBlendMode(renderer.get(), SDL_BLENDMODE_NONE);
+		this->pImpl.get()->deactiveBlendMode();
 	}
 
 	void Renderer::renderRectABS(Rect rect)
@@ -51,9 +46,9 @@ namespace MGL {
 
 		Color bgColor = this->getBackgroundColor();
 		this->activeBlendMode();
-		this->setBackgroundColor(Color(255, 255, 255, 175));
+		this->setBackgroundColor({255, 255, 255, 175});
 
-		SDL_RenderFillRect(renderer.get(), &rect);
+		this->pImpl.get()->renderFillRect(rect);
 
 		this->deactiveBlendMode();
 		this->setBackgroundColor(bgColor);
@@ -62,13 +57,13 @@ namespace MGL {
 	void Renderer::clear()
 	{
 		//Clear screen
-		SDL_RenderClear(renderer.get());
+		this->pImpl.get()->renderClear();
 	}
 
 	void Renderer::present()
 	{
 		//Update screen
-		SDL_RenderPresent(renderer.get());
+		this->pImpl.get()->renderPresent();
 	}
 }
 

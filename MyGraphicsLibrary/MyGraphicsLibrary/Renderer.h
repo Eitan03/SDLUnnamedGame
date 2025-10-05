@@ -1,6 +1,5 @@
 #pragma once
 #include <memory>
-#include <SDL.h>
 #include <string>
 
 #include "Window.h"
@@ -9,6 +8,7 @@
 namespace MGL {
 	class Renderer
 	{
+		friend class Texture;
 	public:
 		Renderer(Window& window);
 		Renderer(const Renderer&) = default;
@@ -18,15 +18,17 @@ namespace MGL {
 		void setBackgroundColor(Color color);
 		Color getBackgroundColor();
 
-		inline SDL_Renderer* get() const { return renderer.get(); }
 
 		void activeBlendMode();
 		void deactiveBlendMode();
 
 		void renderRectABS(Rect rect);
 
+	protected:
+		struct pimpl;
+		inline pimpl* get() const { return pImpl.get(); }
 	private:
-		std::unique_ptr<SDL_Renderer, void(*)(SDL_Renderer*)> renderer;
+		std::unique_ptr<pimpl> pImpl;
 	};
 }
 

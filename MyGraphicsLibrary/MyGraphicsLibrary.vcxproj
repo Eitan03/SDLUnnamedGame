@@ -167,6 +167,7 @@
     <ClInclude Include="MyGraphicsLibrary.h" />
     <ClInclude Include="MyGraphicsLibrary\Drawable.h" />
     <ClInclude Include="MyGraphicsLibrary\Event\Event.h" />
+    <ClInclude Include="MyGraphicsLibrary\pimpl.h" />
     <ClInclude Include="MyGraphicsLibrary\Point.h" />
     <ClInclude Include="MyGraphicsLibrary\Renderer.h" />
     <ClInclude Include="MyGraphicsLibrary\SetupFunctions.h" />
