@@ -80,6 +80,7 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependecies\SDL2-2.0.12\include;$(SolutionDir)Dependecies\SDL2_image-2.0.5\include;$(SolutionDir)Dependecies\SDL2_ttf-2.20.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -103,6 +104,7 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependecies\SDL2-2.0.12\include;$(SolutionDir)Dependecies\SDL2_image-2.0.5\include;$(SolutionDir)Dependecies\SDL2_ttf-2.20.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -126,6 +128,7 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependecies\SDL2-2.0.12\include;$(SolutionDir)Dependecies\SDL2_image-2.0.5\include;$(SolutionDir)Dependecies\SDL2_ttf-2.20.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -149,6 +152,7 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependecies\SDL2-2.0.12\include;$(SolutionDir)Dependecies\SDL2_image-2.0.5\include;$(SolutionDir)Dependecies\SDL2_ttf-2.20.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -163,6 +167,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="MyGraphicsLibrary\Font.h" />
     <ClInclude Include="MyGraphicsLibrary\Event\Enums.h" />
     <ClInclude Include="MyGraphicsLibrary.h" />
     <ClInclude Include="MyGraphicsLibrary\Drawable.h" />
@@ -179,6 +184,7 @@
     <ClInclude Include="MyGraphicsLibrary\Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MyGraphicsLibrary\Font.cpp" />
     <ClCompile Include="MyGraphicsLibrary.cpp" />
     <ClCompile Include="MyGraphicsLibrary\Event\Event.cpp" />
     <ClCompile Include="MyGraphicsLibrary\Renderer.cpp" />
@@ -188,6 +194,7 @@
     <ClCompile Include="MyGraphicsLibrary\Texture.cpp" />
     <ClCompile Include="MyGraphicsLibrary\Window.cpp" />
     <ClCompile Include="MyGraphicsLibrary\Timer.cpp" />
+    <ClCompile Include="MyGraphicsLibrary\pimpl.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -17,7 +17,7 @@ void initlialize() {
 void initlializeGameEngine()
 {
 	window = std::make_shared<MGL::Window>("Game", SCREEN_WIDTH, SCREEN_HEIGHT);
-	renderer = std::make_shared<MGL::Renderer>(*window);
+	renderer = std::make_shared<MGL::Renderer>(window.get());
 	renderer->setBackgroundColor(colors.Black);
 	setUpTextures(*renderer);
 
@@ -118,7 +118,7 @@ void render() {
 	renderer->clear();
 	chunkManager->render();
 	mousePositionABSText.get()->renderABS(10, 0);
-	fpsText.get()->renderABS(SCREEN_WIDTH - fpsText.get()->getRect().w - 10, 0);
+	fpsText.get()->renderABS(SCREEN_WIDTH - fpsText.get()->getTextureRect().w - 10, 0);
 	renderMouseRect();
 }
 
@@ -131,35 +131,38 @@ void renderMouseRect()
 }
 
 void GameplayEventFactory::runEvents() {
-	MGL::Event event;
-	while (MGL::GetEvent(&event) != 0)
+	
+	for (MGL::Event event = MGL::GetEvent(); event.type != MGL::EventTypes::NONE; event = MGL::GetEvent())
 	{
-		this->proccessEvent(event);
+	
+		if (event.type != MGL::EventTypes::UNKNOWN) {
+			this->proccessEvent(event);
+		}
 	}
 }
 
-void GameplayEventFactory::proccessEvent(MGL::Event event) {
+void GameplayEventFactory::proccessEvent(const MGL::Event &event) {
 	switch (event.type) {
-	case static_cast<uint32_t>(MGL::Events::QUIT):
+	case MGL::EventTypes::QUIT:
 		quitApplication = true;
 		break;
 
-	case static_cast<uint32_t>(MGL::Events::MOUSEMOTION):
+	case MGL::EventTypes::MOUSE_MOVED:
 		if (isMouseInWindow) {
 			this->updateMousePosition();
 		}
 		break;
 
-	case static_cast<uint32_t>(MGL::Events::MOUSEWHEEL): //on mouse scroll
+	case MGL::EventTypes::MOUSE_WHEEL:
 		this->changeScale(event.wheel.y);
 		break;
 
-	case static_cast<uint32_t>(MGL::Events::WINDOWEVENT):
-		this->windowEvent(event.window.event);
+	case MGL::EventTypes::WINDOW_EVENT:
+		this->windowEvent(event.window);
 		break;
 
-	case static_cast<uint32_t>(MGL::Events::KEYDOWN):
-		this->keydownEvent(static_cast<MGL::Events_KeyCode>(event.key.keysym.sym));
+	case MGL::EventTypes::KEY_PRESSED:
+		this->keydownEvent(event.pressedKey);
 		break;
 	}
 
@@ -216,13 +219,13 @@ void GameplayEventFactory::changeScale(int32_t mouseMovement)
 	}
 }
 
-void GameplayEventFactory::windowEvent(uint8_t event) {
+void GameplayEventFactory::windowEvent(MGL::WindowEventTypes event) {
 	switch (event)
 	{
-	case static_cast<int>(MGL::Events_Window::WINDOWEVENT_ENTER):
+	case MGL::WindowEventTypes::ENTER:
 		isMouseInWindow = true;
 		break;
-	case static_cast<int>(MGL::Events_Window::WINDOWEVENT_LEAVE):
+	case MGL::WindowEventTypes::LEAVE:
 		isMouseInWindow = false;
 		screenMoveDirection = None;
 		break;
@@ -230,16 +233,16 @@ void GameplayEventFactory::windowEvent(uint8_t event) {
 
 }
 
-void GameplayEventFactory::keydownEvent(MGL::Events_KeyCode key) {
+void GameplayEventFactory::keydownEvent(MGL::KeyCodes key) {
 
 	auto mousePos = MGL::PointI{ (int)floor(mousePosition.x), (int)floor(mousePosition.y) };
 	switch (key)
 	{
-	case MGL::Events_KeyCode::w:
+	case MGL::KeyCodes::w:
 		chunkManager->setBlock(Sand, 1, mousePos);
 		std::cout << "pressed W" << std::endl;
 		break;
-	case MGL::Events_KeyCode::e:
+	case MGL::KeyCodes::e:
 		treeStructure->place(mousePos);
 		std::cout << "pressed E" << std::endl;
 		break;

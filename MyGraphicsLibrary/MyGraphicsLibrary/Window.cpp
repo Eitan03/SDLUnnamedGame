@@ -11,6 +11,5 @@ namespace MGL {
 
 	Window::~Window()
 	{
-		
 	}
 }

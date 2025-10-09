@@ -1,7 +1,5 @@
 #pragma once
-//timer.h
 
-#include <SDL.h> //for Uint32
 
 namespace MGL {
     class Timer

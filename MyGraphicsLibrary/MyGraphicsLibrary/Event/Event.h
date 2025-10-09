@@ -1,18 +1,24 @@
 #pragma once
 #include <memory>
-#include <SDL.h>
 #include <string>
 #include <iostream>
 
-#include "../Renderer.h"
 #include "./Enums.h"
-#include <SDL.h>
+#include "../Point.h"
 
 namespace MGL {
 
-	typedef SDL_Event Event;
+	struct Event {
 
-	int GetEvent(Event* event);
+		EventTypes type;
+		union { // can be done with polymorphisem, but requires effecinvcy so i dont want to use it
+			PointI wheel;
+			WindowEventTypes window;
+			KeyCodes pressedKey; // keyDown or KeyUp
+		};
+	};
+
+	Event GetEvent();
 
 	uint32_t GetMouseState(int* x, int* y);
 	

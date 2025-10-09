@@ -3,14 +3,9 @@
 #include "./pimpl.h"
 
 namespace MGL {
-	Renderer::Renderer(Window& window)
-		: pImpl(std::make_unique<Renderer::pimpl>(window.pImpl.get()))
+	Renderer::Renderer(Window *window)
+		: pImpl(std::make_unique<Renderer::pimpl>(*window->pImpl.get()))
 	{
-		SDL_RendererInfo info;
-		SDL_GetRendererInfo(this->pImpl.get()->renderer, &info);
-		if (!info.flags & SDL_RENDERER_TARGETTEXTURE) {
-			throw MyGraphicsLibraryException("Renderer does not support target texture, and the game require that");
-		}
 	}
 
 	Renderer::~Renderer()

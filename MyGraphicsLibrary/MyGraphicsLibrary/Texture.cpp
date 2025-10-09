@@ -8,6 +8,8 @@ namespace MGL {
 	{
 	}
 
+	Texture::~Texture() = default;
+
 	void Texture::renderABS(int x, int y)
 	{
 		//Set rendering space and render to screen
@@ -24,22 +26,8 @@ namespace MGL {
 	{
 		std::shared_ptr<Texture> texture = std::make_shared<Texture>(renderer, textureRect);
 
-		SDL_Surface* textureSurface = IMG_Load(path.c_str());
-		if (textureSurface == NULL) {
-			throw MyGraphicsLibraryException("Unable to load image " + path + "! SDL_image Error: " + IMG_GetError());
-		}
+		texture->pImpl = std::unique_ptr<Texture::pimpl>(Texture::pimpl::textureFromPath(renderer, path, &textureRect));
 
-		texture->sdlTexture = std::unique_ptr<SDL_Texture, void(*)(SDL_Texture*)>(SDL_CreateTextureFromSurface(renderer.get() , textureSurface), SDL_DestroyTexture);
-		if ( ! texture->sdlTexture) {
-			throw MyGraphicsLibraryException("Unable to load texture " + path + "! SDL_image Error: " + IMG_GetError());
-		}
-
-		if (textureRect.w == -1) {
-			texture->textureRect.w = textureSurface->w;
-			texture->textureRect.h = textureSurface->h;
-		}
-
-		SDL_FreeSurface(textureSurface);
 		return texture;
 	}
 }

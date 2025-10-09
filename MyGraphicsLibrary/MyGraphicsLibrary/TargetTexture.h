@@ -11,6 +11,7 @@ namespace MGL {
 	{
 	public:
 		TargetTexture(Renderer& renderer, Rect textureRect = { -1, -1, -1, -1});
+		~TargetTexture(); // needed bc of pimpl
 
 		void DrawToTexture(std::map<std::shared_ptr<Texture>, std::vector<PointI>> textures);
 		void DrawToTexture(std::shared_ptr<Texture>, PointI textureLocation);

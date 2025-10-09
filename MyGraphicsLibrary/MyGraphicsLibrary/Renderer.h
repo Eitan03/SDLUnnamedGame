@@ -10,7 +10,7 @@ namespace MGL {
 	{
 		friend class Texture;
 	public:
-		Renderer(Window& window);
+		Renderer(Window *window);
 		Renderer(const Renderer&) = default;
 		~Renderer();
 		void clear();
