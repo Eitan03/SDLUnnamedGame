@@ -150,7 +150,7 @@ namespace MGL {
 
 		//Get rid of old surface
 		SDL_FreeSurface(textureSurface);
-		return new Texture::pimpl();
+		return new Texture::pimpl(texture);
 	}
 
 
@@ -167,9 +167,7 @@ namespace MGL {
 	Font::pimpl *Font::pimpl::fromPath(std::string path, int fontSize)
 	{
 		//Open the font
-		//TTF_Font* font = TTF_OpenFont(path.c_str(), fontSize);
-		//TTF_Font* font = TTF_OpenFont("C:\\Users\\eitan\\Projects\\C++\\SDLUnnamedGame\\SDLUnnamedGame\\assets\\fonts\\Pixeled.ttf", fontSize);
-		TTF_Font* font = TTF_OpenFont("C:\\Users\\eitan\\Projects\\C++\\SDLUnnamedGame\\SDLUnnamedGame\\assets\\fonts\\Pixeled.ttf", 28);
+		TTF_Font* font = TTF_OpenFont(path.c_str(), fontSize);
 		if (font == NULL)
 		{
 			throw MyGraphicsLibraryException("Failed to load font! SDL_ttf Error: " + std::string(TTF_GetError()));
