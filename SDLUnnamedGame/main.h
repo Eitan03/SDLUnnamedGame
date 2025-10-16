@@ -62,9 +62,8 @@ class EventFactory {
 public:
 	virtual void runEvents() = 0;
 private:
-	virtual  void proccessEvent(MGL::Event event) = 0;
-	virtual void windowEvent(uint8_t event) = 0;
-	virtual void keydownEvent(MGL::Events_KeyCode key) = 0;
+	virtual void proccessEvent(const MGL::Event &event) = 0;
+	virtual void keydownEvent(MGL::KeyCodes key) = 0;
 };
 
 class GameplayEventFactory : public EventFactory {
@@ -78,11 +77,10 @@ private:
 
 	void changeScale(int32_t mouseMovement);
 
-	void proccessEvent(MGL::Event event) override;
+	void proccessEvent(const MGL::Event &event) override;
 
-	void windowEvent(uint8_t event) override;
 
-	void keydownEvent(MGL::Events_KeyCode key) override;
+	void keydownEvent(MGL::KeyCodes key) override;
 };
 
 std::unique_ptr<EventFactory> gameplayEventFactory;

@@ -1,11 +1,10 @@
 #pragma once
-#include <SDL.h>
 #include "Point.h"
 
 namespace MGL {
 
 	struct MyGraphicsLibraryException : public std::exception {
-		MyGraphicsLibraryException(std::string msg): _msg(msg) {  }
+		MyGraphicsLibraryException(std::string msg) : _msg(msg) {}
 		const char* what() const throw () {
 			return _msg.c_str();
 		}
@@ -14,13 +13,18 @@ namespace MGL {
 		std::string _msg;
 	};
 
-	struct Color : public SDL_Color {
-		Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 0xFF) : SDL_Color{ r,b,g,a } {}
+	struct Color {
+		uint8_t r = 0;
+		uint8_t g = 0;
+		uint8_t b = 0;
+		uint8_t a = 0xFF;
 	};
 
-	struct Rect : public SDL_Rect {
-		Rect(int x, int y, int w, int h) : SDL_Rect{x, y, w, h} {}
-		Rect() : SDL_Rect{} {}
+	struct Rect {
+		int x = -1;
+		int y = -1;
+		int w = -1;
+		int h = -1;
 
 		void setPosition(PointI pos) {
 			this->x = pos.x;

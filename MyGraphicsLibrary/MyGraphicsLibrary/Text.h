@@ -1,11 +1,8 @@
 #pragma once
 #include <iostream>
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
 
-#include "Drawable.h"
-#include "Renderer.h"
+#include "Texture.h"
+#include "Font.h"
 
 
 namespace MGL {
@@ -19,27 +16,14 @@ namespace MGL {
 	fonts
 	size
 	*/
-	typedef TTF_Font Font;
-
-	class Text : Drawable
+	class Text : public Texture
 	{
 	public:
 		Text(std::string text, Color color, Font& font, Renderer& renderer);
 		void setText(std::string text);
 		std::string getText() const { return text; };
-		void renderABS(int x, int y) override;
-		void renderABS(PointF location);
 
-		inline Rect getRect() const { return this->textureRect; };
-
-		//for the copy constructor
-		Renderer& getRenderer() const { return renderer; };
-		SDL_Texture* getTexture() const { return texture.get(); };
-	private:
-		std::unique_ptr<SDL_Texture, void(*)(SDL_Texture*)> texture;
-		Rect textureRect;
-		Renderer& renderer;
-
+	protected:
 		std::string text;
 		Color color;
 		Font& font;
