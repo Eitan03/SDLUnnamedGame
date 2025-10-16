@@ -1,18 +1,20 @@
 #include "pimpl.h"
 #include "SetupFunctions.h"
 
-
 namespace MGL {
-	SDL_Rect convertRectToSDLRect(const Rect& rect) {
+	static SDL_Rect convertRectToSDLRect(const Rect& rect) {
 		return { rect.x, rect.y, rect.w, rect.h };
 	}
+	static SDL_FRect convertRectToSDLFRect(const Rect& rect) {
+		return { (float)rect.x, (float)rect.y, (float)rect.w, (float)rect.h };
+	}
 
-	SDL_Color convertColorToSDLColor(const Color& color) {
+	static SDL_Color convertColorToSDLColor(const Color& color) {
 		return { color.r, color.g, color.b, color.a };
 	}
 
 	Window::pimpl::pimpl(std::string name, int width, int height) :
-		window(SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN))
+		window(SDL_CreateWindow(name.c_str(), width, height, NULL /* TODO see flags and choose which are relevant */))
 	{
 		if (window == nullptr)
 		{
@@ -25,17 +27,11 @@ namespace MGL {
 	}
 
 	Renderer::pimpl::pimpl(Window::pimpl &window) :
-		renderer(SDL_CreateRenderer(window.window, -1, SDL_RENDERER_ACCELERATED))
+		renderer(SDL_CreateRenderer(window.window, NULL))
 	{
 		if (renderer == nullptr)
 		{
 			throw MyGraphicsLibraryException("Renderer could not be created! SDL Error: " + std::string(SDL_GetError()));
-		}
-
-		SDL_RendererInfo info;
-		SDL_GetRendererInfo(this->renderer, &info);
-		if ((info.flags & SDL_RENDERER_TARGETTEXTURE) == 0) {
-			throw MyGraphicsLibraryException("Renderer does not support target texture, and the game require that");
 		}
 	}
 
@@ -64,8 +60,8 @@ namespace MGL {
 	}
 
 	void Renderer::pimpl::renderFillRect(const Rect& rect) {
-		SDL_Rect sdl_rect = convertRectToSDLRect(rect);
-		SDL_RenderFillRect(renderer, &sdl_rect);
+		SDL_FRect sdl_frect = convertRectToSDLFRect(rect);
+		SDL_RenderFillRect(renderer, &sdl_frect);
 	}
 
 	void Renderer::pimpl::renderClear() {
@@ -96,20 +92,20 @@ namespace MGL {
 
 	void Texture::pimpl::renderCopy(Renderer& renderer, const Rect& textureRect, const Rect& renderQuads) {
 
-		SDL_Rect sdl_textureRect = convertRectToSDLRect(textureRect);
-		SDL_Rect sdl_renderQuads = convertRectToSDLRect(renderQuads);
-		SDL_RenderCopy(renderer.get()->renderer, texture, &sdl_textureRect, &sdl_renderQuads);
+		SDL_FRect sdl_textureRect = convertRectToSDLFRect(textureRect);
+		SDL_FRect sdl_renderQuads = convertRectToSDLFRect(renderQuads);
+		SDL_RenderTexture(renderer.get()->renderer, texture, &sdl_textureRect, &sdl_renderQuads);
 	}
 
 	Texture::pimpl *Texture::pimpl::textureFromPath(Renderer& renderer, std::string path, Rect* textureRect) {
 		SDL_Surface* textureSurface = IMG_Load(path.c_str());
 		if (textureSurface == NULL) {
-			throw MyGraphicsLibraryException("Unable to load image " + path + "! SDL_image Error: " + IMG_GetError());
+			throw MyGraphicsLibraryException("Unable to load image " + path + "! SDL_image Error: " + SDL_GetError());
 		}
 
 		SDL_Texture* sdlTexture = SDL_CreateTextureFromSurface(renderer.get()->renderer, textureSurface);
 		if (!sdlTexture) {
-			throw MyGraphicsLibraryException("Unable to load texture " + path + "! SDL_image Error: " + IMG_GetError());
+			throw MyGraphicsLibraryException("Unable to load texture " + path + "! SDL_image Error: " + SDL_GetError());
 		}
 
 		if (textureRect->w == -1) {
@@ -117,7 +113,7 @@ namespace MGL {
 			textureRect->h = textureSurface->h;
 		}
 
-		SDL_FreeSurface(textureSurface);
+		SDL_DestroySurface(textureSurface);
 
 		return new Texture::pimpl(sdlTexture);
 
@@ -132,11 +128,11 @@ namespace MGL {
 	Texture::pimpl *Texture::pimpl::textureFromText(std::string text , Font &font, Color color, Renderer &renderer, Rect *outRect)
 	{ //not efficient atm
 		//Render text surface
-		SDL_Surface* textureSurface = TTF_RenderText_Solid(font.get()->font, text.c_str(), convertColorToSDLColor(color));
+		SDL_Surface* textureSurface = TTF_RenderText_Solid(font.get()->font, text.c_str(), text.length(), convertColorToSDLColor(color));
 		if (textureSurface == NULL)
 		{
-			std::cout << "Unable to render text surface! SDL_ttf Error: " + std::string(TTF_GetError()) << std::endl;
-			throw MyGraphicsLibraryException("Unable to render text surface! SDL_ttf Error: " + std::string(TTF_GetError()) );
+			std::cout << "Unable to render text surface! SDL_ttf Error: " + std::string(SDL_GetError()) << std::endl;
+			throw MyGraphicsLibraryException("Unable to render text surface! SDL_ttf Error: " + std::string(SDL_GetError()) );
 		}
 		//Create texture from surface pixels
 		SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer.get()->renderer, textureSurface);
@@ -149,7 +145,7 @@ namespace MGL {
 		outRect->h = textureSurface->h;
 
 		//Get rid of old surface
-		SDL_FreeSurface(textureSurface);
+		SDL_DestroySurface(textureSurface);
 		return new Texture::pimpl(texture);
 	}
 
@@ -170,7 +166,7 @@ namespace MGL {
 		TTF_Font* font = TTF_OpenFont(path.c_str(), fontSize);
 		if (font == NULL)
 		{
-			throw MyGraphicsLibraryException("Failed to load font! SDL_ttf Error: " + std::string(TTF_GetError()));
+			throw MyGraphicsLibraryException("Failed to load font! SDL_ttf Error: " + std::string(SDL_GetError()));
 		}
 		return new Font::pimpl(font);
 	}

@@ -63,7 +63,6 @@ public:
 	virtual void runEvents() = 0;
 private:
 	virtual void proccessEvent(const MGL::Event &event) = 0;
-	virtual void windowEvent(MGL::WindowEventTypes event) = 0;
 	virtual void keydownEvent(MGL::KeyCodes key) = 0;
 };
 
@@ -80,7 +79,6 @@ private:
 
 	void proccessEvent(const MGL::Event &event) override;
 
-	void windowEvent(MGL::WindowEventTypes event) override;
 
 	void keydownEvent(MGL::KeyCodes key) override;
 };

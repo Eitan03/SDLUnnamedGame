@@ -1,5 +1,5 @@
 #include "Event.h"
-#include <SDL.h>
+#include <SDL3/SDL.h>
 #include "../Utilities.h"
 
 
@@ -9,32 +9,25 @@ namespace MGL {
 
 		SDL_Event SDLEvent;
 
-		WindowEventTypes windowEvent = {};
-
 		if (SDL_PollEvent(&SDLEvent)) {
 			switch (SDLEvent.type) {
-			case SDL_QUIT:
+			case SDL_EVENT_QUIT:
 				return { EventTypes::QUIT };
 				break;
-			case SDL_MOUSEMOTION:
+			case SDL_EVENT_MOUSE_MOTION:
 				return { EventTypes::MOUSE_MOVED };
 				break;
-			case SDL_MOUSEWHEEL:
+			case SDL_EVENT_MOUSE_WHEEL:
 				return { EventTypes::MOUSE_WHEEL, PointI(SDLEvent.wheel.x, SDLEvent.wheel.y) };
 				break;
-			case SDL_WINDOWEVENT:
-				switch (SDLEvent.window.type) {
-				case SDL_WINDOWEVENT_ENTER:
-					windowEvent = WindowEventTypes::ENTER;
-					break;
-				case SDL_WINDOWEVENT_LEAVE:
-					windowEvent = WindowEventTypes::LEAVE;
-					break;
-				}
-				return { .type = EventTypes::WINDOW_EVENT , .window = windowEvent };
+			case SDL_EVENT_WINDOW_MOUSE_ENTER:
+				return { EventTypes::WINDOW_ENTER };
 				break;
-			case SDL_KEYDOWN:
-				return { .type = EventTypes::KEY_PRESSED, .pressedKey = static_cast<MGL::KeyCodes>(SDLEvent.key.keysym.sym) };
+			case SDL_EVENT_WINDOW_MOUSE_LEAVE:
+				return { EventTypes::WINDOW_LEAVE };
+				break;
+			case SDL_EVENT_KEY_DOWN:
+				return { .type = EventTypes::KEY_PRESSED, .pressedKey = static_cast<MGL::KeyCodes>(SDLEvent.key.key) };
 				break;
 			}
 
@@ -45,7 +38,7 @@ namespace MGL {
 			return { EventTypes::NONE };
 		}
 	}
-	uint32_t GetMouseState(int* x, int* y)
+	uint32_t GetMouseState(float* x, float* y)
 	{
 		return SDL_GetMouseState(x, y);
 	}

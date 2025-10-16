@@ -1,10 +1,16 @@
 #include "main.h"
 
 int main(int argc, char* args[]) {
-	initlialize();
-	gameLoop();
-	close();
-	return 1;
+	try {
+		initlialize();
+		gameLoop();
+		close();
+	}
+	catch (const std::exception& e) {
+		std::cerr << "Caught exception: " << e.what() << std::endl;
+		throw e;
+	}
+	return 0;
 }
 
 void initlialize() {
@@ -157,10 +163,13 @@ void GameplayEventFactory::proccessEvent(const MGL::Event &event) {
 		this->changeScale(event.wheel.y);
 		break;
 
-	case MGL::EventTypes::WINDOW_EVENT:
-		this->windowEvent(event.window);
+	case MGL::EventTypes::WINDOW_ENTER:
+		isMouseInWindow = true;
 		break;
-
+	case MGL::EventTypes::WINDOW_LEAVE:
+		isMouseInWindow = false;
+		screenMoveDirection = None;
+		break;
 	case MGL::EventTypes::KEY_PRESSED:
 		this->keydownEvent(event.pressedKey);
 		break;
@@ -170,9 +179,9 @@ void GameplayEventFactory::proccessEvent(const MGL::Event &event) {
 
 void GameplayEventFactory::updateMousePosition()
 {
-	int x, y;
+	float x, y;
 	MGL::GetMouseState(&x, &y);
-	mousePositionABS = { x, y };
+	mousePositionABS = { (int)x, (int)y };
 	mousePosition = (MGL::PointF)(mousePositionABS + camera.getLocation()) / (float)Block::getSizeScaled();
 	mousePositionABSText.get()->setText(std::to_string((int)floor(mousePosition.x)) + ", " + std::to_string((int)floor(mousePosition.y)));
 
@@ -219,30 +228,16 @@ void GameplayEventFactory::changeScale(int32_t mouseMovement)
 	}
 }
 
-void GameplayEventFactory::windowEvent(MGL::WindowEventTypes event) {
-	switch (event)
-	{
-	case MGL::WindowEventTypes::ENTER:
-		isMouseInWindow = true;
-		break;
-	case MGL::WindowEventTypes::LEAVE:
-		isMouseInWindow = false;
-		screenMoveDirection = None;
-		break;
-	}
-
-}
-
 void GameplayEventFactory::keydownEvent(MGL::KeyCodes key) {
 
 	auto mousePos = MGL::PointI{ (int)floor(mousePosition.x), (int)floor(mousePosition.y) };
 	switch (key)
 	{
-	case MGL::KeyCodes::w:
+	case MGL::KeyCodes::W:
 		chunkManager->setBlock(Sand, 1, mousePos);
 		std::cout << "pressed W" << std::endl;
 		break;
-	case MGL::KeyCodes::e:
+	case MGL::KeyCodes::E:
 		treeStructure->place(mousePos);
 		std::cout << "pressed E" << std::endl;
 		break;

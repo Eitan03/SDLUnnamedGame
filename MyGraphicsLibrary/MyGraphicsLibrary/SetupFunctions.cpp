@@ -1,25 +1,19 @@
 #include "SetupFunctions.h"
-#include <SDL.h>
-#include <SDL_image.h>
-#include <string>
-#include <SDL_ttf.h>
+
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 namespace MGL {
 	void initialize()
 	{
-		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
+		if (!SDL_Init(SDL_INIT_VIDEO))
 		{
 			throw MyGraphicsLibraryException("SDL could not initialize! SDL_Error: " + std::string(SDL_GetError()));
 		}
-		//Initialize PNG loading
-		int imgFlags = IMG_INIT_PNG;
-		if (!(IMG_Init(imgFlags) & imgFlags))
+		if (!TTF_Init())
 		{
-			throw MyGraphicsLibraryException("SDL_image could not initialize! SDL_image Error: " + std::string(IMG_GetError()));
-		}
-		if (TTF_Init() == -1)
-		{
-			throw MyGraphicsLibraryException("SDL_ttf could not initialize! SDL_ttf Error: " + std::string(TTF_GetError()));
+			throw MyGraphicsLibraryException("SDL_ttf could not initialize! SDL_ttf Error: " + std::string(SDL_GetError()));
 		}
 
 	}
@@ -35,7 +29,6 @@ namespace MGL {
 	{
 		//Quit SDL subsystems
 		TTF_Quit();
-		IMG_Quit();
 		SDL_Quit();
 	}
 }
