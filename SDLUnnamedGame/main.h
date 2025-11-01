@@ -18,6 +18,7 @@
 #include "Blocks/Generators/StructureGenerator.h"
 
 #include <MyGraphicsLibrary/Timer.h>
+#include "Blocks/ChunkDatabase/ChunkDatabase.h"
 
 void initlialize();
 void initlializeGameEngine();

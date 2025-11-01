@@ -1,14 +1,17 @@
 #pragma once
 #include <vector>
 #include <array>
+#include <memory>
 #include <MyGraphicsLibrary/TargetTexture.h>
-#include "../GameEngine/ImmobileGameObject.h"
 
+#include "../GameEngine/ImmobileGameObject.h"
+#include "../Globals.h"
+
+#include "Generators/WorldGenerators/WorldGenerator.h"
+#include "ChunkDatabase/ChunkDatabase.h"
 #include "Block.h"
-#include "Generators/WorldGenerators/GrassWorldGenerator.h"
-#include "Generators/WorldGenerators/PossionDiscWorldGenerator.h"
-#define CHUNK_SIZE 8
-#define LAYERS 3
+
+
 /*
 * To Be Done -
 	3 layers-
@@ -26,14 +29,14 @@ public:
 	void render() override; //renders all layers
 
 	static void SetRenderer(std::shared_ptr<MGL::Renderer> renderer) { Chunk::renderer = renderer; }
+	static void SetDatabase(std::unique_ptr<ChunkDatabase> chunkDatabase) { Chunk::chunkDatabase = std::move(chunkDatabase); }
+	static void SetWorldGenerator(std::unique_ptr<WorldGenerator> worldGenerator) { Chunk::worldGenerator = std::move(worldGenerator); }
 
 	void setBlock(std::unique_ptr<Block> block, int layer, MGL::PointI position);
 protected:
 
-	std::array<std::array<std::array<std::unique_ptr<Block>, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> loadBlocksFromFile(const char* path);
+	std::array<std::array<std::array<std::unique_ptr<Block>, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> createChunk();
 	void loadChunk();
-	std::array<std::array<std::array<std::unique_ptr<Block>, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> createChunk(const char* path);
-	void saveChunk(const char* path);
 
 	std::array<std::array<std::array<std::unique_ptr<Block>, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> blocks;
 
@@ -44,6 +47,7 @@ private:
 	void printLayer(int layerNum);
 #endif
 	static std::shared_ptr<MGL::Renderer> renderer; // used for the creation of the chunk textures
+	static std::unique_ptr<ChunkDatabase> chunkDatabase;
 
 	void _drawToChunk(std::shared_ptr<MGL::Texture> texture, MGL::PointI position);
 

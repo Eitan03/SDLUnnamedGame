@@ -8,6 +8,9 @@
 
 #define BLOCK_TEXTURE_SIZE 250
 
+#define CHUNK_SIZE 8
+#define LAYERS 3
+
 struct Colors {
     const MGL::Color White;
     const MGL::Color Black;

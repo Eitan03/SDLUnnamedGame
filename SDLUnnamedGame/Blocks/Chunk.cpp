@@ -4,8 +4,9 @@
 #include "../Globals.h"
 #include "./Block.h"
 
-std::unique_ptr<WorldGenerator> Chunk::worldGenerator = std::make_unique<PossionDiscWorldGenerator>(PossionDiscWorldGenerator());
-std::shared_ptr<MGL::Renderer> Chunk::renderer = std::shared_ptr<MGL::Renderer>();
+std::shared_ptr<MGL::Renderer> Chunk::renderer = nullptr;
+std::unique_ptr<WorldGenerator> Chunk::worldGenerator = nullptr;
+std::unique_ptr<ChunkDatabase> Chunk::chunkDatabase = nullptr;
 
 Chunk::Chunk(MGL::PointI position) : ImmobileGameObject(position, { Block::getSize() * CHUNK_SIZE, Block::getSize() * CHUNK_SIZE }, nullptr), blocks()
 {
@@ -16,8 +17,7 @@ Chunk::Chunk(MGL::PointI position) : ImmobileGameObject(position, { Block::getSi
 
 Chunk::~Chunk()
 {
-	std::string path = std::string("./chunks/" + std::to_string((int)(this->position.x)) + "," + std::to_string((int)(this->position.y)) + ".chunk");
-	saveChunk(path.c_str());
+	Chunk::chunkDatabase->saveChunk(this->position, this->blocks);
 }
 
 void Chunk::render()
@@ -47,59 +47,15 @@ void Chunk::setBlock(std::unique_ptr<Block> block, int layer, MGL::PointI positi
 	this->_drawToChunk(blockTexture, position);
 }
 
-std::array<std::array<std::array<std::unique_ptr<Block>, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::loadBlocksFromFile(const char* path) {
-
-	std::array<std::array<std::array<std::unique_ptr<Block>, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> chunkData{};
-	std::ifstream ifStream;
-	ifStream.open(path);
-
-	int currentLayer = -1;
-	int row = 0;
-	int column = 0;
-
-
-	std::string line;
-	while (getline(ifStream, line)) {
-		if (!line.compare("")) continue;
-
-		if (line.find("layer ") == 0) { //if the line starts with "layer "
-			currentLayer = std::stoi(line.substr(5, line.size() - 1));
-			row = 0;
-			column = 0;
-			continue;
-		}
-
-		std::istringstream lineStream(line);
-		std::string numberAsString;
-		while (getline(lineStream, numberAsString, ',')) {
-			if (row > CHUNK_SIZE || column > CHUNK_SIZE || currentLayer < 0 || currentLayer > LAYERS) {
-				throw GameEngineException("either layer error, or row or column too big");
-			}
-			int blockTypeID = std::stoi(numberAsString);
-			if (static_cast<BlockType>(blockTypeID) != BlockType::Null) {
-				chunkData[currentLayer][row][column] = std::make_unique<Block>(this->getPosition() * CHUNK_SIZE, static_cast<BlockType>(blockTypeID));
-			}
-			row++;
-		}
-		row = 0;
-		column++;
-	}
-	return chunkData;
-
-}
 
 void Chunk::loadChunk()
 {
-	std::string path = std::string("./chunks/" + std::to_string((int)(this->position.x)) + "," + std::to_string((int)(this->position.y)) + ".chunk");
-	std::ifstream ifStream(path);
-
-	if (ifStream.good())
+	if (this->chunkDatabase->isChunkSaved(this->position))
 	{
-		this->blocks = loadBlocksFromFile(path.c_str());
+		this->blocks = this->chunkDatabase->loadChunk(this->position);
 	}
 	else {
-		std::cout << "creating File : " << path << std::endl;
-		this->blocks = createChunk(path.c_str());
+		this->blocks = createChunk();
 	}
 
 
@@ -126,7 +82,7 @@ void Chunk::loadChunk()
 	}
 }
 
-std::array<std::array<std::array<std::unique_ptr<Block>, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::createChunk(const char* path)
+std::array<std::array<std::array<std::unique_ptr<Block>, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> Chunk::createChunk()
 {
 
 	std::array<std::array<std::array<std::unique_ptr<Block>, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> chunkData{};
@@ -150,36 +106,6 @@ std::array<std::array<std::array<std::unique_ptr<Block>, CHUNK_SIZE>, CHUNK_SIZE
 	}
 
 	return chunkData;
-}
-
-void Chunk::saveChunk(const char* path)
-{
-	std::cout << "saving " << path << std::endl;
-	std::ofstream ofStream;
-	ofStream.open(path);
-
-	if (!ofStream.is_open())
-	{
-		throw GameEngineException(std::string("Failed to open file : ") + path);
-	}
-
-	for (int layer = 0; layer < LAYERS; layer++) {
-		ofStream << "layer " << std::to_string(layer) << ":" << "\n";
-		for (int i = 0; i < CHUNK_SIZE; i++) {
-			for (int j = 0; j < CHUNK_SIZE; j++) {
-				if (this->blocks[layer][j][i] != nullptr) {
-					ofStream << std::to_string(this->blocks[layer][j][i]->getType()) + ",";
-				}
-				else {
-					ofStream << std::to_string(BlockType::Null) + ",";
-				}
-			}
-			ofStream << "\n";
-		}
-		ofStream << "\n";
-	}
-
-	ofStream.close();
 }
 
 #ifndef NDEBUG // if debug

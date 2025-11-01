@@ -1,4 +1,7 @@
 #include "main.h"
+#include "Blocks/ChunkDatabase/MockChunkDatabase.h"
+
+#include "Blocks/Generators/WorldGenerators/GrassWorldGenerator.h"
 
 int main(int argc, char* args[]) {
 	try {
@@ -30,6 +33,8 @@ void initlializeGameEngine()
 	font = MGL::initializeFont("assets\\fonts\\Pixeled.ttf");
 
 	Chunk::SetRenderer(renderer);
+	Chunk::SetWorldGenerator(std::make_unique<GrassWorldGenerator>());
+	Chunk::SetDatabase(std::make_unique<MockChunkDatabase>());
 	chunkManager = std::make_shared<ChunkManager>(&camera);
 
 	mousePositionABSText = std::make_unique<MGL::Text>("-1, -1", colors.White, *font, *renderer);
