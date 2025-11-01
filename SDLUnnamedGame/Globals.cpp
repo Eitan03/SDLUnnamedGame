@@ -7,7 +7,7 @@
 #include <MyGraphicsLibrary/Texture.h>
 
 Camera camera = Camera();
-std::shared_ptr<MGL::Texture> blockTextures[BlockTypes::Size];
+std::shared_ptr<MGL::Texture> blockTextures[BlockType::Size];
 
 Colors colors = {
 				{255, 255, 255}, //White
@@ -19,7 +19,7 @@ void setUpTextures(MGL::Renderer& renderer) {
 	/*
 		were  assuming that each texture is BLOCK_TEXTURE_SIZE by BLOCK_TEXTURE_SIZE and that there is max of 5 textures per row
 	*/
-	for (int i = 0; i < BlockTypes::Size; i++) {
+	for (int i = 0; i < BlockType::Size; i++) {
 		blockTextures[i] = MGL::Texture::CreateTextureFromImage("assets\\textures\\blocks.png", renderer, MGL::Rect{ (i % 5) * BLOCK_TEXTURE_SIZE, (i / 5) * BLOCK_TEXTURE_SIZE, BLOCK_TEXTURE_SIZE, BLOCK_TEXTURE_SIZE });
 	}
 }

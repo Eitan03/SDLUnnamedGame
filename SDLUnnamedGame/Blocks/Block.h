@@ -5,17 +5,22 @@
 
 class Block: public ImmobileGameObject
 {
-	friend class Camera; // camera calls the update function to change sizeScaled
 public:
 
-	Block(MGL::PointI position, std::shared_ptr<MGL::Texture> texture);
+	Block(MGL::PointI position, BlockType type);
+
+	const BlockType getType() { return type; }
+
 
 	static const int getSize() { return size; }
 	static int getSizeScaled() { return sizeScaled; }
 
-	static void update(Camera* cam);
-	static const std::shared_ptr<MGL::Texture> getTexture(ID blockId) { return blockTextures[blockId]; }; // TODO maybe weak ptr?
+	static void onCameraChange(Camera* cam);
+
+	static Block* createEmptyBlock() { return new Block({ 0,0 }, BlockType::Unkown); }
 protected:
+	virtual void update() {}; // TODO take nearby blocks, and make sure to update in the following tick to avoid infinite loop
 	static int sizeScaled;
 	static const int size = SCREEN_WIDTH / 16;
+	BlockType type;
 };

@@ -1,6 +1,7 @@
 #include "Timer.h"
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
+
 namespace MGL {
 	Timer::Timer() :
 		startingTime(0), ticks(0), paused(false), started(false), pauseTime(0)

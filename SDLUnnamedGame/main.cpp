@@ -30,7 +30,7 @@ void initlializeGameEngine()
 	font = MGL::initializeFont("assets\\fonts\\Pixeled.ttf");
 
 	Chunk::SetRenderer(renderer);
-	chunkManager = std::make_shared<ChunkManager>(&(camera));
+	chunkManager = std::make_shared<ChunkManager>(&camera);
 
 	mousePositionABSText = std::make_unique<MGL::Text>("-1, -1", colors.White, *font, *renderer);
 	fpsText = std::make_unique<MGL::Text>("fps: -1", colors.White, *font, *renderer);
@@ -47,8 +47,8 @@ void initlializeGameEngine()
 }
 
 void initlializeGame() {
-	camera.addObserver(std::bind(&ChunkManager::cameraMoved, chunkManager.get(), std::placeholders::_1));
-	camera.addObserver(Block::update);
+	camera.addObserver(std::bind(&ChunkManager::onCameraChange, chunkManager.get(), std::placeholders::_1));
+	camera.addObserver(Block::onCameraChange);
 
 	cameraMovmentsTimer.Start();
 
@@ -74,7 +74,7 @@ void gameLoop() {
 void updateFpsCount() {
 	fpsCount++;
 	if (fpsTimer.GetTime() >= 1000) {
-		fpsText.get()->setText("fps: " + std::to_string(fpsCount));
+		fpsText->setText("fps: " + std::to_string(fpsCount));
 		fpsCount = 0;
 		fpsTimer.Start();
 	}
@@ -123,8 +123,8 @@ void moveScreen() {
 void render() {
 	renderer->clear();
 	chunkManager->render();
-	mousePositionABSText.get()->renderABS(10, 0);
-	fpsText.get()->renderABS(SCREEN_WIDTH - fpsText.get()->getTextureRect().w - 10, 0);
+	mousePositionABSText->renderABS(10, 0);
+	fpsText->renderABS(SCREEN_WIDTH - fpsText.get()->getTextureRect().w - 10, 0);
 	renderMouseRect();
 }
 
@@ -183,7 +183,7 @@ void GameplayEventFactory::updateMousePosition()
 	MGL::GetMouseState(&x, &y);
 	mousePositionABS = { (int)x, (int)y };
 	mousePosition = (MGL::PointF)(mousePositionABS + camera.getLocation()) / (float)Block::getSizeScaled();
-	mousePositionABSText.get()->setText(std::to_string((int)floor(mousePosition.x)) + ", " + std::to_string((int)floor(mousePosition.y)));
+	mousePositionABSText->setText(std::to_string((int)floor(mousePosition.x)) + ", " + std::to_string((int)floor(mousePosition.y)));
 
 	bool mouseInArea = false;
 	if ((mousePositionABS.y > 0) && (mousePositionABS.y < SCREEN_HEIGHT / 9)) {
@@ -234,7 +234,7 @@ void GameplayEventFactory::keydownEvent(MGL::KeyCodes key) {
 	switch (key)
 	{
 	case MGL::KeyCodes::W:
-		chunkManager->setBlock(Sand, 1, mousePos);
+		chunkManager->setBlock(std::make_unique<Block>(mousePos, Sand), 1, mousePos);
 		std::cout << "pressed W" << std::endl;
 		break;
 	case MGL::KeyCodes::E:

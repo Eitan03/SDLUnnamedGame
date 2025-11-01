@@ -10,7 +10,7 @@ class PossionDiscWorldGenerator :
 {
 public:
     PossionDiscWorldGenerator();
-    int getBlock(MGL::PointI pos) override;
+    Block* generateBlock(MGL::PointI pos) override;
 
 private:
     std::vector<MGL::PointI> points;

@@ -18,6 +18,9 @@ namespace MGL {
 		void renderABS(int x, int y) override;
 		void renderABS(Rect locationAndSize);
 
+		// allow for multiple sprites in one texture
+		void renderABS(Rect locationAndSize, Rect spriteLocationAndSize);
+
 		inline Rect getTextureRect() const { return this->textureRect; };
 
 

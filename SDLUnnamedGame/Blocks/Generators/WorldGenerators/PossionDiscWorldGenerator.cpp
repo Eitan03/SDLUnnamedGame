@@ -6,14 +6,14 @@ PossionDiscWorldGenerator::PossionDiscWorldGenerator() {
 	points = possionDisk(radius, MGL::PointI(sampleSize, sampleSize));
 }
 
-int PossionDiscWorldGenerator::getBlock(MGL::PointI position) {
+Block* PossionDiscWorldGenerator::generateBlock(MGL::PointI position) {
 	
 	MGL::PointI currPosition = position; // abs(position) % (int)sampleSize;
 	if (std::find(points.begin(), points.end(), currPosition) != points.end()) {
-		return BlockTypes::Sand;
+		return new Block(position, BlockType::Sand);
 	}
 	else {
-		return BlockTypes::Grass;
+		return new Block(position, BlockType::Grass);
 	}
 
 }

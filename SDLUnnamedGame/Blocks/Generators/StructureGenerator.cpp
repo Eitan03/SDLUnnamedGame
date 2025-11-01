@@ -31,7 +31,7 @@ void StructureGenerator::place(MGL::PointI position)
 				if (this->blocks[layer][row][col] != 0) {
 					if (auto chunkManagerPtr = this->chunkManager.lock()) {
 						chunkManagerPtr->setBlock(
-							this->blocks[layer][row][col],
+							std::make_unique<Block>(position + MGL::PointI{ row, col }, static_cast<BlockType>(this->blocks[layer][row][col])),
 							layer,
 							position + MGL::PointI{ row, col }
 						);

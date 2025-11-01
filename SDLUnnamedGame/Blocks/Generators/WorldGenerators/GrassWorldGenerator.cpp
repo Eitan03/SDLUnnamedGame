@@ -5,7 +5,7 @@ GrassWorldGenerator::GrassWorldGenerator()
 {
 }
 
-int GrassWorldGenerator::getBlock(MGL::PointI pos)
+Block* GrassWorldGenerator::generateBlock(MGL::PointI pos)
 {
-    return BlockTypes::Grass;
+		return new Block(pos, BlockType::Sand);
 }

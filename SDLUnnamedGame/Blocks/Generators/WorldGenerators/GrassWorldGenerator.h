@@ -5,6 +5,6 @@ class GrassWorldGenerator :
 {
 public:
     GrassWorldGenerator();
-    int getBlock(MGL::PointI pos) override;
+    Block* generateBlock(MGL::PointI pos) override;
 };
 

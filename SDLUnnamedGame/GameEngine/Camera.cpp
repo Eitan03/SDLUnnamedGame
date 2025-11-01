@@ -10,7 +10,7 @@ Camera::Camera()
 
 void Camera::setLocation(MGL::PointI location)
 {
-	this->location = location; this->update(this);
+	this->location = location; this->notifyObservers(this);
 }
 
 void Camera::setScale(float scale)
@@ -18,12 +18,12 @@ void Camera::setScale(float scale)
 	this->scale = scale; 
 	if (-0.01 < scale && scale < 0.01) 
 		throw GameEngineException("scale cant be 0");
-	this->update(this);
+	this->notifyObservers(this);
 
 	std::cout << "scale: " << this->scale << std::endl;
 }
 
-void Camera::update(Camera* cam)
+void Camera::notifyObservers(Camera* cam)
 {
 	for (auto obs : observers) {
 		obs(this);

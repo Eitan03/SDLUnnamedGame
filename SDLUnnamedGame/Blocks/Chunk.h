@@ -27,23 +27,23 @@ public:
 
 	static void SetRenderer(std::shared_ptr<MGL::Renderer> renderer) { Chunk::renderer = renderer; }
 
-	void setBlock(ID blockId, int layer, MGL::PointI position);
+	void setBlock(std::unique_ptr<Block> block, int layer, MGL::PointI position);
 protected:
 
-	std::array<std::array<std::array<ID, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> loadBlockIdsFromFile(const char* path);
+	std::array<std::array<std::array<std::unique_ptr<Block>, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> loadBlocksFromFile(const char* path);
 	void loadChunk();
-	std::array<std::array<std::array<ID, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> createChunk(const char* path);
+	std::array<std::array<std::array<std::unique_ptr<Block>, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> createChunk(const char* path);
 	void saveChunk(const char* path);
 
-	std::array<std::array<std::array<ID, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> blocks;
+	std::array<std::array<std::array<std::unique_ptr<Block>, CHUNK_SIZE>, CHUNK_SIZE>, LAYERS> blocks;
 
 	static std::unique_ptr<WorldGenerator> worldGenerator;
-	static std::shared_ptr<MGL::Renderer> renderer; // used for the creation of the chunk textures
 
 private:
 #ifndef NDEBUG // if debug
 	void printLayer(int layerNum);
 #endif
+	static std::shared_ptr<MGL::Renderer> renderer; // used for the creation of the chunk textures
 
 	void _drawToChunk(std::shared_ptr<MGL::Texture> texture, MGL::PointI position);
 

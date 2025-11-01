@@ -27,7 +27,7 @@ public:
 	void addObserver(std::function<void (Camera*)> func) { observers.push_back(func); };
 
 protected:
-	void update(Camera* cam);
+	void notifyObservers(Camera* cam);
 private:
 	MGL::PointI location;
 	float scale;

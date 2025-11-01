@@ -12,13 +12,14 @@ struct Colors {
     const MGL::Color White;
     const MGL::Color Black;
 };
-enum BlockTypes {
+enum BlockType {
     Null = 0,
     Grass,
     Sand,
     Log,
     Leaf,
-    Size
+    Size,
+    Unkown = -1
 };
 
-extern std::shared_ptr<MGL::Texture> blockTextures[BlockTypes::Size];
+extern std::shared_ptr<MGL::Texture> blockTextures[BlockType::Size];
